@@ -3,7 +3,7 @@ package com.example.bp.ebookmanager.model.formats;
 /**
  * Created by bp on 07.05.16.
  */
-public class MobiSpecificData implements FormatSpecificData {
+public class MobiSpecificData implements EbookSpecificData {
     @Override
     public String getFormatName() {
         return "MOBI";
@@ -11,6 +11,6 @@ public class MobiSpecificData implements FormatSpecificData {
 
     @Override
     public void acceptVisitor(Visitor visitor) {
-        visitor.visitMobiSpecificData(this);
+        visitor.visitEbookSpecificData(this);
     }
 }

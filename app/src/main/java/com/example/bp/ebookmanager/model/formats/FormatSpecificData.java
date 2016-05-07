@@ -8,9 +8,7 @@ public interface FormatSpecificData {
     void acceptVisitor(Visitor visitor);
 
     interface Visitor {
-        void visitMp3SpecificData(Mp3SpecificData data);
-        void visitEpubSpecificData(EpubSpecificData data);
-        void visitMobiSpecificData(MobiSpecificData data);
-        void visitPdfSpecificData(PdfSpecificData data);
+        void visitAudiobookSpecificData(AudiobookSpecificData data);
+        void visitEbookSpecificData(EbookSpecificData data);
     }
 }

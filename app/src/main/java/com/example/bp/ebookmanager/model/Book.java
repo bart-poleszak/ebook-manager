@@ -12,7 +12,7 @@ public class Book {
     private Person author;
     private Person translator;
     private Publisher publisher;
-    private HashSet<FormatSpecificData> formats;
+    private HashSet<FormatSpecificData> formats = new HashSet<>();
 
     public String getTitle() {
         return title;
@@ -44,5 +44,9 @@ public class Book {
 
     public void setPublisher(Publisher publisher) {
         this.publisher = publisher;
+    }
+
+    public HashSet<FormatSpecificData> getFormats() {
+        return formats;
     }
 }

@@ -3,7 +3,7 @@ package com.example.bp.ebookmanager.model.formats;
 /**
  * Created by bp on 07.05.16.
  */
-public class PdfSpecificData implements FormatSpecificData {
+public class PdfSpecificData implements EbookSpecificData {
     @Override
     public String getFormatName() {
         return "PDF";
@@ -11,6 +11,6 @@ public class PdfSpecificData implements FormatSpecificData {
 
     @Override
     public void acceptVisitor(Visitor visitor) {
-        visitor.visitPdfSpecificData(this);
+        visitor.visitEbookSpecificData(this);
     }
 }
