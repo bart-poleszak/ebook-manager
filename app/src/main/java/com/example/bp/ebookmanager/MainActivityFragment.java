@@ -8,9 +8,12 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.example.bp.ebookmanager.dataprovider.BookDataProvider;
+import com.example.bp.ebookmanager.dataprovider.WebDataProvderStrategy;
 import com.example.bp.ebookmanager.dataprovider.android.BookDataProviderImpl;
+import com.example.bp.ebookmanager.dataprovider.android.VisibleWebClient;
 import com.example.bp.ebookmanager.dataprovider.mock.MockBookDataProviderStrategy;
 import com.example.bp.ebookmanager.dataprovider.MultipleDataProvider;
+import com.example.bp.ebookmanager.dataprovider.mock.MockWebActionContext;
 import com.example.bp.ebookmanager.mainlist.MainListAdapter;
 import com.example.bp.ebookmanager.model.Book;
 import com.example.bp.ebookmanager.viewmodel.BookDetailsViewModel;
@@ -39,9 +42,13 @@ public class MainActivityFragment extends Fragment {
 
         final MainListAdapter adapter = new MainListAdapter(getContext());
         listView.setAdapter(adapter);
-        MultipleDataProvider dataProvider = new MultipleDataProvider();
-        dataProvider.addDataProvider(new BookDataProviderImpl(new MockBookDataProviderStrategy()));
-        dataProvider.addDataProvider(new BookDataProviderImpl(new MockBookDataProviderStrategy()));
+//        MultipleDataProvider dataProvider = new MultipleDataProvider();
+//        dataProvider.addDataProvider(new BookDataProviderImpl(new MockBookDataProviderStrategy()));
+//        dataProvider.addDataProvider(new BookDataProviderImpl(new MockBookDataProviderStrategy()));
+        WebDataProvderStrategy strategy = new WebDataProvderStrategy();
+        strategy.setWebClient(new VisibleWebClient(getContext()));
+        strategy.setWebActionContext(new MockWebActionContext());
+        BookDataProvider dataProvider = new BookDataProviderImpl(strategy);
         dataProvider.requestBooks(new BookDataProvider.Callbacks() {
             @Override
             public void onNewDataAcquired(List<Book> data) {

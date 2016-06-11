@@ -7,6 +7,7 @@ public interface WebClient {
     void setCallbacks(WebClient.Callbacks callbacks);
     void loadUrl(String url);
     boolean isHeadless();
+    void finishWork();
 
     interface Callbacks {
         void onPageFinished(String url, String source);

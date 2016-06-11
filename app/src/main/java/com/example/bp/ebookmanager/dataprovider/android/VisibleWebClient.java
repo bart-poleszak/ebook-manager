@@ -71,4 +71,9 @@ public class VisibleWebClient implements WebClient {
     public boolean isHeadless() {
         return false;
     }
+
+    @Override
+    public void finishWork() {
+        dialog.dismiss();
+    }
 }

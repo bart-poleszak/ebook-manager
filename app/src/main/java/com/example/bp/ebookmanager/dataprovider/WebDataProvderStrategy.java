@@ -22,6 +22,10 @@ public class WebDataProvderStrategy implements DataProviderStrategy {
         this.webClient = webClient;
     }
 
+    public void setWebActionContext(WebActionContext webActionContext) {
+        this.webActionContext = webActionContext;
+    }
+
     @Override
     public void gainAccess(final Callbacks callback) {
 
@@ -29,8 +33,10 @@ public class WebDataProvderStrategy implements DataProviderStrategy {
             @Override
             public void onPageFinished(String url, String source) {
                 webActionContext.processRecievedData(url, source);
-                if(webActionContext.isActionCompleted())
+                if(webActionContext.isActionCompleted()) {
                     callback.onAccessGained();
+                    webClient.finishWork();
+                }
                 else if (webActionContext.isUserActionNeeded() && webClient.isHeadless())
                     callback.onUserActionNeeded();
             }
@@ -40,17 +46,7 @@ public class WebDataProvderStrategy implements DataProviderStrategy {
 
     @Override
     public List<Book> getBooks() {
-        ArrayList<Book> result = new ArrayList<>();
-
-        Book book = new Book();
-        book.setTitle("Zamokowana ksiazka z WebDataProviderStrategy");
-        Person dGlukhowsky = new Person();
-        dGlukhowsky.setName("Dmitry Glukhovsky");
-        book.setAuthor(dGlukhowsky);
-        book.getFormats().add(new PdfSpecificData());
-        result.add(book);
-
-        return result;
+        return webActionContext.getBooks();
     }
 
     @Override
