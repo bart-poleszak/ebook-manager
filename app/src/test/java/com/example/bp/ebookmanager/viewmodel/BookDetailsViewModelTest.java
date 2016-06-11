@@ -1,4 +1,4 @@
-package com.example.bp.ebookmanager;
+package com.example.bp.ebookmanager.viewmodel;
 
 import com.example.bp.ebookmanager.model.Book;
 import com.example.bp.ebookmanager.model.Person;
@@ -13,7 +13,7 @@ import static org.junit.Assert.*;
 /**
  * To work on unit tests, switch the Test Artifact in the Build Variants view.
  */
-public class ExampleUnitTest {
+public class BookDetailsViewModelTest {
     Book authorNarratorBook;
 
     @Before

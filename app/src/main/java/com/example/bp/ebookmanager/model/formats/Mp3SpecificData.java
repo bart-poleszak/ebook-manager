@@ -7,12 +7,13 @@ import com.example.bp.ebookmanager.model.Person;
  */
 public class Mp3SpecificData implements AudiobookSpecificData {
 
+    public static final String FORMAT_NAME = "MP3";
     private Person narrator;
     private Integer lenght;
 
     @Override
     public String getFormatName() {
-        return "MP3";
+        return FORMAT_NAME;
     }
 
     @Override

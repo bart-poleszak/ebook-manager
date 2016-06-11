@@ -29,8 +29,9 @@ public class BookDetailsViewModel {
     private final LinkedHashMap<String, String> details = new LinkedHashMap<>();
     private final ArrayList<String> formats = new ArrayList<>();
 
-    public BookDetailsViewModel() {
+    public BookDetailsViewModel(Book book) {
         specificFormatVisitor = new Visitor();
+        fill(book);
     }
 
     public void fill(Book book) {
@@ -51,6 +52,26 @@ public class BookDetailsViewModel {
     public LinkedHashMap<String, String> getDetails() {
         return details;
     }
+
+    private String getDetailOrEmpty(String key) {
+        String result = details.get(key);
+        if (result != null)
+            return result;
+        return "";
+    }
+
+    public String getTitle() {
+        return getDetailOrEmpty(TITLE);
+    }
+
+    public String getAuthor() {
+        return getDetailOrEmpty(AUTHOR);
+    }
+
+    public ArrayList<String> getFormats() {
+        return formats;
+    }
+
     private class Visitor implements FormatSpecificData.Visitor {
 
         @Override

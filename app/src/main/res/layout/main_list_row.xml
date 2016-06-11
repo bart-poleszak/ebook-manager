@@ -1,6 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent"
-    android:id="@+id/mainListTextView">
+    android:id="@+id/mainListRow" android:padding="@dimen/activity_horizontal_margin">
 
-</TextView>
+    <ImageView
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:id="@+id/imageView"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:src="@drawable/book"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center_vertical"
+        android:layout_toLeftOf="@+id/epubImageView"
+        android:layout_toRightOf="@+id/imageView"
+        android:layout_toEndOf="@+id/imageView"
+        android:layout_marginRight="@dimen/activity_horizontal_margin">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Large Text"
+            android:id="@+id/titleTextView" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Small Text"
+            android:id="@+id/authorTextView"
+            android:layout_alignBottom="@+id/imageView"
+            android:layout_below="@id/titleTextView"
+            android:layout_toLeftOf="@+id/pdfImageView"
+            android:layout_alignLeft="@+id/titleTextView"
+            android:layout_alignStart="@+id/titleTextView" />
+    </LinearLayout>
+
+
+
+    <ImageView
+        android:layout_width="48dp"
+        android:layout_height="16dp"
+        android:id="@+id/epubImageView"
+        android:layout_alignTop="@+id/imageView"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:src="@drawable/epub" />
+
+    <ImageView
+        android:layout_width="48dp"
+        android:layout_height="16dp"
+        android:id="@+id/mobiImageView"
+        android:src="@drawable/mobi"
+        android:layout_marginTop="2dp"
+        android:layout_below="@id/epubImageView"
+        android:layout_alignLeft="@+id/epubImageView"
+        android:layout_alignStart="@+id/epubImageView" />
+
+    <ImageView
+        android:layout_width="48dp"
+        android:layout_height="16dp"
+        android:id="@+id/pdfImageView"
+        android:src="@drawable/pdf"
+        android:layout_marginTop="2dp"
+        android:layout_below="@id/mobiImageView"
+        android:layout_alignLeft="@+id/mobiImageView"
+        android:layout_alignStart="@+id/mobiImageView" />
+
+    <ImageView
+        android:layout_width="48dp"
+        android:layout_height="16dp"
+        android:id="@+id/mp3ImageView"
+        android:src="@drawable/mp3"
+        android:layout_marginTop="2dp"
+        android:layout_below="@id/pdfImageView"
+        android:layout_alignLeft="@+id/pdfImageView"
+        android:layout_alignStart="@+id/pdfImageView" />
+</RelativeLayout>
