@@ -8,9 +8,7 @@ import java.util.List;
  * Created by bp on 08.05.16.
  */
 public interface BookDataProvider {
-    void getDataAsync(Callbacks callbacks);
-
-    void cancel();
+    void requestBooks(Callbacks callbacks);
 
     enum ProgressStatus {
         ACTION_REQUIRED

@@ -13,7 +13,7 @@ public class MultipleDataProvider implements BookDataProvider {
     ArrayList<BookDataProvider> providers = new ArrayList<>();
 
     @Override
-    public void getDataAsync(final Callbacks callbacks) {
+    public void requestBooks(final Callbacks callbacks) {
         Callbacks internalCallbacks = new Callbacks() {
             @Override
             public void onNewDataAcquired(List<Book> data) {
@@ -31,14 +31,7 @@ public class MultipleDataProvider implements BookDataProvider {
             }
         };
         for (BookDataProvider provider : providers)
-            provider.getDataAsync(internalCallbacks);
-    }
-
-    @Override
-    public void cancel() {
-        for (BookDataProvider provider : providers) {
-            provider.cancel();
-        }
+            provider.requestBooks(internalCallbacks);
     }
 
     public void addDataProvider(BookDataProvider provider) {

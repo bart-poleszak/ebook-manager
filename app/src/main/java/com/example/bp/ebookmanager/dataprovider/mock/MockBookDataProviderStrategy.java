@@ -1,5 +1,7 @@
-package com.example.bp.ebookmanager.dataprovider;
+package com.example.bp.ebookmanager.dataprovider.mock;
 
+import com.example.bp.ebookmanager.dataprovider.DataProviderStrategy;
+import com.example.bp.ebookmanager.dataprovider.UserActionEnabler;
 import com.example.bp.ebookmanager.model.Book;
 import com.example.bp.ebookmanager.model.Person;
 import com.example.bp.ebookmanager.model.Publisher;
@@ -15,14 +17,10 @@ import java.util.List;
  * Created by bp on 08.05.16.
  */
 public class MockBookDataProviderStrategy implements DataProviderStrategy {
-    @Override
-    public boolean testAccess() {
-        return true;
-    }
 
     @Override
-    public AccessConditions getAccessConditions() {
-        return null;
+    public void gainAccess(Callbacks callback) {
+        callback.onAccessGained();
     }
 
     @Override
@@ -66,5 +64,10 @@ public class MockBookDataProviderStrategy implements DataProviderStrategy {
         result.add(book);
 
         return result;
+    }
+
+    @Override
+    public void enableUserAction(UserActionEnabler visitor) {
+
     }
 }

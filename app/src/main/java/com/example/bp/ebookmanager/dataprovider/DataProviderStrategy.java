@@ -8,12 +8,13 @@ import java.util.List;
  * Created by bp on 08.05.16.
  */
 public interface DataProviderStrategy {
-    boolean testAccess();
-    AccessConditions getAccessConditions();
-    List<Book> getBooks();
 
-    class AccessConditions {
-        public String accessUrl;
-        public String targetUrl;
+    void gainAccess(Callbacks callback);
+    List<Book> getBooks();
+    void enableUserAction(UserActionEnabler visitor);
+
+    interface Callbacks {
+        void onAccessGained();
+        void onUserActionNeeded();
     }
 }

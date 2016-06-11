@@ -8,8 +8,8 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.example.bp.ebookmanager.dataprovider.BookDataProvider;
-import com.example.bp.ebookmanager.dataprovider.BookDataProviderImpl;
-import com.example.bp.ebookmanager.dataprovider.MockBookDataProviderStrategy;
+import com.example.bp.ebookmanager.dataprovider.android.BookDataProviderImpl;
+import com.example.bp.ebookmanager.dataprovider.mock.MockBookDataProviderStrategy;
 import com.example.bp.ebookmanager.dataprovider.MultipleDataProvider;
 import com.example.bp.ebookmanager.mainlist.MainListAdapter;
 import com.example.bp.ebookmanager.model.Book;
@@ -42,7 +42,7 @@ public class MainActivityFragment extends Fragment {
         MultipleDataProvider dataProvider = new MultipleDataProvider();
         dataProvider.addDataProvider(new BookDataProviderImpl(new MockBookDataProviderStrategy()));
         dataProvider.addDataProvider(new BookDataProviderImpl(new MockBookDataProviderStrategy()));
-        dataProvider.getDataAsync(new BookDataProvider.Callbacks() {
+        dataProvider.requestBooks(new BookDataProvider.Callbacks() {
             @Override
             public void onNewDataAcquired(List<Book> data) {
                 ArrayList<BookDetailsViewModel> viewModels = new ArrayList<>();

@@ -1,50 +1,60 @@
 package com.example.bp.ebookmanager.dataprovider;
 
-import android.content.Context;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
-
 import com.example.bp.ebookmanager.model.Book;
+import com.example.bp.ebookmanager.model.Person;
+import com.example.bp.ebookmanager.model.Publisher;
+import com.example.bp.ebookmanager.model.formats.EpubSpecificData;
+import com.example.bp.ebookmanager.model.formats.MobiSpecificData;
+import com.example.bp.ebookmanager.model.formats.Mp3SpecificData;
+import com.example.bp.ebookmanager.model.formats.PdfSpecificData;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by bp on 08.05.16.
  */
-public abstract class WebDataProvderStrategy implements DataProviderStrategy {
-    private WebView headlessWebView;
+public class WebDataProvderStrategy implements DataProviderStrategy {
+    private WebClient webClient;
+    private WebActionContext webActionContext;
 
-    public WebDataProvderStrategy(Context context) {
-        headlessWebView = new WebView(context);
-        headlessWebView.setWebViewClient(new WebViewClient() {
+    public void setWebClient(WebClient webClient) {
+        this.webClient = webClient;
+    }
 
+    @Override
+    public void gainAccess(final Callbacks callback) {
+
+        webClient.setCallbacks(new WebClient.Callbacks() {
+            @Override
+            public void onPageFinished(String url, String source) {
+                webActionContext.processRecievedData(url, source);
+                if(webActionContext.isActionCompleted())
+                    callback.onAccessGained();
+                else if (webActionContext.isUserActionNeeded() && webClient.isHeadless())
+                    callback.onUserActionNeeded();
+            }
         });
+        webClient.loadUrl(webActionContext.getTargetSiteURL());
     }
 
     @Override
     public List<Book> getBooks() {
-        String pageSource = downloadPageSource();
-        return extractData(pageSource);
+        ArrayList<Book> result = new ArrayList<>();
+
+        Book book = new Book();
+        book.setTitle("Zamokowana ksiazka z WebDataProviderStrategy");
+        Person dGlukhowsky = new Person();
+        dGlukhowsky.setName("Dmitry Glukhovsky");
+        book.setAuthor(dGlukhowsky);
+        book.getFormats().add(new PdfSpecificData());
+        result.add(book);
+
+        return result;
     }
 
     @Override
-    public boolean testAccess() {
-
-        return false;
-    }
-
-    private String downloadPageSource() {
-        String pageUrl = getPageUrl();
-        return "";
-    }
-
-    protected abstract String getPageUrl();
-
-    protected abstract String getAccessTestUrl();
-
-    protected abstract List<Book> extractData(String pageSource);
-
-    private interface Callbacks {
-        void onActionRequired();
+    public void enableUserAction(UserActionEnabler visitor) {
+        visitor.enableWebUserAction(this);
     }
 }
