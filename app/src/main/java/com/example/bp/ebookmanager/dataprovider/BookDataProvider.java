@@ -17,7 +17,7 @@ public interface BookDataProvider {
     interface Callbacks {
         void onNewDataAcquired(List<Book> data);
         void onDataAcquisitionFailed();
-        void webActionRequired(String actionUrl, String targetUrl);
+        void enableUserActions(DataProviderStrategy strategy);
 
     }
 }

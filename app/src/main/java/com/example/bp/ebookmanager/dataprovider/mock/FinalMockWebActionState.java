@@ -11,7 +11,7 @@ public class FinalMockWebActionState implements WebActionState {
 
     @Override
     public String getTargetSiteURL() {
-        return null;
+        return "https://pl.wikipedia.org/wiki/Wikipedia:Strona_g%C5%82%C3%B3wna";
     }
 
     @Override

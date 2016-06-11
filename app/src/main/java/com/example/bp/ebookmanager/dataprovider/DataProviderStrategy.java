@@ -10,11 +10,12 @@ import java.util.List;
 public interface DataProviderStrategy {
 
     void gainAccess(Callbacks callback);
+    void retryToGainAccess();
     List<Book> getBooks();
     void enableUserAction(UserActionEnabler visitor);
 
     interface Callbacks {
         void onAccessGained();
-        void onUserActionNeeded();
+        void onUserActionRequired();
     }
 }

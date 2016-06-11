@@ -1,14 +1,7 @@
 package com.example.bp.ebookmanager.dataprovider;
 
 import com.example.bp.ebookmanager.model.Book;
-import com.example.bp.ebookmanager.model.Person;
-import com.example.bp.ebookmanager.model.Publisher;
-import com.example.bp.ebookmanager.model.formats.EpubSpecificData;
-import com.example.bp.ebookmanager.model.formats.MobiSpecificData;
-import com.example.bp.ebookmanager.model.formats.Mp3SpecificData;
-import com.example.bp.ebookmanager.model.formats.PdfSpecificData;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,6 +10,7 @@ import java.util.List;
 public class WebDataProvderStrategy implements DataProviderStrategy {
     private WebClient webClient;
     private WebActionContext webActionContext;
+    private Callbacks callbacks;
 
     public void setWebClient(WebClient webClient) {
         this.webClient = webClient;
@@ -27,21 +21,26 @@ public class WebDataProvderStrategy implements DataProviderStrategy {
     }
 
     @Override
-    public void gainAccess(final Callbacks callback) {
-
+    public void gainAccess(final Callbacks callbacks) {
+        this.callbacks = callbacks;
         webClient.setCallbacks(new WebClient.Callbacks() {
             @Override
             public void onPageFinished(String url, String source) {
                 webActionContext.processRecievedData(url, source);
                 if(webActionContext.isActionCompleted()) {
-                    callback.onAccessGained();
+                    callbacks.onAccessGained();
                     webClient.finishWork();
                 }
                 else if (webActionContext.isUserActionNeeded() && webClient.isHeadless())
-                    callback.onUserActionNeeded();
+                    callbacks.onUserActionRequired();
             }
         });
         webClient.loadUrl(webActionContext.getTargetSiteURL());
+    }
+
+    @Override
+    public void retryToGainAccess() {
+        gainAccess(callbacks);
     }
 
     @Override

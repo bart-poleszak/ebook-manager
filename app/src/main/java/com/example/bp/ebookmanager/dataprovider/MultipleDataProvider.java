@@ -26,9 +26,10 @@ public class MultipleDataProvider implements BookDataProvider {
             }
 
             @Override
-            public void webActionRequired(String actionUrl, String targetUrl) {
+            public void enableUserActions(DataProviderStrategy strategy) {
 
             }
+
         };
         for (BookDataProvider provider : providers)
             provider.requestBooks(internalCallbacks);

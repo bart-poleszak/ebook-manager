@@ -18,9 +18,17 @@ import java.util.List;
  */
 public class MockBookDataProviderStrategy implements DataProviderStrategy {
 
+    private Callbacks callbacks;
+
     @Override
     public void gainAccess(Callbacks callback) {
-        callback.onAccessGained();
+        callbacks = callback;
+        callbacks.onAccessGained();
+    }
+
+    @Override
+    public void retryToGainAccess() {
+        callbacks.onAccessGained();
     }
 
     @Override

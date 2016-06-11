@@ -13,6 +13,10 @@ import com.example.bp.ebookmanager.dataprovider.WebDataProvderStrategy;
 public class AndroidUserActionEnabler implements UserActionEnabler {
     Context context;
 
+    public AndroidUserActionEnabler(Context context) {
+        this.context = context;
+    }
+
     @Override
     public void enableWebUserAction(WebDataProvderStrategy strategy) {
         strategy.setWebClient(new VisibleWebClient(context));
