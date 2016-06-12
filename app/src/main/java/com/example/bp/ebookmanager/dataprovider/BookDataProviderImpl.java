@@ -1,15 +1,13 @@
-package com.example.bp.ebookmanager.dataprovider.android;
-
-import com.example.bp.ebookmanager.dataprovider.BookDataProvider;
-import com.example.bp.ebookmanager.dataprovider.DataProviderStrategy;
+package com.example.bp.ebookmanager.dataprovider;
 
 /**
+ * Ebook Manager
  * Created by bp on 08.05.16.
  */
-public class AndroidBookDataProvider implements BookDataProvider {
+public class BookDataProviderImpl implements BookDataProvider {
     private DataProviderStrategy strategy;
 
-    public AndroidBookDataProvider(DataProviderStrategy strategy) {
+    public BookDataProviderImpl(DataProviderStrategy strategy) {
         this.strategy = strategy;
     }
 
