@@ -7,18 +7,10 @@ import com.example.bp.ebookmanager.dataprovider.WebActionState;
 import com.example.bp.ebookmanager.dataprovider.html.HTMLScraper;
 import com.example.bp.ebookmanager.model.Book;
 
-import org.w3c.dom.Document;
-import org.xml.sax.InputSource;
-
-import java.io.StringReader;
 import java.util.List;
 
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpression;
-import javax.xml.xpath.XPathFactory;
-
 /**
+ * Ebook Manager
  * Created by bp on 11.06.16.
  */
 public class FrontPageWoblinkWebActionState implements WebActionState {
@@ -49,15 +41,6 @@ public class FrontPageWoblinkWebActionState implements WebActionState {
             shelfUrl = scraper.getAttributeValue("href");
             logged = true;
         }
-
-//        try {
-//            Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new InputSource(new StringReader(source)));
-//            XPathExpression xpath = XPathFactory.newInstance().newXPath().compile("//a[@data-ga-action='My_bookshelf']/@href");
-//            shelfUrl = (String) xpath.evaluate(doc, XPathConstants.STRING);
-//            logged = true;
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
     }
 
     @NonNull
@@ -82,7 +65,7 @@ public class FrontPageWoblinkWebActionState implements WebActionState {
     }
 
     @Override
-    public List<Book> getBooks() {
+    public String getResult() {
         throw new UnsupportedOperationException();
     }
 }

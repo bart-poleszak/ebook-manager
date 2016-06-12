@@ -28,11 +28,6 @@ public class MockBookDataProviderStrategy implements DataProviderStrategy {
     }
 
     @Override
-    public void retryToGainAccess() {
-        callbacks.onAccessGained();
-    }
-
-    @Override
     public List<Book> getBooks() {
         ArrayList<Book> result = new ArrayList<>();
         Person hSienkiewicz = Person.named("Henryk Sienkiewicz");
@@ -42,7 +37,6 @@ public class MockBookDataProviderStrategy implements DataProviderStrategy {
         Book book = new Book();
         book.setTitle("[mock] Ogniem i Mieczem");
         book.setAuthor(hSienkiewicz);
-        book.setPublisher(greg);
 
         book.getFormats().add(new EpubSpecificData());
         book.getFormats().add(new MobiSpecificData());
@@ -52,7 +46,6 @@ public class MockBookDataProviderStrategy implements DataProviderStrategy {
         book = new Book();
         book.setTitle("[mock] Potop");
         book.setAuthor(hSienkiewicz);
-        book.setPublisher(greg);
 
         book.getFormats().add(new EpubSpecificData());
         Mp3SpecificData mp3SpecificData = new Mp3SpecificData();

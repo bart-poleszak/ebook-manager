@@ -6,6 +6,7 @@ import com.example.bp.ebookmanager.model.Book;
 import java.util.List;
 
 /**
+ * Ebook Manager
  * Created by bp on 11.06.16.
  */
 public class StartMockWebActionState implements WebActionState {
@@ -30,7 +31,7 @@ public class StartMockWebActionState implements WebActionState {
     }
 
     @Override
-    public List<Book> getBooks() {
+    public String getResult() {
         throw new UnsupportedOperationException();
     }
 }

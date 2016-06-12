@@ -1,10 +1,7 @@
 package com.example.bp.ebookmanager.dataprovider;
 
-import com.example.bp.ebookmanager.model.Book;
-
-import java.util.List;
-
 /**
+ * Ebook Manager
  * Created by bp on 11.06.16.
  */
 public interface WebActionContext {
@@ -16,5 +13,5 @@ public interface WebActionContext {
 
     boolean isUserActionNeeded();
 
-    List<Book> getBooks();
+    String getResult();
 }

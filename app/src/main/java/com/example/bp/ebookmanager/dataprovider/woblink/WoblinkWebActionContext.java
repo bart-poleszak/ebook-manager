@@ -7,6 +7,7 @@ import com.example.bp.ebookmanager.model.Book;
 import java.util.List;
 
 /**
+ * Ebook Manager
  * Created by bp on 11.06.16.
  */
 public class WoblinkWebActionContext implements WebActionContext{
@@ -46,7 +47,7 @@ public class WoblinkWebActionContext implements WebActionContext{
     }
 
     @Override
-    public List<Book> getBooks() {
-        return currentState.getBooks();
+    public String getResult() {
+        return currentState.getResult();
     }
 }

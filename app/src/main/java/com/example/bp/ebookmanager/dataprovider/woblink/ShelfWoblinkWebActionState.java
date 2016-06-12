@@ -14,7 +14,7 @@ import java.util.List;
 public class ShelfWoblinkWebActionState implements WebActionState {
     private String shelfUrl;
     private boolean actionCompleted = false;
-    private WoblinkBookDataParser parser = new WoblinkBookDataParser();
+    private String source;
 
     public void setShelfUrl(String shelfUrl) {
         this.shelfUrl = shelfUrl;
@@ -28,7 +28,7 @@ public class ShelfWoblinkWebActionState implements WebActionState {
     @Override
     public void processRecievedData(String url, String source) {
         Log.d("WoblinkShelf", url);
-        parser.parse(source);
+        this.source = source;
         actionCompleted = true;
     }
 
@@ -43,7 +43,7 @@ public class ShelfWoblinkWebActionState implements WebActionState {
     }
 
     @Override
-    public List<Book> getBooks() {
-        return parser.getBooks();
+    public String getResult() {
+        return source;
     }
 }

@@ -5,13 +5,14 @@ import com.example.bp.ebookmanager.model.formats.FormatSpecificData;
 import java.util.HashSet;
 
 /**
+ * Ebook Manager
  * Created by bp on 07.05.16.
  */
 public class Book {
     private String title;
     private Person author;
-    private Person translator;
-    private Publisher publisher;
+    private BookDetails details = NullBookDetails.instance();
+
     private HashSet<FormatSpecificData> formats = new HashSet<>();
 
     public String getTitle() {
@@ -30,23 +31,16 @@ public class Book {
         this.author = author;
     }
 
-    public Person getTranslator() {
-        return translator;
-    }
-
-    public void setTranslator(Person translator) {
-        this.translator = translator;
-    }
-
-    public Publisher getPublisher() {
-        return publisher;
-    }
-
-    public void setPublisher(Publisher publisher) {
-        this.publisher = publisher;
-    }
-
     public HashSet<FormatSpecificData> getFormats() {
         return formats;
     }
+
+    public Person getTranslator() {
+        return details.getTranslator();
+    }
+
+    public Publisher getPublisher() {
+        return details.getPublisher();
+    }
+
 }

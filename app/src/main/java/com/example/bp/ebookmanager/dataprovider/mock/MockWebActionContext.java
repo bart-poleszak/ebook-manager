@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Ebook Manager
  * Created by bp on 11.06.16.
  */
 public class MockWebActionContext implements WebActionContext{
@@ -38,7 +39,8 @@ public class MockWebActionContext implements WebActionContext{
     }
 
     @Override
-    public List<Book> getBooks() {
-        return state.getBooks();
+    public String getResult() {
+        return null;
     }
+
 }

@@ -1,12 +1,6 @@
 package com.example.bp.ebookmanager.dataprovider.mock;
 
 import com.example.bp.ebookmanager.dataprovider.WebActionState;
-import com.example.bp.ebookmanager.model.Book;
-import com.example.bp.ebookmanager.model.Person;
-import com.example.bp.ebookmanager.model.formats.PdfSpecificData;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Ebook Manager
@@ -38,14 +32,8 @@ public class FinalMockWebActionState implements WebActionState {
     }
 
     @Override
-    public List<Book> getBooks() {
-        ArrayList<Book> result = new ArrayList<>();
-        Book book = new Book();
-        book.setTitle("Zamokowana ksiazka z MockWebActionContext");
-        Person dGlukhowsky = Person.named("Dmitry Glukhovsky");
-        book.setAuthor(dGlukhowsky);
-        book.getFormats().add(new PdfSpecificData());
-        result.add(book);
-        return result;
+    public String getResult() {
+
+        return null;
     }
 }

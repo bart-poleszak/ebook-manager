@@ -24,12 +24,11 @@ public class BookDataProviderImpl implements BookDataProvider {
                 @Override
                 public void onUserActionRequired() {
                     callbacks.enableUserActions(strategy);
-                    strategy.retryToGainAccess();
                 }
             });
         } catch (Exception e) {
+            e.printStackTrace();
             callbacks.onDataAcquisitionFailed();
         }
     }
-
 }

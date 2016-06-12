@@ -1,20 +1,15 @@
 package com.example.bp.ebookmanager.viewmodel;
 
-import com.example.bp.ebookmanager.R;
 import com.example.bp.ebookmanager.model.Book;
 import com.example.bp.ebookmanager.model.formats.AudiobookSpecificData;
 import com.example.bp.ebookmanager.model.formats.EbookSpecificData;
-import com.example.bp.ebookmanager.model.formats.EpubSpecificData;
 import com.example.bp.ebookmanager.model.formats.FormatSpecificData;
-import com.example.bp.ebookmanager.model.formats.MobiSpecificData;
-import com.example.bp.ebookmanager.model.formats.Mp3SpecificData;
-import com.example.bp.ebookmanager.model.formats.PdfSpecificData;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.Map;
 
 /**
+ * Ebook Manager
  * Created by bp on 07.05.16.
  */
 public class BookDetailsViewModel {
@@ -31,17 +26,21 @@ public class BookDetailsViewModel {
 
     public BookDetailsViewModel(Book book) {
         specificFormatVisitor = new Visitor();
-        fill(book);
+        fillBasicData(book);
     }
 
-    public void fill(Book book) {
-        details.put(TITLE, book.getTitle());
-        if (book.getAuthor() != null)
-            details.put(AUTHOR, book.getAuthor().getName());
+    public void fillWithDetails(Book book) {
+        fillBasicData(book);
         if (book.getTranslator() != null)
             details.put(TRANSLATOR, book.getTranslator().getName());
         if (book.getPublisher() != null)
             details.put(PUBLISHER, book.getPublisher().getName());
+    }
+
+    public void fillBasicData(Book book) {
+        details.put(TITLE, book.getTitle());
+        if (book.getAuthor() != null)
+            details.put(AUTHOR, book.getAuthor().getName());
 
         for (FormatSpecificData data : book.getFormats()) {
             formats.add(data.getFormatName());

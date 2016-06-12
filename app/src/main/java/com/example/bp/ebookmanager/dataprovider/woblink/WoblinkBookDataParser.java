@@ -17,11 +17,12 @@ import java.util.List;
  * Ebook Manager
  * Created by bp on 12.06.16.
  */
-public class WoblinkBookDataParser {
+public class WoblinkBookDataParser implements BookDataParser {
     private ArrayList<Book> books;
     private HTMLScraper scraper;
     private String source;
 
+    @Override
     public void parse(String source) {
         this.source = prepareSource(source);
         scraper = new HTMLScraper(this.source);
@@ -123,6 +124,7 @@ public class WoblinkBookDataParser {
         return source;
     }
 
+    @Override
     public List<Book> getBooks() {
         return books;
     }

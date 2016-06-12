@@ -11,11 +11,13 @@ import android.widget.ListView;
 import com.example.bp.ebookmanager.dataprovider.BookDataProvider;
 import com.example.bp.ebookmanager.dataprovider.DataProviderStrategy;
 import com.example.bp.ebookmanager.dataprovider.MultipleDataProvider;
-import com.example.bp.ebookmanager.dataprovider.WebDataProvderStrategy;
+import com.example.bp.ebookmanager.dataprovider.WebActionResolver;
+import com.example.bp.ebookmanager.dataprovider.WebDataProviderStrategy;
 import com.example.bp.ebookmanager.dataprovider.BookDataProviderImpl;
 import com.example.bp.ebookmanager.dataprovider.android.AndroidUserActionEnabler;
 import com.example.bp.ebookmanager.dataprovider.android.HeadlessWebClient;
 import com.example.bp.ebookmanager.dataprovider.mock.MockBookDataProviderStrategy;
+import com.example.bp.ebookmanager.dataprovider.woblink.WoblinkBookDataParser;
 import com.example.bp.ebookmanager.dataprovider.woblink.WoblinkWebActionContext;
 import com.example.bp.ebookmanager.mainlist.MainListAdapter;
 import com.example.bp.ebookmanager.model.Book;
@@ -47,8 +49,11 @@ public class MainActivityFragment extends Fragment {
         listView.setAdapter(adapter);
         MultipleDataProvider dataProvider = new MultipleDataProvider();
         dataProvider.addDataProvider(new BookDataProviderImpl(new MockBookDataProviderStrategy()));
-        WebDataProvderStrategy strategy = new WebDataProvderStrategy();
-        strategy.setWebClient(new HeadlessWebClient());
+
+        WebDataProviderStrategy strategy = new WebDataProviderStrategy();
+        WebActionResolver resolver = new WebActionResolver(new HeadlessWebClient());
+        strategy.setResolver(resolver);
+        strategy.setParser(new WoblinkBookDataParser());
         strategy.setWebActionContext(new WoblinkWebActionContext());
         BookDataProvider webDataProvider = new BookDataProviderImpl(strategy);
         dataProvider.addDataProvider(webDataProvider);
