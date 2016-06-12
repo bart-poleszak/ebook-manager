@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Ebook Manager
  * Created by bp on 08.05.16.
  */
 public class MockBookDataProviderStrategy implements DataProviderStrategy {
@@ -34,13 +35,12 @@ public class MockBookDataProviderStrategy implements DataProviderStrategy {
     @Override
     public List<Book> getBooks() {
         ArrayList<Book> result = new ArrayList<>();
-        Person hSienkiewicz = new Person();
-        hSienkiewicz.setName("Henryk Sienkiewicz");
+        Person hSienkiewicz = Person.named("Henryk Sienkiewicz");
         Publisher greg = new Publisher();
         greg.setName("GREG");
 
         Book book = new Book();
-        book.setTitle("Ogniem i Mieczem");
+        book.setTitle("[mock] Ogniem i Mieczem");
         book.setAuthor(hSienkiewicz);
         book.setPublisher(greg);
 
@@ -50,23 +50,21 @@ public class MockBookDataProviderStrategy implements DataProviderStrategy {
         result.add(book);
 
         book = new Book();
-        book.setTitle("Potop");
+        book.setTitle("[mock] Potop");
         book.setAuthor(hSienkiewicz);
         book.setPublisher(greg);
 
         book.getFormats().add(new EpubSpecificData());
         Mp3SpecificData mp3SpecificData = new Mp3SpecificData();
         mp3SpecificData.setLenght(23456);
-        Person narrator = new Person();
-        narrator.setName("Krzysztof Gosztyła");
+        Person narrator = Person.named("Krzysztof Gosztyła");
         mp3SpecificData.setNarrator(narrator);
         book.getFormats().add(mp3SpecificData);
         result.add(book);
 
         book = new Book();
-        book.setTitle("Metro 2033");
-        Person dGlukhowsky = new Person();
-        dGlukhowsky.setName("Dmitry Glukhovsky");
+        book.setTitle("[mock] Metro 2033");
+        Person dGlukhowsky = Person.named("Dmitry Glukhovsky");
         book.setAuthor(dGlukhowsky);
         book.getFormats().add(new PdfSpecificData());
         result.add(book);

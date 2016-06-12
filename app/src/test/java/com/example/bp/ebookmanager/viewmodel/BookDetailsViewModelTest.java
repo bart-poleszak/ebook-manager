@@ -20,13 +20,11 @@ public class BookDetailsViewModelTest {
     public void initializeBook() {
         authorNarratorBook = new Book();
         authorNarratorBook.setTitle("The Title");
-        Person author = new Person();
-        author.setName("Aaaa Aaaaaaaa");
+        Person author = Person.named("Aaaa Aaaaaaaa");
         authorNarratorBook.setAuthor(author);
 
         Mp3SpecificData mp3Data = new Mp3SpecificData();
-        Person narrator = new Person();
-        narrator.setName("Bbbb Bbbbbbbb");
+        Person narrator = Person.named("Bbbb Bbbbbbbb");
         mp3Data.setNarrator(narrator);
         authorNarratorBook.getFormats().add(mp3Data);
     }

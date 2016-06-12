@@ -2,6 +2,7 @@ package com.example.bp.ebookmanager.dataprovider.html;
 
 
 import org.w3c.dom.Document;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
@@ -15,6 +16,7 @@ import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
 /**
+ * Ebook Manager
  * Created by bp on 12.06.16.
  */
 public class HTMLScraper {
@@ -53,8 +55,13 @@ public class HTMLScraper {
 
     public ArrayList<String> getAttributeValueList(String attribute) {
         ArrayList<String> result = new ArrayList<>();
-        for (int i = 0; i < nodeList.getLength(); i++)
-            result.add(nodeList.item(i).getAttributes().getNamedItem(attribute).getNodeValue());
+        for (int i = 0; i < nodeList.getLength(); i++) {
+            Node item = nodeList.item(i);
+            if (item == null)
+                result.add(null);
+            else
+                result.add(item.getAttributes().getNamedItem(attribute).getNodeValue());
+        }
         return result;
     }
 
@@ -63,5 +70,40 @@ public class HTMLScraper {
         for (int i = 0; i < nodeList.getLength(); i++)
             result.add(nodeList.item(i).getFirstChild().getNodeValue());
         return result;
+    }
+
+    public void switchToChildrenWith(String element, String attribute, String attributeValue) {
+        ArrayNodeList newList = new ArrayNodeList();
+        for (int i = 0; i < nodeList.getLength(); i++) {
+            NodeList childNodes = nodeList.item(i).getChildNodes();
+            for (int j = 0; j < childNodes.getLength(); j++) {
+                Node item = childNodes.item(j);
+                if (item.getNodeName().equals(element)
+                        && item.getAttributes().getNamedItem(attribute).getNodeValue().equals(attributeValue)) {
+                    newList.add(item);
+                }
+            }
+            if (newList.getLength() - 1 < i)
+                newList.add(null);
+        }
+        nodeList = newList;
+    }
+
+    private static class ArrayNodeList implements NodeList {
+        ArrayList<Node> list = new ArrayList<>();
+
+        @Override
+        public Node item(int index) {
+            return list.get(index);
+        }
+
+        @Override
+        public int getLength() {
+            return list.size();
+        }
+
+        public void add(Node node) {
+            list.add(node);
+        }
     }
 }

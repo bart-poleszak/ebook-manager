@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Ebook Manager
  * Created by bp on 11.06.16.
  */
 public class FinalMockWebActionState implements WebActionState {
@@ -41,8 +42,7 @@ public class FinalMockWebActionState implements WebActionState {
         ArrayList<Book> result = new ArrayList<>();
         Book book = new Book();
         book.setTitle("Zamokowana ksiazka z MockWebActionContext");
-        Person dGlukhowsky = new Person();
-        dGlukhowsky.setName("Dmitry Glukhovsky");
+        Person dGlukhowsky = Person.named("Dmitry Glukhovsky");
         book.setAuthor(dGlukhowsky);
         book.getFormats().add(new PdfSpecificData());
         result.add(book);

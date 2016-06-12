@@ -1,4 +1,4 @@
-package com.example.bp.ebookmanager.viewmodel;
+package com.example.bp.ebookmanager.dataprovider.html;
 
 import com.example.bp.ebookmanager.dataprovider.html.HTMLScraper;
 
@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import static org.junit.Assert.*;
 
 /**
+ * Ebook Manager
  * Created by bp on 12.06.16.
  */
 public class HTMLScraperTest {
@@ -38,7 +39,7 @@ public class HTMLScraperTest {
             "\t\t\t\t<p class=\"nw_profil_polka_ksiazka_opcje_autor\"><a href=\"/autor,john-sweeney,10639\">www</a></p>\n" +
             "\t\t\t\t\t\t\t    <div class=\"nw_profil_polka_ksiazka_opcje_przyciski\">\n" +
             "\t\t\t    \t\t\t\t<div class=\"nw_profil_polka_ksiazka_opcje_przyciski_inhalf\">\n" +
-            "    \t\t\t\t<a class=\"download_blue\" title=\"Pobierz plik w formacie EPUB\" href=\"/user_profile/downloadepub/id/1528907\">EPUB</a><a class=\"download_blue\" title=\"Pobierz plik w formacie MOBI\" href=\"/user_profile/downloadmobi/id/1528907\">MOBI</a>\t\t\t\t</div>\n" +
+            "    \t\t\t\t<a class=\"download_blue\" title=\"Pobierz plik w formacie MOBI\" href=\"/user_profile/downloadmobi/id/1528907\">MOBI</a>\t\t\t\t</div>\n" +
             "\t\t\t\t\t\t\t\t\t<a href=\"#\" class=\"download_orange sendToKindle\" rel=\"1528907\" title=\"Wyślij na Kindle\">KINDLE</a>\n" +
             "\t\t\t\t\t<a href=\"#\" class=\"download_orange sendToPocketBook\" rel=\"1528907\" title=\"Wyślij do Pocketbook\">POCKETBOOK</a>\n" +
             "\t\t\t\t\t\t</div><div class=\"nw_profil_polka_ksiazka_opcje_dodajdokolekcji\"><form method=\"post\" action=\"/profile/shelfCollectionBookEdit?cop=1528907\"><select name=\"copy[collection_has_copy_list]\" id=\"copy_collection_has_copy_list\">\n" +
@@ -91,5 +92,19 @@ public class HTMLScraperTest {
 
     private boolean checkAuthors(ArrayList<String> authors) {
         return authors.contains("qqq") && authors.contains("www") && authors.contains("eee");
+    }
+
+    @Test
+    public void scraper_resturnsNulledValueInListWhenMissing() {
+        //when
+        scraper.evaluateXPathExpression("//div[@class=\"nw_profil_polka_ksiazka_opcje_przyciski_inhalf\"]");
+        scraper.switchToChildrenWith("a", "title", "Pobierz plik w formacie EPUB");
+        ArrayList<String> list = scraper.getAttributeValueList("class");
+        //then
+        assertTrue(checkIfMissingIsNull(list));
+    }
+
+    private boolean checkIfMissingIsNull(ArrayList<String> list) {
+        return list.get(1) == null && list.get(0).equals(list.get(2)) && list.get(0).equals("download_blue");
     }
 }
