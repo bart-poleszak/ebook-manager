@@ -14,6 +14,7 @@ import com.example.bp.ebookmanager.dataprovider.WebClient;
 import org.apache.commons.lang3.StringEscapeUtils;
 
 /**
+ * Ebook Manager
  * Created by bp on 11.06.16.
  */
 public class VisibleWebClient implements WebClient {
@@ -73,7 +74,7 @@ public class VisibleWebClient implements WebClient {
     }
 
     @Override
-    public void finishWork() {
+    public void close() {
         dialog.dismiss();
     }
 }

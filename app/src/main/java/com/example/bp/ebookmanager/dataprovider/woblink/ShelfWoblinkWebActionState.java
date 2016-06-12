@@ -23,6 +23,7 @@ import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathFactory;
 
 /**
+ * Ebook Manager
  * Created by bp on 11.06.16.
  */
 public class ShelfWoblinkWebActionState implements WebActionState {
@@ -68,16 +69,24 @@ public class ShelfWoblinkWebActionState implements WebActionState {
         int start = source.indexOf("<div id=\"nw_profil_polka\"");
         int end = source.indexOf("<aside id=\"nw_paginacja\">", start);
         source = source.substring(start, end);
-//        source = source.replaceAll("<img\\b[^>]*>", "");
+        source = repairImgTagsIfNeeded(source);
+        source = source.replaceAll("<input\\b[^>]*>", "");
+        return source;
+    }
+
+    @NonNull
+    private String repairImgTagsIfNeeded(String source) {
         String imgTag = "<img";
         int imgIndex = source.indexOf(imgTag);
+        int imgEndIndex = source.indexOf(">", imgIndex) + 1;
+        if (imgEndIndex >= 1 && source.charAt(imgEndIndex - 2) == '/')
+            return source;
         while (imgIndex >= 0) {
-            int imgEndIndex = source.indexOf(">", imgIndex) + 1;
             String substring = source.substring(imgIndex, imgEndIndex);
             source = source.replace(substring, substring.replace(">", "/>"));
             imgIndex = source.indexOf(imgTag, imgEndIndex);
+            imgEndIndex = source.indexOf(">", imgIndex) + 1;
         }
-        source = source.replaceAll("<input\\b[^>]*>", "");
         return source;
     }
 
