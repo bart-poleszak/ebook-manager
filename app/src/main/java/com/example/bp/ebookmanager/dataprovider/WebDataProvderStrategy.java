@@ -33,6 +33,8 @@ public class WebDataProvderStrategy implements DataProviderStrategy {
                 }
                 else if (webActionContext.isUserActionNeeded() && webClient.isHeadless())
                     callbacks.onUserActionRequired();
+                else if (!webActionContext.isUserActionNeeded())
+                    webClient.loadUrl(webActionContext.getTargetSiteURL());
             }
         });
         webClient.loadUrl(webActionContext.getTargetSiteURL());

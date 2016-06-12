@@ -39,16 +39,6 @@ public class MockWebActionContext implements WebActionContext{
 
     @Override
     public List<Book> getBooks() {
-        ArrayList<Book> result = new ArrayList<>();
-        if (state.isActionCompleted()) {
-            Book book = new Book();
-            book.setTitle("Zamokowana ksiazka z MockWebActionContext");
-            Person dGlukhowsky = new Person();
-            dGlukhowsky.setName("Dmitry Glukhovsky");
-            book.setAuthor(dGlukhowsky);
-            book.getFormats().add(new PdfSpecificData());
-            result.add(book);
-        }
-        return result;
+        return state.getBooks();
     }
 }

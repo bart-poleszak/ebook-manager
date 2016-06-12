@@ -1,9 +1,9 @@
 package com.example.bp.ebookmanager.dataprovider.android;
 
+import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.support.v7.app.AlertDialog;
 import android.util.Log;
+import android.webkit.CookieManager;
 import android.webkit.ValueCallback;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -11,22 +11,26 @@ import android.webkit.WebViewClient;
 import com.example.bp.ebookmanager.R;
 import com.example.bp.ebookmanager.dataprovider.WebClient;
 
+import org.apache.commons.lang3.StringEscapeUtils;
+
 /**
  * Created by bp on 11.06.16.
  */
 public class VisibleWebClient implements WebClient {
-    private AlertDialog dialog;
+    private Dialog dialog;
     private Callbacks callbacks;
     public static final String GET_HTML_JS_FUNCTION = "(function() { return ('<html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>'); })();";
     private WebView webView;
 
     public VisibleWebClient(Context context) {
-        webView = createWebView(context);
         dialog = createDialog(context);
+        webView = getWebView();
     }
 
-    private WebView createWebView(Context context) {
-        WebView webView = new WebView(context);
+    private WebView getWebView() {
+        WebView webView = (WebView) dialog.findViewById(R.id.dialog_web_view);
+        webView.getSettings().setJavaScriptEnabled(true);
+//        CookieManager.getInstance().removeAllCookie();
         webView.setWebViewClient(new WebViewClient() {
             @Override
             public void onPageFinished(WebView view, final String url) {
@@ -35,6 +39,8 @@ public class VisibleWebClient implements WebClient {
                 view.evaluateJavascript(GET_HTML_JS_FUNCTION, new ValueCallback<String>() {
                     @Override
                     public void onReceiveValue(String html) {
+                        html = StringEscapeUtils.unescapeJava(html);
+                        html = html.substring(1, html.length() - 1);
                         callbacks.onPageFinished(url, html);
                     }
                 });
@@ -43,17 +49,11 @@ public class VisibleWebClient implements WebClient {
         return webView;
     }
 
-    private AlertDialog createDialog(Context context) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle(R.string.action_required);
-        builder.setView(webView);
-        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int id) {
-                dialog.dismiss();
-            }
-        });
-        return builder.create();
+    private Dialog createDialog(Context context) {
+        Dialog dialog = new Dialog(context);
+        dialog.setTitle(R.string.action_required);
+        dialog.setContentView(R.layout.web_view_dialog);
+        return dialog;
     }
 
     @Override

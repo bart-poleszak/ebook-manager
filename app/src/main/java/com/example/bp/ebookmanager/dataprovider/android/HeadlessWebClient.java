@@ -15,7 +15,7 @@ public class HeadlessWebClient implements WebClient {
 
     @Override
     public void loadUrl(String url) {
-        callbacks.onPageFinished("aaa", "bbb");
+        callbacks.onPageFinished("aaa", "<html></html>");
     }
 
     @Override

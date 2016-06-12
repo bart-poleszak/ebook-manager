@@ -34,9 +34,8 @@ public class BookDetailsViewModelTest {
     @Test
     public void authorNarratorBook_hasThreeEntriesInViewModel() throws Exception {
         // given
-        BookDetailsViewModel viewModel = new BookDetailsViewModel();
+        BookDetailsViewModel viewModel = new BookDetailsViewModel(authorNarratorBook);
         // when
-        viewModel.fill(authorNarratorBook);
         // then
         assertEquals(3, viewModel.getDetails().size());
     }

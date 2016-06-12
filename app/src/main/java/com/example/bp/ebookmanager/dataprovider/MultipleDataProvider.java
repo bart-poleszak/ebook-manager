@@ -14,25 +14,8 @@ public class MultipleDataProvider implements BookDataProvider {
 
     @Override
     public void requestBooks(final Callbacks callbacks) {
-        Callbacks internalCallbacks = new Callbacks() {
-            @Override
-            public void onNewDataAcquired(List<Book> data) {
-                callbacks.onNewDataAcquired(data);
-            }
-
-            @Override
-            public void onDataAcquisitionFailed() {
-
-            }
-
-            @Override
-            public void enableUserActions(DataProviderStrategy strategy) {
-
-            }
-
-        };
         for (BookDataProvider provider : providers)
-            provider.requestBooks(internalCallbacks);
+            provider.requestBooks(callbacks);
     }
 
     public void addDataProvider(BookDataProvider provider) {
