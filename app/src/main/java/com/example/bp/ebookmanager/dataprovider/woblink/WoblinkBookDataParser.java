@@ -3,9 +3,12 @@ package com.example.bp.ebookmanager.dataprovider.woblink;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.example.bp.ebookmanager.dataprovider.BasicWebActionContext;
 import com.example.bp.ebookmanager.dataprovider.html.HTMLScraper;
 import com.example.bp.ebookmanager.model.Book;
+import com.example.bp.ebookmanager.model.BookDetails;
 import com.example.bp.ebookmanager.model.Person;
+import com.example.bp.ebookmanager.model.WebBookDetails;
 import com.example.bp.ebookmanager.model.formats.EpubSpecificData;
 import com.example.bp.ebookmanager.model.formats.FormatSpecificData;
 import com.example.bp.ebookmanager.model.formats.MobiSpecificData;
@@ -26,24 +29,38 @@ public class WoblinkBookDataParser implements BookDataParser {
     public void parse(String source) {
         this.source = prepareSource(source);
         scraper = new HTMLScraper(this.source);
-        createBooksAndFillTitles();
+        createBooks();
+        fillTitles();
         fillAuthors();
         fillAllFormatsData();
 //        fillThumbnails();
     }
 
-    private void createBooksAndFillTitles() {
+    private void createBooks() {
         scraper.evaluateXPathExpression("//p[@class=\"nw_profil_polka_ksiazka_opcje_tytul\"]/a");
         if (scraper.evaluationSuccessful()) {
-            ArrayList<String> titles = scraper.getAttributeValueList("title");
-            books = new ArrayList<>(titles.size());
-            for (String title : titles) {
-                Book book = new Book();
-                book.setTitle(title);
+            ArrayList<String> hrefs = scraper.getAttributeValueList("href");
+            books = new ArrayList<>(hrefs.size());
+            for (String href : hrefs) {
+                Book book = new Book(createDetails("https://woblink.com" + href));
                 books.add(book);
             }
         }
 
+    }
+
+    private BookDetails createDetails(String href) {
+        BasicWebActionContext context = new BasicWebActionContext(href);
+        return WoblinkWebDataProviderFactory.instance().createBookDetails(context);
+    }
+
+    private void fillTitles() {
+        if (scraper.evaluationSuccessful()) {
+            ArrayList<String> titles = scraper.getAttributeValueList("title");
+            for (int i = 0; i < titles.size(); i++) {
+                books.get(i).setTitle(titles.get(i));
+            }
+        }
     }
 
     private void fillAuthors() {

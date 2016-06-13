@@ -11,9 +11,21 @@ import java.util.HashSet;
 public class Book {
     private String title;
     private Person author;
-    private BookDetails details = NullBookDetails.instance();
+    private BookDetails details;
 
     private HashSet<FormatSpecificData> formats = new HashSet<>();
+
+    public Book(BookDetails details) {
+        this.details = details;
+    }
+
+    public Book() {
+        this(NullBookDetails.instance());
+    }
+
+    public void setDetailsObserver(BookDetails.DetailsObserver detailsObserver) {
+        details.setObserver(detailsObserver);
+    }
 
     public String getTitle() {
         return title;
@@ -42,5 +54,4 @@ public class Book {
     public Publisher getPublisher() {
         return details.getPublisher();
     }
-
 }

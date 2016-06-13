@@ -31,8 +31,7 @@ public class MockBookDataProviderStrategy implements DataProviderStrategy {
     public List<Book> getBooks() {
         ArrayList<Book> result = new ArrayList<>();
         Person hSienkiewicz = Person.named("Henryk Sienkiewicz");
-        Publisher greg = new Publisher();
-        greg.setName("GREG");
+        Publisher greg = Publisher.named("GREG");
 
         Book book = new Book();
         book.setTitle("[mock] Ogniem i Mieczem");

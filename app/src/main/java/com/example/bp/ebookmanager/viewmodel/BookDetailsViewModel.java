@@ -27,6 +27,7 @@ public class BookDetailsViewModel {
     public BookDetailsViewModel(Book book) {
         specificFormatVisitor = new Visitor();
         fillBasicData(book);
+//        fillWithDetails(book);
     }
 
     public void fillWithDetails(Book book) {

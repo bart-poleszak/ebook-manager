@@ -7,9 +7,11 @@ package com.example.bp.ebookmanager.model;
 public interface BookDetails {
     Person getTranslator();
 
-    void setTranslator(Person translator);
-
     Publisher getPublisher();
 
-    void setPublisher(Publisher publisher);
+    void setObserver(DetailsObserver observer);
+
+    interface DetailsObserver {
+        void onDetailsChanged(BookDetails details);
+    }
 }

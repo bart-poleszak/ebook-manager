@@ -31,7 +31,7 @@ public class WebDataProviderStrategy implements DataProviderStrategy {
     public void gainAccess(final Callbacks callbacks) {
         resolverCallbacks = new WebActionResolver.Callbacks() {
             @Override
-            public void onActionCompleted() {
+            public void onActionCompleted(WebActionContext context) {
                 callbacks.onAccessGained();
             }
 

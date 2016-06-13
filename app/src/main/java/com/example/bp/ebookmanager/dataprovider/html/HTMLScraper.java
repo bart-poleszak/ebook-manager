@@ -89,6 +89,10 @@ public class HTMLScraper {
         nodeList = newList;
     }
 
+    public String getFirstChild() {
+        return nodeList.item(0).getFirstChild().getNodeValue();
+    }
+
     private static class ArrayNodeList implements NodeList {
         ArrayList<Node> list = new ArrayList<>();
 

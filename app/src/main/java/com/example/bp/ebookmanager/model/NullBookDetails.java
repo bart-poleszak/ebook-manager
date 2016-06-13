@@ -21,17 +21,13 @@ public class NullBookDetails implements BookDetails {
     }
 
     @Override
-    public void setTranslator(Person translator) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
     public Publisher getPublisher() {
         return null;
     }
 
     @Override
-    public void setPublisher(Publisher publisher) {
-        throw new UnsupportedOperationException();
+    public void setObserver(DetailsObserver observer) {
+
     }
+
 }

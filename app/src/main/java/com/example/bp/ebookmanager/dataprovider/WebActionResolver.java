@@ -8,6 +8,8 @@ public class WebActionResolver {
 
     private WebClient headlessWebClient;
     private WebClient webClient;
+    private final Object isWorkingLock = new Object();
+    private boolean working = false;
 
     public WebActionResolver(WebClient webClient) {
         this.webClient = webClient;
@@ -16,16 +18,20 @@ public class WebActionResolver {
     }
 
     public void resolve(final WebActionContext action, final Callbacks callbacks) {
+        setWorking(true);
         webClient.setCallbacks(new WebClient.Callbacks() {
             @Override
             public void onPageFinished(String url, String source) {
                 action.processRecievedData(url, source);
                 if(action.isActionCompleted()) {
-                    callbacks.onActionCompleted();
+                    callbacks.onActionCompleted(action);
                     webClient.close();
+                    setWorking(false);
                 }
-                else if (action.isUserActionNeeded() && webClient.isHeadless())
+                else if (action.isUserActionNeeded() && webClient.isHeadless()) {
                     callbacks.onUserActionRequired();
+                    setWorking(false);
+                }
                 else if (!action.isUserActionNeeded()) {
                     if (!webClient.isHeadless())
                         switchToHeadlessIfPossible();
@@ -34,6 +40,18 @@ public class WebActionResolver {
             }
         });
         webClient.loadUrl(action.getTargetSiteURL());
+    }
+
+    public void setWorking(boolean working) {
+        synchronized (isWorkingLock) {
+            this.working = working;
+        }
+    }
+
+    public boolean isWorking() {
+        synchronized (isWorkingLock) {
+            return working;
+        }
     }
 
     private void switchToHeadlessIfPossible() {
@@ -48,7 +66,7 @@ public class WebActionResolver {
     }
 
     public interface Callbacks {
-        void onActionCompleted();
+        void onActionCompleted(WebActionContext context);
         void onUserActionRequired();
     }
 }
