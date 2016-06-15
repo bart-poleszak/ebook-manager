@@ -2,12 +2,6 @@ package com.example.bp.ebookmanager.dataprovider.mock;
 
 import com.example.bp.ebookmanager.dataprovider.WebActionContext;
 import com.example.bp.ebookmanager.dataprovider.WebActionState;
-import com.example.bp.ebookmanager.model.Book;
-import com.example.bp.ebookmanager.model.Person;
-import com.example.bp.ebookmanager.model.formats.PdfSpecificData;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Ebook Manager

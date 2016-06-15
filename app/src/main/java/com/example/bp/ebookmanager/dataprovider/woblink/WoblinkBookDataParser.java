@@ -8,10 +8,9 @@ import com.example.bp.ebookmanager.dataprovider.html.HTMLScraper;
 import com.example.bp.ebookmanager.model.Book;
 import com.example.bp.ebookmanager.model.BookDetails;
 import com.example.bp.ebookmanager.model.Person;
-import com.example.bp.ebookmanager.model.WebBookDetails;
-import com.example.bp.ebookmanager.model.formats.EpubSpecificData;
+import com.example.bp.ebookmanager.model.formats.EpubDetails;
 import com.example.bp.ebookmanager.model.formats.FormatSpecificData;
-import com.example.bp.ebookmanager.model.formats.MobiSpecificData;
+import com.example.bp.ebookmanager.model.formats.MobiDetails;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -78,14 +77,14 @@ public class WoblinkBookDataParser implements BookDataParser {
     private void fillAllFormatsData() {
         fillFormatData("Pobierz plik w formacie EPUB", new FormatSpecificDataCreator() {
             @Override
-            public FormatSpecificData create() {
-                return new EpubSpecificData();
+            public String getName() {
+                return EpubDetails.FORMAT_NAME;
             }
         });
         fillFormatData("Pobierz plik w formacie MOBI", new FormatSpecificDataCreator() {
             @Override
-            public FormatSpecificData create() {
-                return new MobiSpecificData();
+            public String getName() {
+                return MobiDetails.FORMAT_NAME;
             }
         });
     }
@@ -97,7 +96,7 @@ public class WoblinkBookDataParser implements BookDataParser {
         for (int i = 0; i < hrefs.size(); i++) {
             String href = hrefs.get(i);
             if (href != null) {
-                books.get(i).getFormats().add(creator.create());
+                books.get(i).getFormatNames().add(creator.getName());
             }
         }
     }
@@ -147,6 +146,6 @@ public class WoblinkBookDataParser implements BookDataParser {
     }
 
     private interface FormatSpecificDataCreator {
-        FormatSpecificData create();
+        String getName();
     }
 }

@@ -1,6 +1,7 @@
 package com.example.bp.ebookmanager.mainlist;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,11 +10,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.bp.ebookmanager.R;
-import com.example.bp.ebookmanager.model.formats.EpubSpecificData;
-import com.example.bp.ebookmanager.model.formats.MobiSpecificData;
-import com.example.bp.ebookmanager.model.formats.Mp3SpecificData;
-import com.example.bp.ebookmanager.model.formats.PdfSpecificData;
-import com.example.bp.ebookmanager.viewmodel.BookDetailsViewModel;
+import com.example.bp.ebookmanager.model.Book;
+import com.example.bp.ebookmanager.model.formats.EpubDetails;
+import com.example.bp.ebookmanager.model.formats.MobiDetails;
+import com.example.bp.ebookmanager.model.formats.Mp3Details;
+import com.example.bp.ebookmanager.model.formats.PdfDetails;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,17 +23,18 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
+ * Ebook Manager
  * Created by bp on 06.05.16.
  */
 public class MainListAdapter extends BaseAdapter {
-    private ArrayList<BookDetailsViewModel> data = new ArrayList<>();
+    private ArrayList<Book> data = new ArrayList<>();
     private Context context;
 
     public MainListAdapter(Context context) {
         this.context = context;
     }
 
-    public void addItems(List<BookDetailsViewModel> items) {
+    public void addItems(List<Book> items) {
         data.addAll(items);
         notifyDataSetChanged();
     }
@@ -54,24 +56,33 @@ public class MainListAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        if (convertView == null) {
-            LayoutInflater inflater = LayoutInflater.from(context);
-            convertView = inflater.inflate(R.layout.main_list_row, null);
-            convertView.setTag(new ViewHolder(convertView));
-        }
+        if (convertView == null)
+            convertView = inflateRow();
         ViewHolder holder = (ViewHolder) convertView.getTag();
-        BookDetailsViewModel bookViewModel = (BookDetailsViewModel) getItem(position);
-        holder.title.setText(bookViewModel.getTitle());
-        holder.author.setText(bookViewModel.getAuthor());
-        setVisibilityForFormat(holder.epubImageView, bookViewModel, EpubSpecificData.FORMAT_NAME);
-        setVisibilityForFormat(holder.mobiImageView, bookViewModel, MobiSpecificData.FORMAT_NAME);
-        setVisibilityForFormat(holder.pdfImageView, bookViewModel, PdfSpecificData.FORMAT_NAME);
-        setVisibilityForFormat(holder.mp3ImageView, bookViewModel, Mp3SpecificData.FORMAT_NAME);
+        Book book = (Book) getItem(position);
+        fillRowContent(holder, book);
         return convertView;
     }
 
-    private void setVisibilityForFormat(View view, BookDetailsViewModel viewModel, String formatName) {
-        if (viewModel.getFormats().contains(formatName))
+    @NonNull
+    private View inflateRow() {
+        View convertView;LayoutInflater inflater = LayoutInflater.from(context);
+        convertView = inflater.inflate(R.layout.main_list_row, null);
+        convertView.setTag(new ViewHolder(convertView));
+        return convertView;
+    }
+
+    private void fillRowContent(ViewHolder holder, Book book) {
+        holder.title.setText(book.getTitle());
+        holder.author.setText(book.getAuthor().getName());
+        setVisibilityForFormat(holder.epubImageView, book, EpubDetails.FORMAT_NAME);
+        setVisibilityForFormat(holder.mobiImageView, book, MobiDetails.FORMAT_NAME);
+        setVisibilityForFormat(holder.pdfImageView, book, PdfDetails.FORMAT_NAME);
+        setVisibilityForFormat(holder.mp3ImageView, book, Mp3Details.FORMAT_NAME);
+    }
+
+    private void setVisibilityForFormat(View view, Book book, String formatName) {
+        if (book.getFormatNames().contains(formatName))
             view.setVisibility(View.VISIBLE);
         else
             view.setVisibility(View.INVISIBLE);

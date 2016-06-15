@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.example.bp.ebookmanager.dataprovider.BookDataProvider;
@@ -17,7 +18,6 @@ import com.example.bp.ebookmanager.dataprovider.mock.MockBookDataProviderStrateg
 import com.example.bp.ebookmanager.dataprovider.woblink.WoblinkWebDataProviderFactory;
 import com.example.bp.ebookmanager.mainlist.MainListAdapter;
 import com.example.bp.ebookmanager.model.Book;
-import com.example.bp.ebookmanager.viewmodel.BookDetailsViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,11 +28,12 @@ import butterknife.ButterKnife;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class MainActivityFragment extends Fragment {
+public class BookListFragment extends Fragment {
 
     @BindView(R.id.listView) ListView listView;
+    private MainListAdapter adapter;
 
-    public MainActivityFragment() {
+    public BookListFragment() {
     }
 
     @Override
@@ -41,36 +42,50 @@ public class MainActivityFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
         ButterKnife.bind(this, view);
 
-        final MainListAdapter adapter = new MainListAdapter(getContext());
+        initializeListView();
+        fillList();
+
+        return view;
+    }
+
+    private void initializeListView() {
+        adapter = new MainListAdapter(getContext());
         listView.setAdapter(adapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Book book = (Book) adapter.getItem(position);
+                MainActivity activity = (MainActivity) getActivity();
+                activity.showBookDetails(book);
+            }
+        });
+    }
+
+    private void fillList() {
         MultipleDataProvider dataProvider = new MultipleDataProvider();
         dataProvider.addDataProvider(new BookDataProviderImpl(new MockBookDataProviderStrategy()));
 
         WoblinkWebDataProviderFactory woblinkFactory = WoblinkWebDataProviderFactory.instance();
         dataProvider.addDataProvider(woblinkFactory.createBookDataProvider());
-        dataProvider.requestBooks(new BookDataProvider.Callbacks() {
-            @Override
-            public void onNewDataAcquired(List<Book> data) {
-                ArrayList<BookDetailsViewModel> viewModels = new ArrayList<>();
-                for (Book book : data)
-                    viewModels.add(new BookDetailsViewModel(book));
+        dataProvider.requestBooks(new BookDataProviderCallbacks());
+    }
 
-                adapter.addItems(viewModels);
-            }
+    private class BookDataProviderCallbacks implements BookDataProvider.Callbacks {
+        @Override
+        public void onNewDataAcquired(List<Book> data) {
+            adapter.addItems(data);
+        }
 
-            @Override
-            public void onDataAcquisitionFailed() {
-                Log.d("MainActivityFragment", "Data acquisition failed");
-            }
+        @Override
+        public void onDataAcquisitionFailed() {
+            Log.d("BookListFragment", "Data acquisition failed");
+        }
 
-            @Override
-            public void enableUserActions(DataProviderStrategy strategy) {
-                AndroidUserActionEnabler userActionEnabler = new AndroidUserActionEnabler(getContext());
-                strategy.enableUserAction(userActionEnabler);
-            }
+        @Override
+        public void enableUserActions(DataProviderStrategy strategy) {
+            AndroidUserActionEnabler userActionEnabler = new AndroidUserActionEnabler(getContext());
+            strategy.enableUserAction(userActionEnabler);
+        }
 
-        });
-
-        return view;
     }
 }

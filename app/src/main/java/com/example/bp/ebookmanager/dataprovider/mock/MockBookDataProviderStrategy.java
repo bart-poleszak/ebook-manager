@@ -5,10 +5,10 @@ import com.example.bp.ebookmanager.dataprovider.UserActionEnabler;
 import com.example.bp.ebookmanager.model.Book;
 import com.example.bp.ebookmanager.model.Person;
 import com.example.bp.ebookmanager.model.Publisher;
-import com.example.bp.ebookmanager.model.formats.EpubSpecificData;
-import com.example.bp.ebookmanager.model.formats.MobiSpecificData;
-import com.example.bp.ebookmanager.model.formats.Mp3SpecificData;
-import com.example.bp.ebookmanager.model.formats.PdfSpecificData;
+import com.example.bp.ebookmanager.model.formats.EpubDetails;
+import com.example.bp.ebookmanager.model.formats.MobiDetails;
+import com.example.bp.ebookmanager.model.formats.Mp3Details;
+import com.example.bp.ebookmanager.model.formats.PdfDetails;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,8 +37,8 @@ public class MockBookDataProviderStrategy implements DataProviderStrategy {
         book.setTitle("[mock] Ogniem i Mieczem");
         book.setAuthor(hSienkiewicz);
 
-        book.getFormats().add(new EpubSpecificData());
-        book.getFormats().add(new MobiSpecificData());
+        book.getFormatNames().add(EpubDetails.FORMAT_NAME);
+        book.getFormatNames().add(MobiDetails.FORMAT_NAME);
 
         result.add(book);
 
@@ -46,19 +46,17 @@ public class MockBookDataProviderStrategy implements DataProviderStrategy {
         book.setTitle("[mock] Potop");
         book.setAuthor(hSienkiewicz);
 
-        book.getFormats().add(new EpubSpecificData());
-        Mp3SpecificData mp3SpecificData = new Mp3SpecificData();
-        mp3SpecificData.setLenght(23456);
-        Person narrator = Person.named("Krzysztof Gosztyła");
-        mp3SpecificData.setNarrator(narrator);
-        book.getFormats().add(mp3SpecificData);
+        book.getFormatNames().add(EpubDetails.FORMAT_NAME);
+//        Person narrator = Person.named("Krzysztof Gosztyła");
+//        mp3SpecificData.setNarrator(narrator);
+        book.getFormatNames().add(Mp3Details.FORMAT_NAME);
         result.add(book);
 
         book = new Book();
         book.setTitle("[mock] Metro 2033");
         Person dGlukhowsky = Person.named("Dmitry Glukhovsky");
         book.setAuthor(dGlukhowsky);
-        book.getFormats().add(new PdfSpecificData());
+        book.getFormatNames().add(PdfDetails.FORMAT_NAME);
         result.add(book);
 
         return result;

@@ -1,18 +1,17 @@
 package com.example.bp.ebookmanager;
 
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AlertDialog;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
+import android.view.View;
+
+import com.example.bp.ebookmanager.model.Book;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -23,6 +22,8 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        setBookListAsInitialFragment();
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         if (fab != null) {
             fab.setOnClickListener(new View.OnClickListener() {
@@ -32,33 +33,27 @@ public class MainActivity extends AppCompatActivity {
                             .setAction("Action", new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    AlertDialog.Builder alert = new AlertDialog.Builder(MainActivity.this);
-                                    alert.setTitle(R.string.action_required);
 
-                                    WebView webView = new WebView(MainActivity.this);
-                                    webView.loadUrl("http://www.google.com");
-                                    webView.setWebViewClient(new WebViewClient() {
-                                        @Override
-                                        public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                                            view.loadUrl(url);
-
-                                            return true;
-                                        }
-                                    });
-
-                                    alert.setView(webView);
-                                    alert.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int id) {
-                                            dialog.dismiss();
-                                        }
-                                    });
-                                    alert.show();
                                 }
                             }).show();
                 }
             });
         }
+    }
+
+    private void setBookListAsInitialFragment() {
+        Fragment fragment = new BookListFragment();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.contentFragment, fragment);
+        transaction.commit();
+    }
+
+    public void showBookDetails(Book book) {
+        DetailsFragment fragment = new DetailsFragment();
+        fragment.setBook(book);
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.contentFragment, fragment);
+        transaction.addToBackStack(null).commit();
     }
 
     @Override

@@ -1,11 +1,12 @@
 package com.example.bp.ebookmanager.model.formats;
 
 /**
+ * Ebook Manager
  * Created by bp on 07.05.16.
  */
-public class EpubSpecificData implements EbookSpecificData {
+public class PdfDetails implements EbookSpecificData {
 
-    public static final String FORMAT_NAME = "EPUB";
+    public static final String FORMAT_NAME = "PDF";
 
     @Override
     public String getFormatName() {
