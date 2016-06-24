@@ -52,7 +52,8 @@ public class WebBookDetails implements BookDetails {
 
     @Override
     public Publisher getPublisher() {
-        return null;
+        requestDataIfNeeded();
+        return downloadedData.getPublisher();
     }
 
     @Override
@@ -65,7 +66,7 @@ public class WebBookDetails implements BookDetails {
         public void onActionCompleted(WebActionContext context) {
             downloadedData = parser.parse(context.getResult());
             if (observer != null)
-                observer.onDetailsChanged(WebBookDetails.this);
+                observer.onDetailsChanged();
         }
 
         @Override

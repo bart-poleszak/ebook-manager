@@ -3,6 +3,7 @@ package com.example.bp.ebookmanager.dataprovider.mock;
 import com.example.bp.ebookmanager.dataprovider.DataProviderStrategy;
 import com.example.bp.ebookmanager.dataprovider.UserActionEnabler;
 import com.example.bp.ebookmanager.model.Book;
+import com.example.bp.ebookmanager.model.BookDetailsImpl;
 import com.example.bp.ebookmanager.model.Person;
 import com.example.bp.ebookmanager.model.Publisher;
 import com.example.bp.ebookmanager.model.formats.EpubDetails;
@@ -32,8 +33,10 @@ public class MockBookDataProviderStrategy implements DataProviderStrategy {
         ArrayList<Book> result = new ArrayList<>();
         Person hSienkiewicz = Person.named("Henryk Sienkiewicz");
         Publisher greg = Publisher.named("GREG");
+        BookDetailsImpl details = new BookDetailsImpl();
+        details.setPublisher(greg);
 
-        Book book = new Book();
+        Book book = new Book(details);
         book.setTitle("[mock] Ogniem i Mieczem");
         book.setAuthor(hSienkiewicz);
 

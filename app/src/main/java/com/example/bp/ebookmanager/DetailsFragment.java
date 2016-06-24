@@ -1,5 +1,6 @@
 package com.example.bp.ebookmanager;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -10,6 +11,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.bp.ebookmanager.model.Book;
+import com.example.bp.ebookmanager.model.BookDetails;
+import com.example.bp.ebookmanager.model.Person;
+import com.example.bp.ebookmanager.model.Publisher;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -26,6 +30,8 @@ public class DetailsFragment extends Fragment {
     @BindView(R.id.detailsThumbnail) ImageView thumbnail;
 
     private Book book;
+    private DetailsListAdapter adapter;
+    private Context ctx;
 
     public DetailsFragment() {
     }
@@ -42,9 +48,31 @@ public class DetailsFragment extends Fragment {
 
         fillBasicData();
 
-        DetailsListAdapter adapter = new DetailsListAdapter(getContext());
+        ctx = getContext();
+        adapter = new DetailsListAdapter(ctx);
         listView.setAdapter(adapter);
+
+        book.setDetailsObserver(new BookDetails.DetailsObserver() {
+            @Override
+            public void onDetailsChanged() {
+                fillDetails();
+            }
+        });
+
+        fillDetails();
         return view;
+    }
+
+    private void fillDetails() {
+        adapter.clear();
+
+        Publisher publisher = book.getPublisher();
+        if (publisher != null)
+            adapter.addRow(ctx.getString(R.string.publisher), publisher.getName());
+
+        Person translator = book.getTranslator();
+        if (translator != null)
+            adapter.addRow(ctx.getString(R.string.translator), translator.getName());
     }
 
     private void fillBasicData() {

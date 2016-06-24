@@ -12,6 +12,6 @@ public interface BookDetails {
     void setObserver(DetailsObserver observer);
 
     interface DetailsObserver {
-        void onDetailsChanged(BookDetails details);
+        void onDetailsChanged();
     }
 }

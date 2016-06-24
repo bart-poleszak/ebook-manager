@@ -31,7 +31,7 @@ public class BookDetailsImpl implements BookDetails {
 
     private void notifyObserver() {
         if (observer != null)
-            observer.onDetailsChanged(this);
+            observer.onDetailsChanged();
     }
 
     @Override

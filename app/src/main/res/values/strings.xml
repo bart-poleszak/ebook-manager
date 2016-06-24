@@ -4,4 +4,6 @@
     <string name="action_required">Action required</string>
     <string name="narrator">Narrator</string>
     <string name="cancel">Cancel</string>
+    <string name="publisher">Publisher</string>
+    <string name="translator">Translator</string>
 </resources>
