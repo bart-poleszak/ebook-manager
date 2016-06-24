@@ -6,9 +6,19 @@ package com.example.bp.ebookmanager.dataprovider;
  */
 public class BookDataProviderImpl implements BookDataProvider {
     private DataProviderStrategy strategy;
+    private String name = "Undefined";
 
     public BookDataProviderImpl(DataProviderStrategy strategy) {
         this.strategy = strategy;
+    }
+
+    @Override
+    public String getName() {
+        return this.name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override

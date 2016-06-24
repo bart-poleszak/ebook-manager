@@ -42,10 +42,16 @@ public class WoblinkBookDataParser implements BookDataParser {
             books = new ArrayList<>(hrefs.size());
             for (String href : hrefs) {
                 Book book = new Book(createDetails("https://woblink.com" + href));
+                book.setId(parseId(href));
                 books.add(book);
             }
         }
 
+    }
+
+    private String parseId(String href) {
+        int index = href.lastIndexOf(',');
+        return "woblink" + href.substring(index);
     }
 
     private BookDetails createDetails(String href) {

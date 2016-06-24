@@ -37,7 +37,9 @@ public class WoblinkWebDataProviderFactory implements WebDataProviderFactory {
         strategy.setResolver(resolver);
         strategy.setParser(new WoblinkBookDataParser());
         strategy.setWebActionContext(new WoblinkWebActionContext());
-        return new BookDataProviderImpl(strategy);
+        BookDataProviderImpl bookDataProvider = new BookDataProviderImpl(strategy);
+        bookDataProvider.setName("Woblink");
+        return bookDataProvider;
     }
 
     @Override

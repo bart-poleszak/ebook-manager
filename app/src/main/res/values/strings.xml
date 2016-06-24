@@ -6,4 +6,7 @@
     <string name="cancel">Cancel</string>
     <string name="publisher">Publisher</string>
     <string name="translator">Translator</string>
+    <string name="sync_options">Sync options</string>
+    <string name="done">Done</string>
+    <string name="select_to_sync">Select sources to sync</string>
 </resources>

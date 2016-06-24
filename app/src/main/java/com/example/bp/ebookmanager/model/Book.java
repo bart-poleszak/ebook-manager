@@ -7,6 +7,7 @@ import java.util.HashSet;
  * Created by bp on 07.05.16.
  */
 public class Book {
+    private String id;
     private String title;
     private Person author;
     private BookDetails details;
@@ -22,6 +23,14 @@ public class Book {
 
     public void setDetailsObserver(BookDetails.DetailsObserver detailsObserver) {
         details.setObserver(detailsObserver);
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getTitle() {

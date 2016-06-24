@@ -9,6 +9,7 @@ import java.util.List;
  * Created by bp on 08.05.16.
  */
 public interface BookDataProvider {
+    String getName();
     void requestBooks(Callbacks callbacks);
 
     interface Callbacks {

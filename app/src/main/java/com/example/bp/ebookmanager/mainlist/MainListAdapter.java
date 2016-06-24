@@ -66,7 +66,8 @@ public class MainListAdapter extends BaseAdapter {
 
     @NonNull
     private View inflateRow() {
-        View convertView;LayoutInflater inflater = LayoutInflater.from(context);
+        View convertView;
+        LayoutInflater inflater = LayoutInflater.from(context);
         convertView = inflater.inflate(R.layout.main_list_row, null);
         convertView.setTag(new ViewHolder(convertView));
         return convertView;
@@ -86,6 +87,11 @@ public class MainListAdapter extends BaseAdapter {
             view.setVisibility(View.VISIBLE);
         else
             view.setVisibility(View.INVISIBLE);
+    }
+
+    public void clear() {
+        data.clear();
+        notifyDataSetChanged();
     }
 
     static class ViewHolder {

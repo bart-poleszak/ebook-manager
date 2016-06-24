@@ -1,8 +1,9 @@
 package com.example.bp.ebookmanager;
 
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.util.Log;
+import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,12 +11,9 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.example.bp.ebookmanager.config.ConfigManager;
 import com.example.bp.ebookmanager.dataprovider.BookDataProvider;
 import com.example.bp.ebookmanager.dataprovider.BookDataProviderImpl;
-import com.example.bp.ebookmanager.dataprovider.DataProviderStrategy;
 import com.example.bp.ebookmanager.dataprovider.MultipleDataProvider;
-import com.example.bp.ebookmanager.dataprovider.UserActionEnabler;
 import com.example.bp.ebookmanager.dataprovider.mock.MockBookDataProviderStrategy;
 import com.example.bp.ebookmanager.dataprovider.woblink.WoblinkWebDataProviderFactory;
 import com.example.bp.ebookmanager.mainlist.MainListAdapter;
@@ -44,7 +42,15 @@ public class BookListFragment extends Fragment {
         ButterKnife.bind(this, view);
 
         initializeListView();
-        fillList();
+        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
+        if (fab != null) {
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    fillList();
+                }
+            });
+        }
 
         return view;
     }
@@ -63,11 +69,9 @@ public class BookListFragment extends Fragment {
     }
 
     private void fillList() {
-        MultipleDataProvider dataProvider = new MultipleDataProvider();
-        dataProvider.addDataProvider(new BookDataProviderImpl(new MockBookDataProviderStrategy()));
-
-        WoblinkWebDataProviderFactory woblinkFactory = WoblinkWebDataProviderFactory.instance();
-        dataProvider.addDataProvider(woblinkFactory.createBookDataProvider());
+        adapter.clear();
+        MainActivity activity = (MainActivity) getActivity();
+        BookDataProvider dataProvider = activity.getProviderForSync();
         dataProvider.requestBooks(new BookDataProviderCallbacks());
     }
 

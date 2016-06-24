@@ -11,6 +11,11 @@ public class MultipleDataProvider implements BookDataProvider {
     ArrayList<BookDataProvider> providers = new ArrayList<>();
 
     @Override
+    public String getName() {
+        return "Multiple sources";
+    }
+
+    @Override
     public void requestBooks(final Callbacks callbacks) {
         for (BookDataProvider provider : providers)
             provider.requestBooks(callbacks);

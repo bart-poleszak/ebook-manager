@@ -1,21 +1,20 @@
 package com.example.bp.ebookmanager;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.example.bp.ebookmanager.android.config.AndroidConfiguration;
 import com.example.bp.ebookmanager.config.ConfigManager;
+import com.example.bp.ebookmanager.dataprovider.BookDataProvider;
 import com.example.bp.ebookmanager.model.Book;
 
 public class MainActivity extends AppCompatActivity {
+
+    private SyncOptionsDialogMediator syncDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,21 +27,7 @@ public class MainActivity extends AppCompatActivity {
 
         setBookListAsInitialFragment();
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        if (fab != null) {
-            fab.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                            .setAction("Action", new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-
-                                }
-                            }).show();
-                }
-            });
-        }
+        syncDialog = new SyncOptionsDialogMediator(this);
     }
 
     private void initializeConfigIfNeeded() {
@@ -51,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setBookListAsInitialFragment() {
-        Fragment fragment = new BookListFragment();
+        BookListFragment fragment = new BookListFragment();
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.contentFragment, fragment);
         transaction.commit();
@@ -79,11 +64,14 @@ public class MainActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        if (id == R.id.sync_options_button) {
+            syncDialog.show();
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public BookDataProvider getProviderForSync() {
+        return syncDialog.getProvider();
     }
 }
