@@ -1,5 +1,6 @@
 package com.example.bp.ebookmanager.dataprovider;
 
+import com.example.bp.ebookmanager.config.ConfigManager;
 import com.example.bp.ebookmanager.dataprovider.woblink.BookDataParser;
 import com.example.bp.ebookmanager.model.Book;
 
@@ -37,7 +38,8 @@ public class WebDataProviderStrategy implements DataProviderStrategy {
 
             @Override
             public void onUserActionRequired() {
-                callbacks.onUserActionRequired();
+                UserActionEnabler userActionEnabler = ConfigManager.get().getUserActionEnabler();
+                enableUserAction(userActionEnabler);
             }
         };
         resolver.resolve(webActionContext, resolverCallbacks);

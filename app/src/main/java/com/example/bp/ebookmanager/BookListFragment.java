@@ -1,7 +1,7 @@
 package com.example.bp.ebookmanager;
 
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,17 +9,17 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.example.bp.ebookmanager.config.ConfigManager;
 import com.example.bp.ebookmanager.dataprovider.BookDataProvider;
+import com.example.bp.ebookmanager.dataprovider.BookDataProviderImpl;
 import com.example.bp.ebookmanager.dataprovider.DataProviderStrategy;
 import com.example.bp.ebookmanager.dataprovider.MultipleDataProvider;
-import com.example.bp.ebookmanager.dataprovider.BookDataProviderImpl;
-import com.example.bp.ebookmanager.dataprovider.android.AndroidUserActionEnabler;
+import com.example.bp.ebookmanager.dataprovider.UserActionEnabler;
 import com.example.bp.ebookmanager.dataprovider.mock.MockBookDataProviderStrategy;
 import com.example.bp.ebookmanager.dataprovider.woblink.WoblinkWebDataProviderFactory;
 import com.example.bp.ebookmanager.mainlist.MainListAdapter;
 import com.example.bp.ebookmanager.model.Book;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -79,12 +79,6 @@ public class BookListFragment extends Fragment {
         @Override
         public void onDataAcquisitionFailed() {
             Log.d("BookListFragment", "Data acquisition failed");
-        }
-
-        @Override
-        public void enableUserActions(DataProviderStrategy strategy) {
-            AndroidUserActionEnabler userActionEnabler = new AndroidUserActionEnabler(getContext());
-            strategy.enableUserAction(userActionEnabler);
         }
 
     }

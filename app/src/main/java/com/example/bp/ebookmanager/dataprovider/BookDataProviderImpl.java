@@ -21,10 +21,6 @@ public class BookDataProviderImpl implements BookDataProvider {
                     callbacks.onNewDataAcquired(strategy.getBooks());
                 }
 
-                @Override
-                public void onUserActionRequired() {
-                    callbacks.enableUserActions(strategy);
-                }
             });
         } catch (Exception e) {
             e.printStackTrace();

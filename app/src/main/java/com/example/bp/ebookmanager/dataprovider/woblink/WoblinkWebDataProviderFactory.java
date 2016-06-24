@@ -1,13 +1,13 @@
 package com.example.bp.ebookmanager.dataprovider.woblink;
 
+import com.example.bp.ebookmanager.config.ConfigManager;
+import com.example.bp.ebookmanager.dataprovider.WebClientFactory;
 import com.example.bp.ebookmanager.dataprovider.BookDataProvider;
 import com.example.bp.ebookmanager.dataprovider.BookDataProviderImpl;
 import com.example.bp.ebookmanager.dataprovider.WebActionContext;
-import com.example.bp.ebookmanager.dataprovider.WebDataProviderFactory;
 import com.example.bp.ebookmanager.dataprovider.WebActionResolver;
+import com.example.bp.ebookmanager.dataprovider.WebDataProviderFactory;
 import com.example.bp.ebookmanager.dataprovider.WebDataProviderStrategy;
-import com.example.bp.ebookmanager.dataprovider.android.HeadlessWebClient;
-import com.example.bp.ebookmanager.model.BookDetails;
 import com.example.bp.ebookmanager.model.WebBookDetails;
 
 /**
@@ -18,7 +18,11 @@ public class WoblinkWebDataProviderFactory implements WebDataProviderFactory {
 
     private static WoblinkWebDataProviderFactory inst;
 
-    private WoblinkWebDataProviderFactory() {}
+    private final WebClientFactory webClientFactory;
+
+    private WoblinkWebDataProviderFactory() {
+        webClientFactory = ConfigManager.get().getWebClientFactory();
+    }
 
     public static WoblinkWebDataProviderFactory instance() {
         if (inst == null)
@@ -29,7 +33,7 @@ public class WoblinkWebDataProviderFactory implements WebDataProviderFactory {
     @Override
     public BookDataProvider createBookDataProvider() {
         WebDataProviderStrategy strategy = new WebDataProviderStrategy();
-        WebActionResolver resolver = new WebActionResolver(new HeadlessWebClient());
+        WebActionResolver resolver = new WebActionResolver(webClientFactory.getHeadlessClient());
         strategy.setResolver(resolver);
         strategy.setParser(new WoblinkBookDataParser());
         strategy.setWebActionContext(new WoblinkWebActionContext());
@@ -40,7 +44,7 @@ public class WoblinkWebDataProviderFactory implements WebDataProviderFactory {
     public WebBookDetails createBookDetails(WebActionContext context) {
         WebBookDetails details = new WebBookDetails();
         details.setContext(context);
-        details.setResolver(new WebActionResolver(new HeadlessWebClient()));
+        details.setResolver(new WebActionResolver(webClientFactory.getHeadlessClient()));
         details.setParser(new WoblinkBookDetailsParser());
         return details;
     }

@@ -1,7 +1,5 @@
 package com.example.bp.ebookmanager.dataprovider;
 
-import com.example.bp.ebookmanager.dataprovider.WebActionContext;
-
 /**
  * Ebook Manager
  * Created by bp on 13.06.16.

@@ -1,7 +1,7 @@
-package com.example.bp.ebookmanager.dataprovider.android;
+package com.example.bp.ebookmanager.android.dataprovider;
 
-import android.content.Context;
-
+import com.example.bp.ebookmanager.config.ConfigManager;
+import com.example.bp.ebookmanager.dataprovider.WebClientFactory;
 import com.example.bp.ebookmanager.dataprovider.UserActionEnabler;
 import com.example.bp.ebookmanager.dataprovider.WebDataProviderStrategy;
 
@@ -10,14 +10,10 @@ import com.example.bp.ebookmanager.dataprovider.WebDataProviderStrategy;
  * Created by bp on 11.06.16.
  */
 public class AndroidUserActionEnabler implements UserActionEnabler {
-    Context context;
-
-    public AndroidUserActionEnabler(Context context) {
-        this.context = context;
-    }
 
     @Override
     public void enableWebUserAction(WebDataProviderStrategy strategy) {
-        strategy.changeResolverWebClient(new VisibleWebClient(context));
+        WebClientFactory webClientFactory = ConfigManager.get().getWebClientFactory();
+        strategy.changeResolverWebClient(webClientFactory.getVisualClient());
     }
 }

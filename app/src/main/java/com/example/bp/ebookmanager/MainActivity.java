@@ -11,6 +11,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.example.bp.ebookmanager.android.config.AndroidConfiguration;
+import com.example.bp.ebookmanager.config.ConfigManager;
 import com.example.bp.ebookmanager.model.Book;
 
 public class MainActivity extends AppCompatActivity {
@@ -20,6 +22,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        initializeConfigIfNeeded();
+
         setSupportActionBar(toolbar);
 
         setBookListAsInitialFragment();
@@ -39,6 +43,11 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         }
+    }
+
+    private void initializeConfigIfNeeded() {
+        if (ConfigManager.get() == null)
+            ConfigManager.set(new AndroidConfiguration(this));
     }
 
     private void setBookListAsInitialFragment() {

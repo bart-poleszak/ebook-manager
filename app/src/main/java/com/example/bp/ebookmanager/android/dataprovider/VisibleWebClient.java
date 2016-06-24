@@ -1,4 +1,4 @@
-package com.example.bp.ebookmanager.dataprovider.android;
+package com.example.bp.ebookmanager.android.dataprovider;
 
 import android.app.Dialog;
 import android.content.Context;

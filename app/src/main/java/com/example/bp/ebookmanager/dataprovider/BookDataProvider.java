@@ -14,6 +14,5 @@ public interface BookDataProvider {
     interface Callbacks {
         void onNewDataAcquired(List<Book> data);
         void onDataAcquisitionFailed();
-        void enableUserActions(DataProviderStrategy strategy);
     }
 }
