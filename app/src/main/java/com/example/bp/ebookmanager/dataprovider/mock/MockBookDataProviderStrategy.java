@@ -61,9 +61,4 @@ public class MockBookDataProviderStrategy implements DataProviderStrategy {
 
         return result;
     }
-
-    @Override
-    public void enableUserAction(UserActionEnabler visitor) {
-
-    }
 }

@@ -12,7 +12,6 @@ public interface DataProviderStrategy {
 
     void gainAccess(Callbacks callback);
     List<Book> getBooks();
-    void enableUserAction(UserActionEnabler visitor);
 
     interface Callbacks {
         void onAccessGained();

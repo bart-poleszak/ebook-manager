@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.bp.ebookmanager.config.ConfigManager;
 import com.example.bp.ebookmanager.dataprovider.BookDataProvider;
@@ -78,7 +79,8 @@ public class BookListFragment extends Fragment {
 
         @Override
         public void onDataAcquisitionFailed() {
-            Log.d("BookListFragment", "Data acquisition failed");
+            Toast toast = Toast.makeText(getContext(), "Data acquisition failed", Toast.LENGTH_SHORT);
+            toast.show();
         }
 
     }

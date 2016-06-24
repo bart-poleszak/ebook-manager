@@ -39,7 +39,8 @@ public class WebDataProviderStrategy implements DataProviderStrategy {
             @Override
             public void onUserActionRequired() {
                 UserActionEnabler userActionEnabler = ConfigManager.get().getUserActionEnabler();
-                enableUserAction(userActionEnabler);
+                resolver.enableUserAction(userActionEnabler);
+                retryToGainAccess();
             }
         };
         resolver.resolve(webActionContext, resolverCallbacks);
@@ -53,15 +54,5 @@ public class WebDataProviderStrategy implements DataProviderStrategy {
     public List<Book> getBooks() {
         parser.parse(webActionContext.getResult());
         return parser.getBooks();
-    }
-
-    @Override
-    public void enableUserAction(UserActionEnabler visitor) {
-        visitor.enableWebUserAction(this);
-        retryToGainAccess();
-    }
-
-    public void changeResolverWebClient(WebClient webClient) {
-        resolver.setWebClient(webClient);
     }
 }

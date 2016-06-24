@@ -65,6 +65,10 @@ public class WebActionResolver {
         this.webClient = webClient;
     }
 
+    public void enableUserAction(UserActionEnabler enabler) {
+        enabler.enableWebUserAction(this);
+    }
+
     public interface Callbacks {
         void onActionCompleted(WebActionContext context);
         void onUserActionRequired();

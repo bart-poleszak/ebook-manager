@@ -5,5 +5,5 @@ package com.example.bp.ebookmanager.dataprovider;
  * Created by bp on 11.06.16.
  */
 public interface UserActionEnabler {
-    void enableWebUserAction(WebDataProviderStrategy strategy);
+    void enableWebUserAction(WebActionResolver resolver);
 }

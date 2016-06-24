@@ -1,5 +1,7 @@
 package com.example.bp.ebookmanager.model;
 
+import com.example.bp.ebookmanager.config.ConfigManager;
+import com.example.bp.ebookmanager.dataprovider.UserActionEnabler;
 import com.example.bp.ebookmanager.dataprovider.WebActionContext;
 import com.example.bp.ebookmanager.dataprovider.WebActionResolver;
 
@@ -13,6 +15,7 @@ public class WebBookDetails implements BookDetails {
     private WebActionResolver resolver;
     private WebActionContext context;
     private BookDetailsParser parser;
+    private ResolverCallbacks resolverCallbacks = new ResolverCallbacks();
 
     public void setResolver(WebActionResolver resolver) {
         this.resolver = resolver;
@@ -38,20 +41,13 @@ public class WebBookDetails implements BookDetails {
     }
 
     private void requestData() {
-        if (!resolver.isWorking())
-            resolver.resolve(context, new WebActionResolver.Callbacks() {
-                @Override
-                public void onActionCompleted(WebActionContext context) {
-                    downloadedData = parser.parse(context.getResult());
-                    if (observer != null)
-                        observer.onDetailsChanged(WebBookDetails.this);
-                }
+        if (!resolver.isWorking()) {
+            resolver.resolve(context, resolverCallbacks);
+        }
+    }
 
-                @Override
-                public void onUserActionRequired() {
-
-                }
-            });
+    private void retryToResolve() {
+        resolver.resolve(context, resolverCallbacks);
     }
 
     @Override
@@ -62,5 +58,20 @@ public class WebBookDetails implements BookDetails {
     @Override
     public void setObserver(DetailsObserver observer) {
         this.observer = observer;
+    }
+
+    private class ResolverCallbacks implements WebActionResolver.Callbacks {
+        @Override
+        public void onActionCompleted(WebActionContext context) {
+            downloadedData = parser.parse(context.getResult());
+            if (observer != null)
+                observer.onDetailsChanged(WebBookDetails.this);
+        }
+
+        @Override
+        public void onUserActionRequired() {
+            resolver.enableUserAction(ConfigManager.get().getUserActionEnabler());
+            retryToResolve();
+        }
     }
 }
