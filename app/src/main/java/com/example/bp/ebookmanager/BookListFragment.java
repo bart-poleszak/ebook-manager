@@ -56,7 +56,8 @@ public class BookListFragment extends Fragment {
     }
 
     private void initializeListView() {
-        adapter = new MainListAdapter(getContext());
+        if (adapter == null)
+            adapter = new MainListAdapter(getContext());
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
