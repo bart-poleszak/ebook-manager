@@ -1,4 +1,4 @@
-package com.example.bp.ebookmanager.mainlist;
+package com.example.bp.ebookmanager;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -17,6 +17,7 @@ import com.example.bp.ebookmanager.model.formats.Mp3Details;
 import com.example.bp.ebookmanager.model.formats.PdfDetails;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
@@ -26,17 +27,39 @@ import butterknife.ButterKnife;
  * Ebook Manager
  * Created by bp on 06.05.16.
  */
-public class MainListAdapter extends BaseAdapter {
+public class BookListAdapter extends BaseAdapter {
     private ArrayList<Book> data = new ArrayList<>();
+    private HashMap<String, Integer> idIndexMap = new HashMap<>();
     private Context context;
 
-    public MainListAdapter(Context context) {
+    public BookListAdapter(Context context) {
         this.context = context;
     }
 
-    public void addItems(List<Book> items) {
-        data.addAll(items);
+//    public void addItems(List<Book> items) {
+//        data.addAll(items);
+//        for (int i = 0; i < data.size(); i++) {
+//            Book book = data.get(i);
+//            idIndexMap.put(book.getId(), i);
+//        }
+//        notifyDataSetChanged();
+//    }
+
+    public void addItem(Book item) {
+        data.add(item);
+        idIndexMap.put(item.getId(), data.size() - 1);
         notifyDataSetChanged();
+    }
+
+    public void updateItems(List<Book> items) {
+        for (Book book : items) {
+            Integer index = idIndexMap.get(book.getId());
+            if (index != null) {
+                data.set(index, book);
+                notifyDataSetChanged();
+            } else
+                addItem(book);
+        }
     }
 
     @Override
@@ -89,10 +112,10 @@ public class MainListAdapter extends BaseAdapter {
             view.setVisibility(View.INVISIBLE);
     }
 
-    public void clear() {
-        data.clear();
-        notifyDataSetChanged();
-    }
+//    public void clear() {
+//        data.clear();
+//        notifyDataSetChanged();
+//    }
 
     static class ViewHolder {
         @BindView(R.id.titleTextView) TextView title;

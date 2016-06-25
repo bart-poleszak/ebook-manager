@@ -12,6 +12,9 @@ import com.example.bp.ebookmanager.config.ConfigManager;
 import com.example.bp.ebookmanager.dataprovider.BookDataProvider;
 import com.example.bp.ebookmanager.model.Book;
 
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
+
 public class MainActivity extends AppCompatActivity {
 
     private SyncOptionsDialogMediator syncDialog;
@@ -22,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         initializeConfigIfNeeded();
+        initializeRealm();
 
         setSupportActionBar(toolbar);
 
@@ -33,6 +37,15 @@ public class MainActivity extends AppCompatActivity {
     private void initializeConfigIfNeeded() {
         if (ConfigManager.get() == null)
             ConfigManager.set(new AndroidConfiguration(this));
+    }
+
+
+    private void initializeRealm() {
+        RealmConfiguration config = new RealmConfiguration.Builder(this)
+                .name("ebookmanager.realm")
+                .schemaVersion(0)
+                .build();
+        Realm.setDefaultConfiguration(config);
     }
 
     private void setBookListAsInitialFragment() {

@@ -10,6 +10,7 @@ import com.example.bp.ebookmanager.dataprovider.BookDataProviderImpl;
 import com.example.bp.ebookmanager.dataprovider.UserActionEnabler;
 import com.example.bp.ebookmanager.dataprovider.WebClientFactory;
 import com.example.bp.ebookmanager.dataprovider.mock.MockBookDataProviderStrategy;
+import com.example.bp.ebookmanager.dataprovider.realm.RealmDataProviderStrategy;
 import com.example.bp.ebookmanager.dataprovider.woblink.WoblinkWebDataProviderFactory;
 
 import java.util.ArrayList;
@@ -50,6 +51,7 @@ public class AndroidConfiguration implements Configuration {
 
     @Override
     public BookDataProvider getLocalDataProvider() {
-        return null;
+        RealmDataProviderStrategy strategy = new RealmDataProviderStrategy();
+        return new BookDataProviderImpl(strategy);
     }
 }

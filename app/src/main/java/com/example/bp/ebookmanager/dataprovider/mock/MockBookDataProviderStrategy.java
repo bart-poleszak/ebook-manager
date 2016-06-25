@@ -37,6 +37,7 @@ public class MockBookDataProviderStrategy implements DataProviderStrategy {
         details.setPublisher(greg);
 
         Book book = new Book(details);
+        book.setId("mock1");
         book.setTitle("[mock] Ogniem i Mieczem");
         book.setAuthor(hSienkiewicz);
 
@@ -46,6 +47,7 @@ public class MockBookDataProviderStrategy implements DataProviderStrategy {
         result.add(book);
 
         book = new Book();
+        book.setId("mock2");
         book.setTitle("[mock] Potop");
         book.setAuthor(hSienkiewicz);
 
@@ -56,6 +58,7 @@ public class MockBookDataProviderStrategy implements DataProviderStrategy {
         result.add(book);
 
         book = new Book();
+        book.setId("mock3");
         book.setTitle("[mock] Metro 2033");
         Person dGlukhowsky = Person.named("Dmitry Glukhovsky");
         book.setAuthor(dGlukhowsky);
