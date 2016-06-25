@@ -3,10 +3,10 @@ package com.example.bp.ebookmanager.realm;
 import com.example.bp.ebookmanager.model.Book;
 import com.example.bp.ebookmanager.model.NullBookDetails;
 import com.example.bp.ebookmanager.model.Person;
+import com.example.bp.ebookmanager.model.RawThumbnail;
 
 import io.realm.Realm;
 import io.realm.RealmObject;
-import io.realm.RealmQuery;
 import io.realm.annotations.PrimaryKey;
 
 /**
@@ -19,12 +19,15 @@ public class RealmBook extends RealmObject {
     private String id;
     private String title;
     private RealmPerson author;
+    private byte[] thumbnail;
 
     public Book toBook() {
         Book result = new Book(NullBookDetails.instance());
         result.setId(id);
         result.setTitle(title);
         result.setAuthor(author.toPerson());
+        if (thumbnail != null)
+            result.setThumbnail(new RawThumbnail(thumbnail));
         return result;
     }
 
@@ -43,5 +46,13 @@ public class RealmBook extends RealmObject {
             realmPerson.fromPerson(author);
         }
         this.author = realmPerson;
+    }
+
+    public byte[] getThumbnail() {
+        return thumbnail;
+    }
+
+    public void setThumbnail(byte[] thumbnail) {
+        this.thumbnail = thumbnail;
     }
 }

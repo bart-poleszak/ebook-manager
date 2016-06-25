@@ -1,7 +1,9 @@
 package com.example.bp.ebookmanager;
 
 import android.content.Context;
+import android.graphics.drawable.BitmapDrawable;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,9 +35,14 @@ public class BookListAdapter extends BaseAdapter {
     private ArrayList<Book> data = new ArrayList<>();
     private HashMap<String, Integer> idIndexMap = new HashMap<>();
     private Context context;
+    private ThumbnailDownloadedObserver observer;
 
     public BookListAdapter(Context context) {
         this.context = context;
+    }
+
+    public void setObserver(ThumbnailDownloadedObserver observer) {
+        this.observer = observer;
     }
 
     public void addItem(Book item) {
@@ -75,6 +82,7 @@ public class BookListAdapter extends BaseAdapter {
         if (convertView == null)
             convertView = inflateRow();
         ViewHolder holder = (ViewHolder) convertView.getTag();
+        holder.position = position;
         Book book = (Book) getItem(position);
         fillRowContent(holder, book);
         return convertView;
@@ -107,7 +115,7 @@ public class BookListAdapter extends BaseAdapter {
             view.setVisibility(View.INVISIBLE);
     }
 
-    static class ViewHolder {
+    class ViewHolder {
         @BindView(R.id.titleTextView) TextView title;
         @BindView(R.id.authorTextView) TextView author;
         @BindView(R.id.epubImageView) ImageView epubImageView;
@@ -116,11 +124,22 @@ public class BookListAdapter extends BaseAdapter {
         @BindView(R.id.mp3ImageView) ImageView mp3ImageView;
         @BindView(R.id.thumbnailImageView) ImageView thumbnailImageView;
 
-        ThumbnailVisitor thumbnailVisitor;
+        AndroidThumbnailVisitor thumbnailVisitor;
+        int position;
 
         public ViewHolder(View view) {
             ButterKnife.bind(this, view);
             thumbnailVisitor = new AndroidThumbnailVisitor(thumbnailImageView);
+            thumbnailVisitor.setObserver(new AndroidThumbnailVisitor.DownloadObserver() {
+                @Override
+                public void onDownloaded(BitmapDrawable drawable) {
+                    observer.onThumbnailDownloaded(drawable, data.get(position));
+                }
+            });
         }
+    }
+
+    public interface ThumbnailDownloadedObserver {
+        void onThumbnailDownloaded(BitmapDrawable thumbnail, Book book);
     }
 }

@@ -1,5 +1,7 @@
 package com.example.bp.ebookmanager;
 
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -13,10 +15,9 @@ import android.widget.Toast;
 import com.example.bp.ebookmanager.config.ConfigManager;
 import com.example.bp.ebookmanager.dataprovider.BookDataProvider;
 import com.example.bp.ebookmanager.model.Book;
-import com.example.bp.ebookmanager.model.Person;
 import com.example.bp.ebookmanager.realm.RealmBook;
-import com.example.bp.ebookmanager.realm.RealmPerson;
 
+import java.io.ByteArrayOutputStream;
 import java.util.List;
 
 import butterknife.BindView;
@@ -74,8 +75,25 @@ public class BookListFragment extends Fragment {
     }
 
     private void initializeListView() {
-        if (adapter == null)
+        if (adapter == null) {
             adapter = new BookListAdapter(getContext());
+            adapter.setObserver(new BookListAdapter.ThumbnailDownloadedObserver() {
+                @Override
+                public void onThumbnailDownloaded(BitmapDrawable thumbnail, Book book) {
+                    Bitmap bitmap = thumbnail.getBitmap();
+                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+                    byte[] thumbnailBytes = stream.toByteArray();
+                    Realm realm = Realm.getDefaultInstance();
+                    realm.beginTransaction();
+                    RealmBook realmBook = realm.where(RealmBook.class)
+                            .equalTo("id", book.getId())
+                            .findFirst();
+                    realmBook.setThumbnail(thumbnailBytes);
+                    realm.commitTransaction();
+                }
+            });
+        }
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
