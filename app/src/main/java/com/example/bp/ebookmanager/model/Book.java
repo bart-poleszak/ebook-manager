@@ -11,6 +11,7 @@ public class Book {
     private String title;
     private Person author;
     private BookDetails details;
+    private Thumbnail thumbnail;
     private HashSet<String> formats = new HashSet<>();
 
     public Book(BookDetails details) {
@@ -51,6 +52,14 @@ public class Book {
 
     public HashSet<String> getFormatNames() {
         return formats;
+    }
+
+    public Thumbnail getThumbnail() {
+        return thumbnail;
+    }
+
+    public void setThumbnail(Thumbnail thumbnail) {
+        this.thumbnail = thumbnail;
     }
 
     public Person getTranslator() {

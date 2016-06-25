@@ -10,7 +10,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.bp.ebookmanager.R;
+import com.example.bp.ebookmanager.android.AndroidThumbnailVisitor;
 import com.example.bp.ebookmanager.model.Book;
+import com.example.bp.ebookmanager.model.ThumbnailVisitor;
 import com.example.bp.ebookmanager.model.formats.EpubDetails;
 import com.example.bp.ebookmanager.model.formats.MobiDetails;
 import com.example.bp.ebookmanager.model.formats.Mp3Details;
@@ -35,15 +37,6 @@ public class BookListAdapter extends BaseAdapter {
     public BookListAdapter(Context context) {
         this.context = context;
     }
-
-//    public void addItems(List<Book> items) {
-//        data.addAll(items);
-//        for (int i = 0; i < data.size(); i++) {
-//            Book book = data.get(i);
-//            idIndexMap.put(book.getId(), i);
-//        }
-//        notifyDataSetChanged();
-//    }
 
     public void addItem(Book item) {
         data.add(item);
@@ -99,6 +92,8 @@ public class BookListAdapter extends BaseAdapter {
     private void fillRowContent(ViewHolder holder, Book book) {
         holder.title.setText(book.getTitle());
         holder.author.setText(book.getAuthor().getName());
+        if (book.getThumbnail() != null)
+            book.getThumbnail().fill(holder.thumbnailVisitor);
         setVisibilityForFormat(holder.epubImageView, book, EpubDetails.FORMAT_NAME);
         setVisibilityForFormat(holder.mobiImageView, book, MobiDetails.FORMAT_NAME);
         setVisibilityForFormat(holder.pdfImageView, book, PdfDetails.FORMAT_NAME);
@@ -112,11 +107,6 @@ public class BookListAdapter extends BaseAdapter {
             view.setVisibility(View.INVISIBLE);
     }
 
-//    public void clear() {
-//        data.clear();
-//        notifyDataSetChanged();
-//    }
-
     static class ViewHolder {
         @BindView(R.id.titleTextView) TextView title;
         @BindView(R.id.authorTextView) TextView author;
@@ -124,9 +114,13 @@ public class BookListAdapter extends BaseAdapter {
         @BindView(R.id.mobiImageView) ImageView mobiImageView;
         @BindView(R.id.pdfImageView) ImageView pdfImageView;
         @BindView(R.id.mp3ImageView) ImageView mp3ImageView;
+        @BindView(R.id.thumbnailImageView) ImageView thumbnailImageView;
+
+        ThumbnailVisitor thumbnailVisitor;
 
         public ViewHolder(View view) {
             ButterKnife.bind(this, view);
+            thumbnailVisitor = new AndroidThumbnailVisitor(thumbnailImageView);
         }
     }
 }

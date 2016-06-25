@@ -8,6 +8,7 @@ import com.example.bp.ebookmanager.dataprovider.html.HTMLScraper;
 import com.example.bp.ebookmanager.model.Book;
 import com.example.bp.ebookmanager.model.BookDetails;
 import com.example.bp.ebookmanager.model.Person;
+import com.example.bp.ebookmanager.model.URLThumbnail;
 import com.example.bp.ebookmanager.model.formats.EpubDetails;
 import com.example.bp.ebookmanager.model.formats.FormatSpecificData;
 import com.example.bp.ebookmanager.model.formats.MobiDetails;
@@ -20,6 +21,7 @@ import java.util.List;
  * Created by bp on 12.06.16.
  */
 public class WoblinkBookDataParser implements BookDataParser {
+    public static final String WOBLINK_COM = "https://woblink.com";
     private ArrayList<Book> books;
     private HTMLScraper scraper;
     private String source;
@@ -32,7 +34,7 @@ public class WoblinkBookDataParser implements BookDataParser {
         fillTitles();
         fillAuthors();
         fillAllFormatsData();
-//        fillThumbnails();
+        fillThumbnails();
     }
 
     private void createBooks() {
@@ -41,7 +43,7 @@ public class WoblinkBookDataParser implements BookDataParser {
             ArrayList<String> hrefs = scraper.getAttributeValueList("href");
             books = new ArrayList<>(hrefs.size());
             for (String href : hrefs) {
-                Book book = new Book(createDetails("https://woblink.com" + href));
+                Book book = new Book(createDetails(WOBLINK_COM + href));
                 book.setId(parseId(href));
                 books.add(book);
             }
@@ -115,9 +117,12 @@ public class WoblinkBookDataParser implements BookDataParser {
     private void fillThumbnails() {
         scraper.reset(source);
         scraper.evaluateXPathExpression("//div[@class=\"nw_profil_polka_ksiazka_okladka nw_okladka\"]/img");
-        if (scraper.evaluationSuccessful())
-            for (String str : scraper.getAttributeValueList("src"))
-                Log.d("Shelf", str);
+        if (scraper.evaluationSuccessful()) {
+            ArrayList<String> urls = scraper.getAttributeValueList("src");
+            for (int i = 0; i < books.size(); i++) {
+                books.get(i).setThumbnail(new URLThumbnail(WOBLINK_COM + urls.get(i)));
+            }
+        }
     }
 
     @NonNull
