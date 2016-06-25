@@ -10,10 +10,12 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.bp.ebookmanager.android.AndroidThumbnailVisitor;
 import com.example.bp.ebookmanager.model.Book;
 import com.example.bp.ebookmanager.model.BookDetails;
 import com.example.bp.ebookmanager.model.Person;
 import com.example.bp.ebookmanager.model.Publisher;
+import com.example.bp.ebookmanager.model.ThumbnailVisitor;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -32,6 +34,7 @@ public class DetailsFragment extends Fragment {
     private Book book;
     private DetailsListAdapter adapter;
     private Context ctx;
+    private ThumbnailVisitor thumbnailVisitor;
 
     public DetailsFragment() {
     }
@@ -45,6 +48,7 @@ public class DetailsFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_details, container, false);
         ButterKnife.bind(this, view);
+        thumbnailVisitor = new AndroidThumbnailVisitor(thumbnail);
 
         fillBasicData();
 
@@ -78,6 +82,8 @@ public class DetailsFragment extends Fragment {
     private void fillBasicData() {
         title.setText(book.getTitle());
         author.setText(book.getAuthor().getName());
+        if (book.getThumbnail() != null)
+            book.getThumbnail().fill(thumbnailVisitor);
     }
 
 }
