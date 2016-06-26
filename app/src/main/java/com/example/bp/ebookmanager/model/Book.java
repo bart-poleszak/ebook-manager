@@ -1,6 +1,9 @@
 package com.example.bp.ebookmanager.model;
 
+import com.example.bp.ebookmanager.model.formats.FormatSpecificData;
+
 import java.util.HashSet;
+import java.util.List;
 
 /**
  * Ebook Manager
@@ -68,5 +71,9 @@ public class Book {
 
     public Publisher getPublisher() {
         return details.getPublisher();
+    }
+
+    public List<FormatSpecificData> getFormatSpecificDataList() {
+        return details.getFormatSpecificDataList();
     }
 }

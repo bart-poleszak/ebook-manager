@@ -1,11 +1,22 @@
 package com.example.bp.ebookmanager.model.formats;
 
 /**
+ * Ebook Manager
  * Created by bp on 07.05.16.
  */
-public interface FormatSpecificData {
-    String getFormatName();
-    void acceptVisitor(Visitor visitor);
+public abstract class FormatSpecificData {
+    public abstract String getFormatName();
+    abstract void acceptVisitor(Visitor visitor);
+
+    private Double sizeInMb = null;
+
+    public void setSizeInMb(Double sizeInMb) {
+        this.sizeInMb = sizeInMb;
+    }
+
+    public Double getSizeInMb() {
+        return sizeInMb;
+    }
 
     interface Visitor {
         void visitAudiobookSpecificData(AudiobookSpecificData data);

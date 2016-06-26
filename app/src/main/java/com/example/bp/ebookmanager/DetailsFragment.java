@@ -16,9 +16,8 @@ import com.example.bp.ebookmanager.model.BookDetails;
 import com.example.bp.ebookmanager.model.Person;
 import com.example.bp.ebookmanager.model.Publisher;
 import com.example.bp.ebookmanager.model.ThumbnailVisitor;
+import com.example.bp.ebookmanager.model.formats.FormatSpecificData;
 import com.example.bp.ebookmanager.realm.RealmBook;
-
-import org.apache.commons.lang3.text.StrBuilder;
 
 import java.util.HashSet;
 
@@ -91,6 +90,11 @@ public class DetailsFragment extends Fragment {
             builder.append(", ");
         }
         adapter.addRow(ctx.getString(R.string.format), builder.substring(0, builder.length() - 2));
+
+        for (FormatSpecificData formatData : book.getFormatSpecificDataList()) {
+            String key = formatData.getFormatName() + " size";
+            adapter.addRow(key, String.valueOf(formatData.getSizeInMb()) + " MB");
+        }
         updateRealm();
     }
 

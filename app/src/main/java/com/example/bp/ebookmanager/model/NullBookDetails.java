@@ -1,5 +1,10 @@
 package com.example.bp.ebookmanager.model;
 
+import com.example.bp.ebookmanager.model.formats.FormatSpecificData;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Ebook Manager
  * Created by bp on 12.06.16.
@@ -28,6 +33,11 @@ public class NullBookDetails implements BookDetails {
     @Override
     public void setObserver(DetailsObserver observer) {
 
+    }
+
+    @Override
+    public List<FormatSpecificData> getFormatSpecificDataList() {
+        return new ArrayList<>();
     }
 
 }

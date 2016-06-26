@@ -4,6 +4,10 @@ import com.example.bp.ebookmanager.config.ConfigManager;
 import com.example.bp.ebookmanager.dataprovider.UserActionEnabler;
 import com.example.bp.ebookmanager.dataprovider.WebActionContext;
 import com.example.bp.ebookmanager.dataprovider.WebActionResolver;
+import com.example.bp.ebookmanager.model.formats.FormatSpecificData;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Ebook Manager
@@ -59,6 +63,12 @@ public class WebBookDetails implements BookDetails {
     @Override
     public void setObserver(DetailsObserver observer) {
         this.observer = observer;
+    }
+
+    @Override
+    public List<FormatSpecificData> getFormatSpecificDataList() {
+        requestDataIfNeeded();
+        return downloadedData.getFormatSpecificDataList();
     }
 
     private class ResolverCallbacks implements WebActionResolver.Callbacks {

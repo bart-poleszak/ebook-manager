@@ -1,5 +1,10 @@
 package com.example.bp.ebookmanager.model;
 
+import com.example.bp.ebookmanager.model.formats.FormatSpecificData;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Ebook Manager
  * Created by bp on 12.06.16.
@@ -8,6 +13,7 @@ public class BookDetailsImpl implements BookDetails {
     private Person translator;
     private Publisher publisher;
     private DetailsObserver observer;
+    private ArrayList<FormatSpecificData> formatsList = new ArrayList<>();
 
     @Override
     public Person getTranslator() {
@@ -37,6 +43,11 @@ public class BookDetailsImpl implements BookDetails {
     @Override
     public void setObserver(DetailsObserver observer) {
         this.observer = observer;
+    }
+
+    @Override
+    public List<FormatSpecificData> getFormatSpecificDataList() {
+        return formatsList;
     }
 
 }
