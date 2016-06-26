@@ -6,6 +6,7 @@ import com.example.bp.ebookmanager.model.Person;
 import com.example.bp.ebookmanager.model.RawThumbnail;
 
 import io.realm.Realm;
+import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
@@ -20,6 +21,7 @@ public class RealmBook extends RealmObject {
     private String title;
     private RealmPerson author;
     private byte[] thumbnail;
+    private RealmList<RealmString> formats = new RealmList<>();
 
     public Book toBook() {
         Book result = new Book(NullBookDetails.instance());
@@ -28,6 +30,9 @@ public class RealmBook extends RealmObject {
         result.setAuthor(author.toPerson());
         if (thumbnail != null)
             result.setThumbnail(new RawThumbnail(thumbnail));
+        for (RealmString format : formats)
+            result.getFormatNames().add(format.toString());
+
         return result;
     }
 
@@ -45,6 +50,10 @@ public class RealmBook extends RealmObject {
             realmPerson = realm.createObject(RealmPerson.class);
             realmPerson.fromPerson(author);
         }
+
+        for (String s : book.getFormatNames())
+            formats.add(new RealmString(s));
+
         this.author = realmPerson;
     }
 
