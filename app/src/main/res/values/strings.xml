@@ -9,4 +9,5 @@
     <string name="sync_options">Sync options</string>
     <string name="done">Done</string>
     <string name="select_to_sync">Select sources to sync</string>
+    <string name="format">Formats</string>
 </resources>
