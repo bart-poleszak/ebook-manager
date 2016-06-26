@@ -33,9 +33,11 @@ import butterknife.ButterKnife;
  */
 public class BookListAdapter extends BaseAdapter {
     private ArrayList<Book> data = new ArrayList<>();
+    private ArrayList<Boolean> synced = new ArrayList<>();
     private HashMap<String, Integer> idIndexMap = new HashMap<>();
     private Context context;
     private ThumbnailDownloadedObserver observer;
+    private boolean markNewAsSynched = false;
 
     public BookListAdapter(Context context) {
         this.context = context;
@@ -45,8 +47,13 @@ public class BookListAdapter extends BaseAdapter {
         this.observer = observer;
     }
 
+    public void setMarkNewAsSynched(boolean markNewAsSynched) {
+        this.markNewAsSynched = markNewAsSynched;
+    }
+
     public void addItem(Book item) {
         data.add(item);
+        synced.add(markNewAsSynched);
         idIndexMap.put(item.getId(), data.size() - 1);
         notifyDataSetChanged();
     }
@@ -56,6 +63,7 @@ public class BookListAdapter extends BaseAdapter {
             Integer index = idIndexMap.get(book.getId());
             if (index != null) {
                 data.set(index, book);
+                synced.set(index, markNewAsSynched);
                 notifyDataSetChanged();
             } else
                 addItem(book);
@@ -100,6 +108,10 @@ public class BookListAdapter extends BaseAdapter {
     private void fillRowContent(ViewHolder holder, Book book) {
         holder.title.setText(book.getTitle());
         holder.author.setText(book.getAuthor().getName());
+        if (synced.get(holder.position))
+            holder.syncedImageView.setVisibility(View.VISIBLE);
+        else
+            holder.syncedImageView.setVisibility(View.INVISIBLE);
         if (book.getThumbnail() != null)
             book.getThumbnail().fill(holder.thumbnailVisitor);
         setVisibilityForFormat(holder.epubImageView, book, EpubDetails.FORMAT_NAME);
@@ -123,6 +135,7 @@ public class BookListAdapter extends BaseAdapter {
         @BindView(R.id.pdfImageView) ImageView pdfImageView;
         @BindView(R.id.mp3ImageView) ImageView mp3ImageView;
         @BindView(R.id.thumbnailImageView) ImageView thumbnailImageView;
+        @BindView(R.id.syncedImageView) ImageView syncedImageView;
 
         AndroidThumbnailVisitor thumbnailVisitor;
         int position;

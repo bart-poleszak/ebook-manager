@@ -63,6 +63,7 @@ public class BookListFragment extends Fragment {
         localDataProvider.requestBooks(new BookDataProvider.Callbacks() {
             @Override
             public void onNewDataAcquired(List<Book> data) {
+                adapter.setMarkNewAsSynched(false);
                 adapter.updateItems(data);
                 fab.setEnabled(true);
             }
@@ -114,6 +115,7 @@ public class BookListFragment extends Fragment {
     private class BookDataProviderWithRealmUpdateCallbacks implements BookDataProvider.Callbacks {
         @Override
         public void onNewDataAcquired(List<Book> data) {
+            adapter.setMarkNewAsSynched(true);
             adapter.updateItems(data);
             updateRealm(data);
         }
