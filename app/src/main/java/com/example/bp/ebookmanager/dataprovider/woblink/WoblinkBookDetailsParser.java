@@ -10,6 +10,7 @@ import com.example.bp.ebookmanager.model.BookDetailsParser;
 import com.example.bp.ebookmanager.model.Publisher;
 import com.example.bp.ebookmanager.model.formats.EbookSpecificData;
 import com.example.bp.ebookmanager.model.formats.EpubDetails;
+import com.example.bp.ebookmanager.model.formats.FormatSpecificData;
 import com.example.bp.ebookmanager.model.formats.MobiDetails;
 import com.example.bp.ebookmanager.model.formats.PdfDetails;
 
@@ -66,23 +67,8 @@ public class WoblinkBookDetailsParser implements BookDetailsParser {
         return source.substring(sizeStringStart, sizeStringEnd);
     }
 
-    @NonNull
     private EbookSpecificData determineFormat(String formatString) {
-        EbookSpecificData ebookData;
-        switch (formatString) {
-            case MobiDetails.FORMAT_NAME:
-                ebookData = new MobiDetails();
-                break;
-            case EpubDetails.FORMAT_NAME:
-                ebookData = new EpubDetails();
-                break;
-            case PdfDetails.FORMAT_NAME:
-                ebookData = new PdfDetails();
-                break;
-            default:
-                throw new RuntimeException("Unexpected format name");
-        }
-        return ebookData;
+        return (EbookSpecificData) FormatSpecificData.instanceForFormatName(formatString);
     }
 
     private String cropFileSizesSource(String source) {

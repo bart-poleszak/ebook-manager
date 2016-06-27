@@ -5,6 +5,7 @@ import com.example.bp.ebookmanager.model.BookDetailsImpl;
 import com.example.bp.ebookmanager.model.Person;
 import com.example.bp.ebookmanager.model.Publisher;
 import com.example.bp.ebookmanager.model.RawThumbnail;
+import com.example.bp.ebookmanager.model.formats.FormatSpecificData;
 
 import io.realm.Realm;
 import io.realm.RealmList;
@@ -25,6 +26,7 @@ public class RealmBook extends RealmObject {
     private RealmList<RealmString> formats = new RealmList<>();
     private RealmPerson translator;
     private RealmPublisher publisher;
+    private RealmList<RealmFormatData> formatDetails = new RealmList<>();
 
     public Book toBook() {
         BookDetailsImpl bookDetails = new BookDetailsImpl();
@@ -42,6 +44,8 @@ public class RealmBook extends RealmObject {
         for (RealmString format : formats)
             result.getFormatNames().add(format.toString());
 
+        for (RealmFormatData formatData : formatDetails)
+            bookDetails.getFormatSpecificDataList().add(formatData.toFormatSpecificData());
         return result;
     }
 
@@ -101,5 +105,22 @@ public class RealmBook extends RealmObject {
         Publisher publisher = book.getPublisher();
         if (publisher != null)
             setPublisher(publisher);
+
+        fillFormatDetails(book);
+    }
+
+    private void fillFormatDetails(Book book) {
+        formatDetails.clear();
+        for (FormatSpecificData formatData : book.getFormatSpecificDataList()) {
+            Realm realm = Realm.getDefaultInstance();
+            RealmFormatData realmFormatData = realm.where(RealmFormatData.class)
+                    .equalTo("id", RealmFormatData.generateId(formatData.getFormatName(), book))
+                    .findFirst();
+            if (realmFormatData == null) {
+                realmFormatData = realm.createObject(RealmFormatData.class);
+                realmFormatData.fromFormatSpecificData(formatData, book);
+            }
+            formatDetails.add(realmFormatData);
+        }
     }
 }

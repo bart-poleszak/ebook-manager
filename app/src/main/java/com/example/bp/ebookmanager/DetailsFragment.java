@@ -93,7 +93,9 @@ public class DetailsFragment extends Fragment {
 
         for (FormatSpecificData formatData : book.getFormatSpecificDataList()) {
             String key = formatData.getFormatName() + " size";
-            adapter.addRow(key, String.valueOf(formatData.getSizeInMb()) + " MB");
+            Double sizeInMb = formatData.getSizeInMb();
+            if (sizeInMb != null)
+                adapter.addRow(key, String.valueOf(sizeInMb) + " MB");
         }
         updateRealm();
     }
