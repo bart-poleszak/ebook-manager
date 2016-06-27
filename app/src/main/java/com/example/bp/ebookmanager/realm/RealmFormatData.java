@@ -16,6 +16,7 @@ public class RealmFormatData extends RealmObject {
     private String id;
     private String formatName;
     private Double sizeInMb;
+    private String downloadUrl;
 
     public static String generateId(String formatName, Book book) {
         return book.getId() + formatName;
@@ -25,11 +26,13 @@ public class RealmFormatData extends RealmObject {
         id = generateId(data.getFormatName(), book);
         formatName = data.getFormatName();
         sizeInMb = data.getSizeInMb();
+        downloadUrl = data.getDownloadUrl();
     }
 
     public FormatDetails toFormatSpecificData() {
         FormatDetails result = FormatDetails.instanceForFormatName(formatName);
         result.setSizeInMb(sizeInMb);
+        result.setDownloadUrl(downloadUrl);
         return result;
     }
 }

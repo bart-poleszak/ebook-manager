@@ -13,7 +13,7 @@ import java.util.List;
  * Created by bp on 13.06.16.
  */
 public class WebBookDetails implements BookDetails {
-    private BookDetails downloadedData = NullBookDetails.instance();
+    private BookDetails internalData = NullBookDetails.instance();
     private DetailsObserver observer;
     private WebActionResolver resolver;
     private WebActionContext context;
@@ -36,11 +36,11 @@ public class WebBookDetails implements BookDetails {
     @Override
     public Person getTranslator() {
         requestDataIfNeeded();
-        return downloadedData.getTranslator();
+        return internalData.getTranslator();
     }
 
     private void requestDataIfNeeded() {
-        if (downloadedData == NullBookDetails.instance())
+        if (internalData == NullBookDetails.instance())
             requestData();
     }
 
@@ -57,7 +57,7 @@ public class WebBookDetails implements BookDetails {
     @Override
     public Publisher getPublisher() {
         requestDataIfNeeded();
-        return downloadedData.getPublisher();
+        return internalData.getPublisher();
     }
 
     @Override
@@ -67,9 +67,18 @@ public class WebBookDetails implements BookDetails {
 
     @Override
     public List<FormatDetails> getFormats() {
-        if (downloadedData == NullBookDetails.instance())
+        if (internalData == NullBookDetails.instance())
             return formatDetails;
-        return downloadedData.getFormats();
+        return internalData.getFormats();
+    }
+
+    @Override
+    public FormatDetails getFormat(String formatName) {
+        for (FormatDetails format : formatDetails) {
+            if (format.getFormatName().equals(formatName))
+                return format;
+        }
+        return null;
     }
 
     public void addFormatWithoutDataRequest(FormatDetails format) {
@@ -79,7 +88,12 @@ public class WebBookDetails implements BookDetails {
     private class ResolverCallbacks implements WebActionResolver.Callbacks {
         @Override
         public void onActionCompleted(WebActionContext context) {
-            downloadedData = parser.parse(context.getResult());
+            BookDetails newInternalData = parser.parse(context.getResult());
+            for (FormatDetails newFormat : newInternalData.getFormats()) {
+                FormatDetails format = getFormat(newFormat.getFormatName());
+                newFormat.setDownloadUrl(format.getDownloadUrl());
+            }
+            internalData = newInternalData;
             if (observer != null)
                 observer.onDetailsChanged();
         }

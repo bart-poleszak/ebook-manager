@@ -5,8 +5,8 @@ package com.example.bp.ebookmanager.model.formats;
  * Created by bp on 07.05.16.
  */
 public abstract class EbookDetails extends FormatDetails {
-    @Override
-    void acceptVisitor(Visitor visitor) {
-        visitor.visitEbookSpecificData(this);
-    }
+//    @Override
+//    void acceptVisitor(Visitor visitor) {
+//        visitor.visitEbookSpecificData(this);
+//    }
 }

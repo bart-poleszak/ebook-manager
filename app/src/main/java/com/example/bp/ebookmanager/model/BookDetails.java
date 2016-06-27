@@ -16,6 +16,7 @@ public interface BookDetails {
     void setObserver(DetailsObserver observer);
 
     List<FormatDetails> getFormats();
+    FormatDetails getFormat(String formatName);
 
     interface DetailsObserver {
         void onDetailsChanged();

@@ -6,8 +6,9 @@ package com.example.bp.ebookmanager.model.formats;
  */
 public abstract class FormatDetails {
     public abstract String getFormatName();
-    abstract void acceptVisitor(Visitor visitor);
+//    abstract void acceptVisitor(Visitor visitor);
 
+    private String downloadUrl = null;
     private Double sizeInMb = null;
 
     public void setSizeInMb(Double sizeInMb) {
@@ -16,6 +17,14 @@ public abstract class FormatDetails {
 
     public Double getSizeInMb() {
         return sizeInMb;
+    }
+
+    public void setDownloadUrl(String downloadUrl) {
+        this.downloadUrl = downloadUrl;
+    }
+
+    public String getDownloadUrl() {
+        return downloadUrl;
     }
 
     public static FormatDetails instanceForFormatName(String formatName) {
@@ -39,8 +48,8 @@ public abstract class FormatDetails {
         return result;
     }
 
-    interface Visitor {
-        void visitAudiobookSpecificData(AudiobookDetails data);
-        void visitEbookSpecificData(EbookDetails data);
-    }
+//    interface Visitor {
+//        void visitAudiobookSpecificData(AudiobookDetails data);
+//        void visitEbookSpecificData(EbookDetails data);
+//    }
 }

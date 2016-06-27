@@ -46,4 +46,20 @@
         android:layout_alignParentEnd="true"
         android:layout_marginTop="@dimen/activity_vertical_margin"/>
 
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/downloadButton"
+        android:src="@android:drawable/ic_menu_save"
+        android:layout_alignBottom="@+id/detailsThumbnail"
+        android:layout_alignParentEnd="true" />
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/formatSpinner"
+        android:layout_alignBottom="@+id/downloadButton"
+        android:layout_alignTop="@+id/downloadButton"
+        android:layout_toStartOf="@+id/downloadButton" />
+
 </RelativeLayout>

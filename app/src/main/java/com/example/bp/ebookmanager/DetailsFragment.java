@@ -1,13 +1,20 @@
 package com.example.bp.ebookmanager;
 
+import android.app.DownloadManager;
 import android.content.Context;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.CookieManager;
+import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.bp.ebookmanager.android.AndroidThumbnailVisitor;
@@ -19,7 +26,7 @@ import com.example.bp.ebookmanager.model.ThumbnailVisitor;
 import com.example.bp.ebookmanager.model.formats.FormatDetails;
 import com.example.bp.ebookmanager.realm.RealmBook;
 
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -36,9 +43,12 @@ public class DetailsFragment extends Fragment {
     @BindView(R.id.detailsTitle) TextView title;
     @BindView(R.id.detailsAuthor) TextView author;
     @BindView(R.id.detailsThumbnail) ImageView thumbnail;
+    @BindView(R.id.formatSpinner) Spinner formatSpinner;
+    @BindView(R.id.downloadButton) ImageButton downloadButton;
 
     private Book book;
     private DetailsListAdapter adapter;
+    private ArrayAdapter<String> spinnerAdapter;
     private Context ctx;
     private ThumbnailVisitor thumbnailVisitor;
 
@@ -70,7 +80,35 @@ public class DetailsFragment extends Fragment {
         });
 
         fillDetails();
+
+        downloadButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String formatName = (String) formatSpinner.getSelectedItem();
+                for (FormatDetails format : book.getFormatDetailsList()) {
+                    if (format.getFormatName().equals(formatName)) {
+                        downloadEbook(format);
+                        return;
+                    }
+                }
+                throw new RuntimeException("No such format");
+            }
+        });
         return view;
+    }
+
+    private void downloadEbook(FormatDetails format) {
+
+        Uri uri = Uri.parse(format.getDownloadUrl());
+        DownloadManager.Request request = new DownloadManager.Request(uri);
+
+        CookieManager cookieManager = CookieManager.getInstance();
+        String cookie = cookieManager.getCookie(uri.getHost());
+        request.addRequestHeader("Cookie", cookie);
+        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, book.getTitle() + "." + format.getFormatName());
+        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+        DownloadManager dm = (DownloadManager) ctx.getSystemService(Context.DOWNLOAD_SERVICE);
+        dm.enqueue(request);
     }
 
     private void fillDetails() {
@@ -92,13 +130,25 @@ public class DetailsFragment extends Fragment {
         }
         adapter.addRow(ctx.getString(R.string.format), builder.substring(0, builder.length() - 2));
 
+        fillFormatDetails();
+        updateRealm();
+    }
+
+    private void fillFormatDetails() {
+        ArrayList<String> formatsForDownload = new ArrayList<>();
         for (FormatDetails formatData : book.getFormatDetailsList()) {
             String key = formatData.getFormatName() + " size";
             Double sizeInMb = formatData.getSizeInMb();
             if (sizeInMb != null)
                 adapter.addRow(key, String.valueOf(sizeInMb) + " MB");
+
+            if (formatData.getDownloadUrl() != null)
+                formatsForDownload.add(formatData.getFormatName());
         }
-        updateRealm();
+        spinnerAdapter = new ArrayAdapter<>(ctx, R.layout.spinner_item, formatsForDownload);
+        formatSpinner.setAdapter(spinnerAdapter);
+        if (spinnerAdapter.getCount() == 0)
+            downloadButton.setEnabled(false);
     }
 
     private void updateRealm() {

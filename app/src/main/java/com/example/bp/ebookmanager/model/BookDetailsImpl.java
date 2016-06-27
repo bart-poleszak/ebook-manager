@@ -3,6 +3,7 @@ package com.example.bp.ebookmanager.model;
 import com.example.bp.ebookmanager.model.formats.FormatDetails;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -48,6 +49,15 @@ public class BookDetailsImpl implements BookDetails {
     @Override
     public List<FormatDetails> getFormats() {
         return formatsList;
+    }
+
+    @Override
+    public FormatDetails getFormat(String formatName) {
+        for (FormatDetails details : formatsList) {
+            if (details.getFormatName().equals(formatName))
+                return  details;
+        }
+        return null;
     }
 
 }

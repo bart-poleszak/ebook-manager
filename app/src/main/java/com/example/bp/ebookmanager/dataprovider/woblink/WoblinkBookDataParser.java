@@ -108,7 +108,9 @@ public class WoblinkBookDataParser implements BookDataParser {
         for (int i = 0; i < hrefs.size(); i++) {
             String href = hrefs.get(i);
             if (href != null) {
-                detailsList.get(i).addFormatWithoutDataRequest(creator.getFormatDetails());
+                FormatDetails formatDetails = creator.getFormatDetails();
+                formatDetails.setDownloadUrl(WOBLINK_COM + href);
+                detailsList.get(i).addFormatWithoutDataRequest(formatDetails);
             }
         }
     }

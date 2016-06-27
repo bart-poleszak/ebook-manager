@@ -41,4 +41,9 @@ public class NullBookDetails implements BookDetails {
         return Collections.emptyList();
     }
 
+    @Override
+    public FormatDetails getFormat(String formatName) {
+        return null;
+    }
+
 }
