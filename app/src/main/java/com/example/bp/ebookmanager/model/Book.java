@@ -1,6 +1,6 @@
 package com.example.bp.ebookmanager.model;
 
-import com.example.bp.ebookmanager.model.formats.FormatSpecificData;
+import com.example.bp.ebookmanager.model.formats.FormatDetails;
 
 import java.util.HashSet;
 import java.util.List;
@@ -15,7 +15,6 @@ public class Book {
     private Person author;
     private BookDetails details;
     private Thumbnail thumbnail;
-    private HashSet<String> formats = new HashSet<>();
 
     public Book(BookDetails details) {
         this.details = details;
@@ -53,10 +52,6 @@ public class Book {
         this.author = author;
     }
 
-    public HashSet<String> getFormatNames() {
-        return formats;
-    }
-
     public Thumbnail getThumbnail() {
         return thumbnail;
     }
@@ -73,7 +68,7 @@ public class Book {
         return details.getPublisher();
     }
 
-    public List<FormatSpecificData> getFormatSpecificDataList() {
-        return details.getFormatSpecificDataList();
+    public List<FormatDetails> getFormatDetailsList() {
+        return details.getFormats();
     }
 }

@@ -41,28 +41,32 @@ public class MockBookDataProviderStrategy implements DataProviderStrategy {
         book.setTitle("[mock] Ogniem i Mieczem");
         book.setAuthor(hSienkiewicz);
 
-        book.getFormatNames().add(EpubDetails.FORMAT_NAME);
-        book.getFormatNames().add(MobiDetails.FORMAT_NAME);
+        book.getFormatDetailsList().add(new EpubDetails());
+        book.getFormatDetailsList().add(new MobiDetails());
 
         result.add(book);
 
-        book = new Book();
+        details = new BookDetailsImpl();
+        details.setPublisher(greg);
+        book = new Book(details);
         book.setId("mock2");
         book.setTitle("[mock] Potop");
         book.setAuthor(hSienkiewicz);
 
-        book.getFormatNames().add(EpubDetails.FORMAT_NAME);
+        book.getFormatDetailsList().add(new EpubDetails());
 //        Person narrator = Person.named("Krzysztof Gosztyła");
 //        mp3SpecificData.setNarrator(narrator);
-        book.getFormatNames().add(Mp3Details.FORMAT_NAME);
+        book.getFormatDetailsList().add(new Mp3Details());
         result.add(book);
 
-        book = new Book();
+        details = new BookDetailsImpl();
+        details.setPublisher(greg);
+        book = new Book(details);
         book.setId("mock3");
         book.setTitle("[mock] Metro 2033");
         Person dGlukhowsky = Person.named("Dmitry Glukhovsky");
         book.setAuthor(dGlukhowsky);
-        book.getFormatNames().add(PdfDetails.FORMAT_NAME);
+        book.getFormatDetailsList().add(new PdfDetails());
         result.add(book);
 
         return result;

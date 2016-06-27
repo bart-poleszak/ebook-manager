@@ -16,10 +16,11 @@ import com.example.bp.ebookmanager.model.BookDetails;
 import com.example.bp.ebookmanager.model.Person;
 import com.example.bp.ebookmanager.model.Publisher;
 import com.example.bp.ebookmanager.model.ThumbnailVisitor;
-import com.example.bp.ebookmanager.model.formats.FormatSpecificData;
+import com.example.bp.ebookmanager.model.formats.FormatDetails;
 import com.example.bp.ebookmanager.realm.RealmBook;
 
 import java.util.HashSet;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -83,15 +84,15 @@ public class DetailsFragment extends Fragment {
         if (translator != null)
             adapter.addRow(ctx.getString(R.string.translator), translator.getName());
 
-        HashSet<String> formats = book.getFormatNames();
+        List<FormatDetails> formats = book.getFormatDetailsList();
         StringBuilder builder = new StringBuilder();
-        for (String format : formats) {
-            builder.append(format);
+        for (FormatDetails format : formats) {
+            builder.append(format.getFormatName());
             builder.append(", ");
         }
         adapter.addRow(ctx.getString(R.string.format), builder.substring(0, builder.length() - 2));
 
-        for (FormatSpecificData formatData : book.getFormatSpecificDataList()) {
+        for (FormatDetails formatData : book.getFormatDetailsList()) {
             String key = formatData.getFormatName() + " size";
             Double sizeInMb = formatData.getSizeInMb();
             if (sizeInMb != null)

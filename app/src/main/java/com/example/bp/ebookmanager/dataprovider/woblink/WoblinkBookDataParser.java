@@ -1,7 +1,6 @@
 package com.example.bp.ebookmanager.dataprovider.woblink;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.example.bp.ebookmanager.dataprovider.BasicWebActionContext;
 import com.example.bp.ebookmanager.dataprovider.html.HTMLScraper;
@@ -9,8 +8,9 @@ import com.example.bp.ebookmanager.model.Book;
 import com.example.bp.ebookmanager.model.BookDetails;
 import com.example.bp.ebookmanager.model.Person;
 import com.example.bp.ebookmanager.model.URLThumbnail;
+import com.example.bp.ebookmanager.model.WebBookDetails;
 import com.example.bp.ebookmanager.model.formats.EpubDetails;
-import com.example.bp.ebookmanager.model.formats.FormatSpecificData;
+import com.example.bp.ebookmanager.model.formats.FormatDetails;
 import com.example.bp.ebookmanager.model.formats.MobiDetails;
 
 import java.util.ArrayList;
@@ -23,6 +23,7 @@ import java.util.List;
 public class WoblinkBookDataParser implements BookDataParser {
     public static final String WOBLINK_COM = "https://woblink.com";
     private ArrayList<Book> books;
+    private ArrayList<WebBookDetails> detailsList;
     private HTMLScraper scraper;
     private String source;
 
@@ -42,6 +43,7 @@ public class WoblinkBookDataParser implements BookDataParser {
         if (scraper.evaluationSuccessful()) {
             ArrayList<String> hrefs = scraper.getAttributeValueList("href");
             books = new ArrayList<>(hrefs.size());
+            detailsList = new ArrayList<>(hrefs.size());
             for (String href : hrefs) {
                 Book book = new Book(createDetails(WOBLINK_COM + href));
                 book.setId(parseId(href));
@@ -51,14 +53,16 @@ public class WoblinkBookDataParser implements BookDataParser {
 
     }
 
+    private BookDetails createDetails(String href) {
+        BasicWebActionContext context = new BasicWebActionContext(href);
+        WebBookDetails bookDetails = WoblinkWebDataProviderFactory.instance().createBookDetails(context);
+        detailsList.add(bookDetails);
+        return bookDetails;
+    }
+
     private String parseId(String href) {
         int index = href.lastIndexOf(',');
         return "woblink" + href.substring(index);
-    }
-
-    private BookDetails createDetails(String href) {
-        BasicWebActionContext context = new BasicWebActionContext(href);
-        return WoblinkWebDataProviderFactory.instance().createBookDetails(context);
     }
 
     private void fillTitles() {
@@ -85,14 +89,14 @@ public class WoblinkBookDataParser implements BookDataParser {
     private void fillAllFormatsData() {
         fillFormatData("Pobierz plik w formacie EPUB", new FormatSpecificDataCreator() {
             @Override
-            public String getName() {
-                return EpubDetails.FORMAT_NAME;
+            public FormatDetails getFormatDetails() {
+                return new EpubDetails();
             }
         });
         fillFormatData("Pobierz plik w formacie MOBI", new FormatSpecificDataCreator() {
             @Override
-            public String getName() {
-                return MobiDetails.FORMAT_NAME;
+            public FormatDetails getFormatDetails() {
+                return new MobiDetails();
             }
         });
     }
@@ -104,7 +108,7 @@ public class WoblinkBookDataParser implements BookDataParser {
         for (int i = 0; i < hrefs.size(); i++) {
             String href = hrefs.get(i);
             if (href != null) {
-                books.get(i).getFormatNames().add(creator.getName());
+                detailsList.get(i).addFormatWithoutDataRequest(creator.getFormatDetails());
             }
         }
     }
@@ -157,6 +161,6 @@ public class WoblinkBookDataParser implements BookDataParser {
     }
 
     private interface FormatSpecificDataCreator {
-        String getName();
+        FormatDetails getFormatDetails();
     }
 }

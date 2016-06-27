@@ -4,7 +4,7 @@ package com.example.bp.ebookmanager.model.formats;
  * Ebook Manager
  * Created by bp on 07.05.16.
  */
-public abstract class FormatSpecificData {
+public abstract class FormatDetails {
     public abstract String getFormatName();
     abstract void acceptVisitor(Visitor visitor);
 
@@ -18,8 +18,8 @@ public abstract class FormatSpecificData {
         return sizeInMb;
     }
 
-    public static FormatSpecificData instanceForFormatName(String formatName) {
-        FormatSpecificData result;
+    public static FormatDetails instanceForFormatName(String formatName) {
+        FormatDetails result;
         switch (formatName) {
             case MobiDetails.FORMAT_NAME:
                 result = new MobiDetails();
@@ -40,7 +40,7 @@ public abstract class FormatSpecificData {
     }
 
     interface Visitor {
-        void visitAudiobookSpecificData(AudiobookSpecificData data);
-        void visitEbookSpecificData(EbookSpecificData data);
+        void visitAudiobookSpecificData(AudiobookDetails data);
+        void visitEbookSpecificData(EbookDetails data);
     }
 }

@@ -8,11 +8,8 @@ import com.example.bp.ebookmanager.model.BookDetails;
 import com.example.bp.ebookmanager.model.BookDetailsImpl;
 import com.example.bp.ebookmanager.model.BookDetailsParser;
 import com.example.bp.ebookmanager.model.Publisher;
-import com.example.bp.ebookmanager.model.formats.EbookSpecificData;
-import com.example.bp.ebookmanager.model.formats.EpubDetails;
-import com.example.bp.ebookmanager.model.formats.FormatSpecificData;
-import com.example.bp.ebookmanager.model.formats.MobiDetails;
-import com.example.bp.ebookmanager.model.formats.PdfDetails;
+import com.example.bp.ebookmanager.model.formats.EbookDetails;
+import com.example.bp.ebookmanager.model.formats.FormatDetails;
 
 /**
  * Ebook Manager
@@ -46,12 +43,12 @@ public class WoblinkBookDetailsParser implements BookDetailsParser {
         while (formatStringStart >= 0) {
             int formatStringEnd = source.indexOf(')', formatStringStart);
             String formatString = source.substring(formatStringStart+1, formatStringEnd);
-            EbookSpecificData ebookData = determineFormat(formatString);
+            EbookDetails ebookData = determineFormat(formatString);
 
             String sizeString = findSizeString(source, formatStringStart);
             double size = Double.parseDouble(sizeString);
             ebookData.setSizeInMb(size);
-            result.getFormatSpecificDataList().add(ebookData);
+            result.getFormats().add(ebookData);
 
             formatStringStart = source.indexOf('(', formatStringEnd);
         }
@@ -67,8 +64,8 @@ public class WoblinkBookDetailsParser implements BookDetailsParser {
         return source.substring(sizeStringStart, sizeStringEnd);
     }
 
-    private EbookSpecificData determineFormat(String formatString) {
-        return (EbookSpecificData) FormatSpecificData.instanceForFormatName(formatString);
+    private EbookDetails determineFormat(String formatString) {
+        return (EbookDetails) FormatDetails.instanceForFormatName(formatString);
     }
 
     private String cropFileSizesSource(String source) {

@@ -1,7 +1,7 @@
 package com.example.bp.ebookmanager.realm;
 
 import com.example.bp.ebookmanager.model.Book;
-import com.example.bp.ebookmanager.model.formats.FormatSpecificData;
+import com.example.bp.ebookmanager.model.formats.FormatDetails;
 
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
@@ -21,14 +21,14 @@ public class RealmFormatData extends RealmObject {
         return book.getId() + formatName;
     }
 
-    public void fromFormatSpecificData(FormatSpecificData data, Book book) {
+    public void fromFormatSpecificData(FormatDetails data, Book book) {
         id = generateId(data.getFormatName(), book);
         formatName = data.getFormatName();
         sizeInMb = data.getSizeInMb();
     }
 
-    public FormatSpecificData toFormatSpecificData() {
-        FormatSpecificData result = FormatSpecificData.instanceForFormatName(formatName);
+    public FormatDetails toFormatSpecificData() {
+        FormatDetails result = FormatDetails.instanceForFormatName(formatName);
         result.setSizeInMb(sizeInMb);
         return result;
     }

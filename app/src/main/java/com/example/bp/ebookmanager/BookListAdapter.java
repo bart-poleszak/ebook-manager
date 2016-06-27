@@ -16,6 +16,7 @@ import com.example.bp.ebookmanager.android.AndroidThumbnailVisitor;
 import com.example.bp.ebookmanager.model.Book;
 import com.example.bp.ebookmanager.model.ThumbnailVisitor;
 import com.example.bp.ebookmanager.model.formats.EpubDetails;
+import com.example.bp.ebookmanager.model.formats.FormatDetails;
 import com.example.bp.ebookmanager.model.formats.MobiDetails;
 import com.example.bp.ebookmanager.model.formats.Mp3Details;
 import com.example.bp.ebookmanager.model.formats.PdfDetails;
@@ -114,14 +115,18 @@ public class BookListAdapter extends BaseAdapter {
             holder.syncedImageView.setVisibility(View.INVISIBLE);
         if (book.getThumbnail() != null)
             book.getThumbnail().fill(holder.thumbnailVisitor);
-        setVisibilityForFormat(holder.epubImageView, book, EpubDetails.FORMAT_NAME);
-        setVisibilityForFormat(holder.mobiImageView, book, MobiDetails.FORMAT_NAME);
-        setVisibilityForFormat(holder.pdfImageView, book, PdfDetails.FORMAT_NAME);
-        setVisibilityForFormat(holder.mp3ImageView, book, Mp3Details.FORMAT_NAME);
+
+        ArrayList<String> formatNames = new ArrayList<>();
+        for (FormatDetails formatDetails : book.getFormatDetailsList())
+            formatNames.add(formatDetails.getFormatName());
+        setVisibilityForFormat(holder.epubImageView, formatNames, EpubDetails.FORMAT_NAME);
+        setVisibilityForFormat(holder.mobiImageView, formatNames, MobiDetails.FORMAT_NAME);
+        setVisibilityForFormat(holder.pdfImageView, formatNames, PdfDetails.FORMAT_NAME);
+        setVisibilityForFormat(holder.mp3ImageView, formatNames, Mp3Details.FORMAT_NAME);
     }
 
-    private void setVisibilityForFormat(View view, Book book, String formatName) {
-        if (book.getFormatNames().contains(formatName))
+    private void setVisibilityForFormat(View view, List<String> formatNames, String formatName) {
+        if (formatNames.contains(formatName))
             view.setVisibility(View.VISIBLE);
         else
             view.setVisibility(View.INVISIBLE);

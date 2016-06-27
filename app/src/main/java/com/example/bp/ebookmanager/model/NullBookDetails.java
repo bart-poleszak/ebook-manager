@@ -1,8 +1,9 @@
 package com.example.bp.ebookmanager.model;
 
-import com.example.bp.ebookmanager.model.formats.FormatSpecificData;
+import com.example.bp.ebookmanager.model.formats.FormatDetails;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -36,8 +37,8 @@ public class NullBookDetails implements BookDetails {
     }
 
     @Override
-    public List<FormatSpecificData> getFormatSpecificDataList() {
-        return new ArrayList<>();
+    public List<FormatDetails> getFormats() {
+        return Collections.emptyList();
     }
 
 }

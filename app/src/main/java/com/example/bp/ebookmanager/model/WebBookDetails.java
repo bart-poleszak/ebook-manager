@@ -1,10 +1,9 @@
 package com.example.bp.ebookmanager.model;
 
 import com.example.bp.ebookmanager.config.ConfigManager;
-import com.example.bp.ebookmanager.dataprovider.UserActionEnabler;
 import com.example.bp.ebookmanager.dataprovider.WebActionContext;
 import com.example.bp.ebookmanager.dataprovider.WebActionResolver;
-import com.example.bp.ebookmanager.model.formats.FormatSpecificData;
+import com.example.bp.ebookmanager.model.formats.FormatDetails;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +19,7 @@ public class WebBookDetails implements BookDetails {
     private WebActionContext context;
     private BookDetailsParser parser;
     private ResolverCallbacks resolverCallbacks = new ResolverCallbacks();
+    private ArrayList<FormatDetails> formatDetails = new ArrayList<>();
 
     public void setResolver(WebActionResolver resolver) {
         this.resolver = resolver;
@@ -66,9 +66,14 @@ public class WebBookDetails implements BookDetails {
     }
 
     @Override
-    public List<FormatSpecificData> getFormatSpecificDataList() {
-        requestDataIfNeeded();
-        return downloadedData.getFormatSpecificDataList();
+    public List<FormatDetails> getFormats() {
+        if (downloadedData == NullBookDetails.instance())
+            return formatDetails;
+        return downloadedData.getFormats();
+    }
+
+    public void addFormatWithoutDataRequest(FormatDetails format) {
+        formatDetails.add(format);
     }
 
     private class ResolverCallbacks implements WebActionResolver.Callbacks {

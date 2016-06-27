@@ -1,6 +1,6 @@
 package com.example.bp.ebookmanager.model;
 
-import com.example.bp.ebookmanager.model.formats.FormatSpecificData;
+import com.example.bp.ebookmanager.model.formats.FormatDetails;
 
 import java.util.List;
 
@@ -15,7 +15,7 @@ public interface BookDetails {
 
     void setObserver(DetailsObserver observer);
 
-    List<FormatSpecificData> getFormatSpecificDataList();
+    List<FormatDetails> getFormats();
 
     interface DetailsObserver {
         void onDetailsChanged();

@@ -2,7 +2,7 @@ package com.example.bp.ebookmanager.dataprovider.woblink;
 
 import com.example.bp.ebookmanager.model.BookDetails;
 import com.example.bp.ebookmanager.model.formats.EpubDetails;
-import com.example.bp.ebookmanager.model.formats.FormatSpecificData;
+import com.example.bp.ebookmanager.model.formats.FormatDetails;
 import com.example.bp.ebookmanager.model.formats.MobiDetails;
 
 import org.junit.Test;
@@ -23,7 +23,7 @@ public class WoblinkDetailsParserTest {
         //when
         BookDetails details = parser.parse(src);
         //then
-        assertEquals(2, details.getFormatSpecificDataList().size());
+        assertEquals(2, details.getFormats().size());
     }
 
     @Test
@@ -36,9 +36,9 @@ public class WoblinkDetailsParserTest {
     }
 
     private boolean checkFormatSizes(BookDetails details) {
-        if (details.getFormatSpecificDataList().size() != 2)
+        if (details.getFormats().size() != 2)
             return false;
-        for (FormatSpecificData formatData : details.getFormatSpecificDataList()) {
+        for (FormatDetails formatData : details.getFormats()) {
             if (formatData.getFormatName().equals(MobiDetails.FORMAT_NAME)) {
                 if (formatData.getSizeInMb() != 7.36)
                     return false;
