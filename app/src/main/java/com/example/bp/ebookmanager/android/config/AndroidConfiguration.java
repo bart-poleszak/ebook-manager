@@ -9,6 +9,9 @@ import com.example.bp.ebookmanager.dataprovider.BookDataProvider;
 import com.example.bp.ebookmanager.dataprovider.BookDataProviderImpl;
 import com.example.bp.ebookmanager.dataprovider.UserActionEnabler;
 import com.example.bp.ebookmanager.dataprovider.WebClientFactory;
+import com.example.bp.ebookmanager.dataprovider.empik.AudiobookEmpikWebDataProviderFactory;
+import com.example.bp.ebookmanager.dataprovider.empik.EbookEmpikWebDataProviderFactory;
+import com.example.bp.ebookmanager.dataprovider.empik.EmpikWebDataProviderFactory;
 import com.example.bp.ebookmanager.dataprovider.mock.MockBookDataProviderStrategy;
 import com.example.bp.ebookmanager.dataprovider.realm.RealmDataProviderStrategy;
 import com.example.bp.ebookmanager.dataprovider.woblink.WoblinkWebDataProviderFactory;
@@ -43,6 +46,8 @@ public class AndroidConfiguration implements Configuration {
     public List<BookDataProvider> getDataProviders() {
         ArrayList<BookDataProvider> providers = new ArrayList<>();
         providers.add(WoblinkWebDataProviderFactory.instance().createBookDataProvider());
+        providers.add(AudiobookEmpikWebDataProviderFactory.instance().createBookDataProvider());
+        providers.add(EbookEmpikWebDataProviderFactory.instance().createBookDataProvider());
         BookDataProviderImpl provider = new BookDataProviderImpl(new MockBookDataProviderStrategy());
         provider.setName("Mock");
         providers.add(provider);

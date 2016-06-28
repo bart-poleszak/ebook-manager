@@ -74,14 +74,14 @@ public class WebBookDetails implements BookDetails {
 
     @Override
     public FormatDetails getFormat(String formatName) {
-        for (FormatDetails format : formatDetails) {
+        for (FormatDetails format : getFormats()) {
             if (format.getFormatName().equals(formatName))
                 return format;
         }
         return null;
     }
 
-    public void addFormatWithoutDataRequest(FormatDetails format) {
+    public void addFormat(FormatDetails format) {
         formatDetails.add(format);
     }
 
@@ -89,10 +89,7 @@ public class WebBookDetails implements BookDetails {
         @Override
         public void onActionCompleted(WebActionContext context) {
             BookDetails newInternalData = parser.parse(context.getResult());
-            for (FormatDetails newFormat : newInternalData.getFormats()) {
-                FormatDetails format = getFormat(newFormat.getFormatName());
-                newFormat.setDownloadUrl(format.getDownloadUrl());
-            }
+            mergeFormatDetails(newInternalData);
             internalData = newInternalData;
             if (observer != null)
                 observer.onDetailsChanged();
@@ -102,6 +99,16 @@ public class WebBookDetails implements BookDetails {
         public void onUserActionRequired() {
             resolver.enableUserAction(ConfigManager.get().getUserActionEnabler());
             retryToResolve();
+        }
+    }
+
+    private void mergeFormatDetails(BookDetails newInternalData) {
+        for (FormatDetails oldFormatDetails : formatDetails) {
+            FormatDetails newFormatDetails = newInternalData.getFormat(oldFormatDetails.getFormatName());
+            if (newFormatDetails != null)
+                newFormatDetails.setDownloadUrl(oldFormatDetails.getDownloadUrl());
+            else
+                newInternalData.getFormats().add(oldFormatDetails);
         }
     }
 }

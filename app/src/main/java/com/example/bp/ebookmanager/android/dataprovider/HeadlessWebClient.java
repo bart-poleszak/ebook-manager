@@ -2,6 +2,7 @@ package com.example.bp.ebookmanager.android.dataprovider;
 
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.webkit.CookieManager;
 
 import com.example.bp.ebookmanager.dataprovider.WebClient;
@@ -72,6 +73,8 @@ public class HeadlessWebClient implements WebClient {
         private void setCookie() {
             CookieManager cookieManager = CookieManager.getInstance();
             String cookie = cookieManager.getCookie(url.getHost());
+            connection.setRequestProperty("User-Agent",
+                    "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.80 Safari/537.36");
             connection.setRequestProperty("Cookie", cookie);
         }
 
@@ -92,7 +95,8 @@ public class HeadlessWebClient implements WebClient {
 
         @Override
         protected void onPostExecute(String result) {
-            callbacks.onPageFinished(url.toExternalForm(), result);
+            Log.d("HeadlessWebClient", connection.getURL().toExternalForm());
+            callbacks.onPageFinished(connection.getURL().toExternalForm(), result);
             super.onPostExecute(result);
         }
     }

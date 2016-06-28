@@ -1,7 +1,6 @@
 package com.example.bp.ebookmanager.dataprovider;
 
 import com.example.bp.ebookmanager.config.ConfigManager;
-import com.example.bp.ebookmanager.dataprovider.woblink.BookDataParser;
 import com.example.bp.ebookmanager.model.Book;
 
 import java.util.List;

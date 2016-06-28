@@ -30,6 +30,8 @@ public class VisibleWebClient implements WebClient {
 
     private WebView getWebView() {
         WebView webView = (WebView) dialog.findViewById(R.id.dialog_web_view);
+        webView.getSettings().setUserAgentString(
+                "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.80 Safari/537.36");
         webView.getSettings().setJavaScriptEnabled(true);
 //        CookieManager.getInstance().removeAllCookie();
         webView.setWebViewClient(new WebViewClient() {
@@ -42,6 +44,7 @@ public class VisibleWebClient implements WebClient {
                     public void onReceiveValue(String html) {
                         html = StringEscapeUtils.unescapeJava(html);
                         html = html.substring(1, html.length() - 1);
+                        Log.d("VisibleWebClient", url);
                         callbacks.onPageFinished(url, html);
                     }
                 });

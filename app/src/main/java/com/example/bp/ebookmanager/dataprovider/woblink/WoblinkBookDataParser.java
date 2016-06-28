@@ -3,6 +3,7 @@ package com.example.bp.ebookmanager.dataprovider.woblink;
 import android.support.annotation.NonNull;
 
 import com.example.bp.ebookmanager.dataprovider.BasicWebActionContext;
+import com.example.bp.ebookmanager.dataprovider.BookDataParser;
 import com.example.bp.ebookmanager.dataprovider.html.HTMLScraper;
 import com.example.bp.ebookmanager.model.Book;
 import com.example.bp.ebookmanager.model.BookDetails;
@@ -110,7 +111,7 @@ public class WoblinkBookDataParser implements BookDataParser {
             if (href != null) {
                 FormatDetails formatDetails = creator.getFormatDetails();
                 formatDetails.setDownloadUrl(WOBLINK_COM + href);
-                detailsList.get(i).addFormatWithoutDataRequest(formatDetails);
+                detailsList.get(i).addFormat(formatDetails);
             }
         }
     }

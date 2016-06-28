@@ -128,7 +128,8 @@ public class DetailsFragment extends Fragment {
             builder.append(format.getFormatName());
             builder.append(", ");
         }
-        adapter.addRow(ctx.getString(R.string.format), builder.substring(0, builder.length() - 2));
+        if (formats.size() > 0)
+            adapter.addRow(ctx.getString(R.string.format), builder.substring(0, builder.length() - 2));
 
         fillFormatDetails();
         updateRealm();

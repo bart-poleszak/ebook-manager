@@ -8,7 +8,6 @@ import com.example.bp.ebookmanager.model.Person;
  */
 public abstract class AudiobookDetails extends FormatDetails {
     private Person narrator;
-    private Integer length;
 
 //    @Override
 //    public void acceptVisitor(Visitor visitor) {
@@ -21,13 +20,5 @@ public abstract class AudiobookDetails extends FormatDetails {
 
     public Person getNarrator() {
         return narrator;
-    }
-
-    public void setLength(int length) {
-        this.length = length;
-    }
-
-    public Integer getLength() {
-        return length;
     }
 }

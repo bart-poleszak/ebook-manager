@@ -63,8 +63,8 @@ public class MockBookDataProviderStrategy implements DataProviderStrategy {
         details.setPublisher(greg);
         book = new Book(details);
         book.setId("mock3");
-        book.setTitle("[mock] Metro 2033");
-        Person dGlukhowsky = Person.named("Dmitry Glukhovsky");
+        book.setTitle("[mock] Lalka");
+        Person dGlukhowsky = Person.named("Bolesław Prus");
         book.setAuthor(dGlukhowsky);
         book.getFormatDetailsList().add(new PdfDetails());
         result.add(book);

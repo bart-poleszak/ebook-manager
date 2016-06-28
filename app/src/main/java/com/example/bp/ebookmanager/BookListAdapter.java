@@ -115,6 +115,8 @@ public class BookListAdapter extends BaseAdapter {
             holder.syncedImageView.setVisibility(View.INVISIBLE);
         if (book.getThumbnail() != null)
             book.getThumbnail().fill(holder.thumbnailVisitor);
+        else
+            holder.thumbnailImageView.setImageResource(R.drawable.book);
 
         ArrayList<String> formatNames = new ArrayList<>();
         for (FormatDetails formatDetails : book.getFormatDetailsList())

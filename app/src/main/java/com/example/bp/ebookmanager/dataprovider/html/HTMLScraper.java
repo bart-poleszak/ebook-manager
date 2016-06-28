@@ -89,6 +89,10 @@ public class HTMLScraper {
         nodeList = newList;
     }
 
+    public void switchToChild(int index) {
+        nodeList = nodeList.item(index).getChildNodes();
+    }
+
     public String getFirstChild() {
         return nodeList.item(0).getFirstChild().getNodeValue();
     }
