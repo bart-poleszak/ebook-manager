@@ -101,7 +101,7 @@ public class BookListFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Book book = (Book) adapter.getItem(position);
                 MainActivity activity = (MainActivity) getActivity();
-                activity.showBookDetails(book);
+                activity.showBookDetails(book, adapter.isSynced(position));
             }
         });
     }

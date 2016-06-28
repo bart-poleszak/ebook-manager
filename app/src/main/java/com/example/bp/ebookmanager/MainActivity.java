@@ -55,9 +55,9 @@ public class MainActivity extends AppCompatActivity {
         transaction.commit();
     }
 
-    public void showBookDetails(Book book) {
+    public void showBookDetails(Book book, boolean synced) {
         DetailsFragment fragment = new DetailsFragment();
-        fragment.setBook(book);
+        fragment.setBook(book, synced);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.contentFragment, fragment);
         transaction.addToBackStack(null).commit();

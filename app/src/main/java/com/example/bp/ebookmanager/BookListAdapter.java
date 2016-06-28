@@ -134,6 +134,10 @@ public class BookListAdapter extends BaseAdapter {
             view.setVisibility(View.INVISIBLE);
     }
 
+    public boolean isSynced(int position) {
+        return synced.get(position);
+    }
+
     class ViewHolder {
         @BindView(R.id.titleTextView) TextView title;
         @BindView(R.id.authorTextView) TextView author;

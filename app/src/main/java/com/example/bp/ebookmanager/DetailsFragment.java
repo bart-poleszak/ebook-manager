@@ -53,12 +53,14 @@ public class DetailsFragment extends Fragment {
     private ArrayAdapter<String> spinnerAdapter;
     private Context ctx;
     private ThumbnailVisitor thumbnailVisitor;
+    private boolean synced;
 
     public DetailsFragment() {
     }
 
-    public void setBook(Book book) {
+    public void setBook(Book book, boolean synced) {
         this.book = book;
+        this.synced = synced;
     }
 
     @Override
@@ -139,14 +141,16 @@ public class DetailsFragment extends Fragment {
 
     private void fillFormatDetails() {
         ArrayList<String> formatsForDownload = new ArrayList<>();
-        for (FormatDetails formatData : book.getFormatDetailsList()) {
-            String key = formatData.getFormatName() + " size";
-            Double sizeInMb = formatData.getSizeInMb();
-            if (sizeInMb != null)
-                adapter.addRow(key, String.valueOf(sizeInMb) + " MB");
+        if (synced) {
+            for (FormatDetails formatData : book.getFormatDetailsList()) {
+                String key = formatData.getFormatName() + " size";
+                Double sizeInMb = formatData.getSizeInMb();
+                if (sizeInMb != null)
+                    adapter.addRow(key, String.valueOf(sizeInMb) + " MB");
 
-            if (formatData.getDownloadUrl() != null)
-                formatsForDownload.add(formatData.getFormatName());
+                if (formatData.getDownloadUrl() != null)
+                    formatsForDownload.add(formatData.getFormatName());
+            }
         }
         spinnerAdapter = new ArrayAdapter<>(ctx, R.layout.spinner_item, formatsForDownload);
         formatSpinner.setAdapter(spinnerAdapter);
