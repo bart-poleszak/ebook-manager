@@ -23,6 +23,8 @@ import com.example.bp.ebookmanager.model.BookDetails;
 import com.example.bp.ebookmanager.model.Person;
 import com.example.bp.ebookmanager.model.Publisher;
 import com.example.bp.ebookmanager.model.ThumbnailVisitor;
+import com.example.bp.ebookmanager.model.formats.AudiobookDetails;
+import com.example.bp.ebookmanager.model.formats.EbookDetails;
 import com.example.bp.ebookmanager.model.formats.FormatDetails;
 import com.example.bp.ebookmanager.realm.RealmBook;
 
@@ -150,6 +152,20 @@ public class DetailsFragment extends Fragment {
         formatSpinner.setAdapter(spinnerAdapter);
         if (spinnerAdapter.getCount() == 0)
             downloadButton.setEnabled(false);
+
+        book.visitFormatDetails(new FormatDetails.Visitor() {
+            @Override
+            public void visitAudiobookSpecificData(AudiobookDetails data) {
+                Person narrator = data.getNarrator();
+                if (narrator != null)
+                    adapter.addRow(ctx.getString(R.string.narrator), narrator.getName());
+            }
+
+            @Override
+            public void visitEbookSpecificData(EbookDetails data) {
+
+            }
+        });
     }
 
     private void updateRealm() {

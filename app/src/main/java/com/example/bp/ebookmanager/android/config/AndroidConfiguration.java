@@ -49,7 +49,7 @@ public class AndroidConfiguration implements Configuration {
         providers.add(AudiobookEmpikWebDataProviderFactory.instance().createBookDataProvider());
         providers.add(EbookEmpikWebDataProviderFactory.instance().createBookDataProvider());
         BookDataProviderImpl provider = new BookDataProviderImpl(new MockBookDataProviderStrategy());
-        provider.setName("Mock");
+        provider.setName("Fake data");
         providers.add(provider);
         return providers;
     }

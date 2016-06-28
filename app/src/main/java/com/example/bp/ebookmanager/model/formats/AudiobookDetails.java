@@ -9,10 +9,10 @@ import com.example.bp.ebookmanager.model.Person;
 public abstract class AudiobookDetails extends FormatDetails {
     private Person narrator;
 
-//    @Override
-//    public void acceptVisitor(Visitor visitor) {
-//        visitor.visitAudiobookSpecificData(this);
-//    }
+    @Override
+    public void acceptVisitor(Visitor visitor) {
+        visitor.visitAudiobookSpecificData(this);
+    }
 
     public void setNarrator(Person narrator) {
         this.narrator = narrator;

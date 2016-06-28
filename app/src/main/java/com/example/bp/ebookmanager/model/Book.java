@@ -71,4 +71,10 @@ public class Book {
     public List<FormatDetails> getFormatDetailsList() {
         return details.getFormats();
     }
+
+    public void visitFormatDetails(FormatDetails.Visitor visitor) {
+        for (FormatDetails format : details.getFormats()) {
+            format.acceptVisitor(visitor);
+        }
+    }
 }

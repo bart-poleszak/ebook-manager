@@ -52,7 +52,7 @@ public class RealmBook extends RealmObject {
 
         Person author = book.getAuthor();
 
-        this.author = createOrFindPerson(author);
+        this.author = RealmPerson.createOrFind(author);
         fillFormatDetails(book);
 
     }
@@ -66,19 +66,7 @@ public class RealmBook extends RealmObject {
     }
 
     private void setTranslator(Person translator) {
-        this.translator = createOrFindPerson(translator);
-    }
-
-    private RealmPerson createOrFindPerson(Person person) {
-        Realm realm = Realm.getDefaultInstance();
-        RealmPerson realmPerson = realm.where(RealmPerson.class)
-                .equalTo("name", person.getName())
-                .findFirst();
-        if (realmPerson == null) {
-            realmPerson = realm.createObject(RealmPerson.class);
-            realmPerson.fromPerson(person);
-        }
-        return realmPerson;
+        this.translator = RealmPerson.createOrFind(translator);
     }
 
     private void setPublisher(Publisher publisher) {
