@@ -12,6 +12,8 @@ public class ShelfEmpikWebActionState implements WebActionState {
     private String source;
     private String shelfName;
 
+    public static final String MOBILE_SITE_SHELF_URL_PREFIX = "https://m.empik.com/twoje-konto/biblioteka-lista?activeTab=";
+
     public ShelfEmpikWebActionState(String shelfName) {
         this.shelfName = shelfName;
     }
@@ -23,11 +25,6 @@ public class ShelfEmpikWebActionState implements WebActionState {
 
     @Override
     public void processRecievedData(String url, String source) {
-        if (!url.equals(getTargetSiteURL())) {
-            userActionNeeded = true;
-            return;
-        }
-
         this.source = source;
         userActionNeeded = false;
         actionCompleted = true;

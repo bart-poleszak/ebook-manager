@@ -57,10 +57,10 @@ public class EmpikBookDataParser implements BookDataParser {
 
             ArrayList<String> formatNames = scraper.getFirstChildList();
             ArrayList<String> hrefs = scraper.getAttributeValueList("href");
-            for (String formatName : formatNames) {
-                FormatDetails format = FormatDetails.instanceForFormatName(formatName);
+            for (int formatIndex = 0; formatIndex < formatNames.size(); formatIndex++) {
+                FormatDetails format = FormatDetails.instanceForFormatName(formatNames.get(formatIndex));
                 if (!format.getFormatName().equals(Mp3Details.FORMAT_NAME)) {
-                    format.setDownloadUrl(hrefs.get(i));
+                    format.setDownloadUrl(hrefs.get(formatIndex));
                     Log.d("Download URL", format.getDownloadUrl());
                 }
                 details.addFormat(format);

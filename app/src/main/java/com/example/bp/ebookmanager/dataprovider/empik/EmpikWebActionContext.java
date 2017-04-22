@@ -13,13 +13,11 @@ public class EmpikWebActionContext implements WebActionContext {
     private ShelfEmpikWebActionState shelfState;
     private LoginEmpikWebActionState loginState;
     private WebActionState currentState;
-    private String shelfName;
 
     public EmpikWebActionContext(String shelfName) {
-        this.shelfName = shelfName;
         shelfState = new ShelfEmpikWebActionState(shelfName);
         loginState = new LoginEmpikWebActionState();
-        currentState = shelfState;
+        currentState = loginState;
     }
 
     @Override
@@ -29,12 +27,10 @@ public class EmpikWebActionContext implements WebActionContext {
 
     @Override
     public void processRecievedData(String url, String source) {
-        if (url.equals(shelfState.getTargetSiteURL()))
-            currentState = shelfState;
-        else
-            currentState = loginState;
-
         currentState.processRecievedData(url, source);
+
+        if (url.startsWith(ShelfEmpikWebActionState.MOBILE_SITE_SHELF_URL_PREFIX))
+            currentState = shelfState;
     }
 
     @Override
