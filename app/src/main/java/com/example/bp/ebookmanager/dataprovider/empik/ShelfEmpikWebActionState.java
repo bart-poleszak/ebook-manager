@@ -20,7 +20,7 @@ public class ShelfEmpikWebActionState implements WebActionState {
 
     @Override
     public String getTargetSiteURL() {
-        return "https://www.empik.com/twoje-konto/biblioteka-lista?activeTab=" + shelfName;
+        return "https://www.empik.com/twoje-konto/produkty-cyfrowe/" + shelfName;
     }
 
     @Override

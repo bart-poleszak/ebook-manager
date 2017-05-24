@@ -1,22 +1,29 @@
 package com.example.bp.ebookmanager.dataprovider.empik;
 
-import com.example.bp.ebookmanager.android.config.AndroidConfiguration;
-import com.example.bp.ebookmanager.android.dataprovider.HeadlessWebClient;
 import com.example.bp.ebookmanager.config.ConfigManager;
 import com.example.bp.ebookmanager.config.Configuration;
 import com.example.bp.ebookmanager.dataprovider.BookDataProvider;
 import com.example.bp.ebookmanager.dataprovider.UserActionEnabler;
 import com.example.bp.ebookmanager.dataprovider.WebClient;
 import com.example.bp.ebookmanager.dataprovider.WebClientFactory;
+import com.example.bp.ebookmanager.dataprovider.html.HTMLScraper;
+import com.example.bp.ebookmanager.dataprovider.mock.MockWebClient;
+import com.example.bp.ebookmanager.dataprovider.mock.TestHTMLCodeProvider;
+import com.example.bp.ebookmanager.dataprovider.mock.UrlExtractorThumbnailVisitor;
 import com.example.bp.ebookmanager.model.Book;
+import com.example.bp.ebookmanager.model.WebBookDetails;
+import com.example.bp.ebookmanager.model.formats.EpubDetails;
 import com.example.bp.ebookmanager.model.formats.FormatDetails;
+import com.example.bp.ebookmanager.model.formats.MobiDetails;
 import com.example.bp.ebookmanager.model.formats.Mp3Details;
 
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.Assert.*;
 
@@ -25,77 +32,11 @@ import static org.junit.Assert.*;
  * Created by bp on 28.06.16.
  */
 public class EmpikBookDataParserTest {
-    private String source = "  <div class=\"LibraryProductsList\">\n" +
-            "  \n" +
-            "<div class=\"ebookProductLibrary\">\n" +
-            "    <div>\n" +
-            "  <div class=\"productBox-450Pic\">\n" +
-            "<a href=\"/metro-2034-glukhovsky-dmitry,p1085023335,ebooki-i-mp3-p\" class=\"productBox-450Pic\" title=\"Metro 2034 &nbsp;-&nbsp;Glukhovsky Dmitry\"  rel=\"nofollow\"><img src=\"https://ecsmedia.pl/c/metro-2034-d-iext33632227.jpg\"   alt=\"Metro 2034&nbsp;-&nbsp;Glukhovsky Dmitry\" /></a>  </div>\n" +
-            "        <div>\n" +
-            "<a href=\"/metro-2034-glukhovsky-dmitry,p1085023335,ebooki-i-mp3-p\" class=\"productTitle\" title=\"Metro 2034 &nbsp;-&nbsp;Glukhovsky Dmitry\" >      <span class=\"Title\">\n" +
-            "             Metro 2034\n" +
-            "\n" +
-            "        </span>\n" +
-            "</a><a href=\"/szukaj/produkt?author=Glukhovsky+Dmitry\" class=\"author11\" title=\"Glukhovsky Dmitry - wszystkie produkty\" >Glukhovsky Dmitry</a>            <span class=\"type\">    audiobook mp3\n" +
-            "</span>\n" +
-            "    <div class=\"efileFormat\">\n" +
-            "      <span>\n" +
-            "                  <span>Pobierz: <a href=\"/media?OrderId=10100215233679&LineItemId=10100323991515&UserId=91733075\" >MP3</a></span>\n" +
-            "            </span>\n" +
-            "          </div>\n" +
-            "          <span class=\"readNow\"><a href=\"#\" id=\"p1085023335\" class=\"btnAddReview addReview\">Dodaj recenzję &rsaquo;</a></span>\n" +
-            "        </div>\n" +
-            "    </div>\n" +
 
-            "  \n" +
-            "<div class=\"ebookProductLibrary\">\n" +
-            "    <div>\n" +
-            "  <div class=\"productBox-450Pic\">\n" +
-            "<a href=\"/klamca-cwiek-jakub,p1072746649,ebooki-i-mp3-p\" class=\"productBox-450Pic\" title=\"Kłamca. Tom 1 &nbsp;-&nbsp;Ćwiek Jakub\"  rel=\"nofollow\"><img src=\"https://ecsmedia.pl/c/klamca-tom-1-d-iext34472636.jpg\"   alt=\"Kłamca. Tom 1&nbsp;-&nbsp;Ćwiek Jakub\"></a>  </div>\n" +
-            "        <div>\n" +
-            "<a href=\"/klamca-cwiek-jakub,p1072746649,ebooki-i-mp3-p\" class=\"productTitle\" title=\"Kłamca. Tom 1 &nbsp;-&nbsp;Ćwiek Jakub\" >      <span class=\"Title\">\n" +
-            "             Kłamca. Tom 1\n" +
-            "\n" +
-            "        </span>\n" +
-            "</a><a href=\"/szukaj/produkt?author=%C4%86wiek+Jakub\" class=\"author11\" title=\"Ćwiek Jakub - wszystkie produkty\" >Ćwiek Jakub</a>            <span class=\"type\">    audiobook mp3\n" +
-            "</span>\n" +
-            "    <div class=\"efileFormat\">\n" +
-            "      <span>\n" +
-            "                  <span>Pobierz: <a href=\"/media?OrderId=10100210623581&LineItemId=10100314262907&UserId=91733075\" >MP3</a></span>\n" +
-            "            </span>\n" +
-            "          </div>\n" +
-            "          <span class=\"readNow\"><a href=\"#\" id=\"p1072746649\" class=\"btnAddReview addReview\">Dodaj recenzję &rsaquo;</a></span>\n" +
-            "        </div>\n" +
-            "    </div>\n" +
-            "</div>\n" +
-            "  </div>\n" +
-            "<div class=\"ebookProductLibrary\">\n" +
-            "    <div>\n" +
-            "  <div class=\"productBox-450Pic\">\n" +
-            "<a href=\"/gdybym-miala-brata-opowiesci-z-meekhanskiego-pogranicza-wegner-robert-m,p1117544377,ebooki-i-mp3-p\" class=\"productBox-450Pic\" title=\"Gdybym miała brata. Opowieści z meekhańskiego pogranicza &nbsp;-&nbsp;Wegner Robert M.\"  rel=\"nofollow\"><img src=\"https://ecsmedia.pl/c/gdybym-miala-brata-opowiesci-z-meekhanskiego-pogranicza-d-iext37243764.jpg\"   alt=\"Gdybym miała brata. Opowieści z meekhańskiego pogranicza&nbsp;-&nbsp;Wegner Robert M.\" /></a>  </div>\n" +
-            "        <div>\n" +
-            "<a href=\"/gdybym-miala-brata-opowiesci-z-meekhanskiego-pogranicza-wegner-robert-m,p1117544377,ebooki-i-mp3-p\" class=\"productTitle\" title=\"Gdybym miała brata. Opowieści z meekhańskiego pogranicza &nbsp;-&nbsp;Wegner Robert M.\" >      <span class=\"Title\">\n" +
-            "             Gdybym miała brata. Opowieści z meekhańskiego  ...\n" +
-            "\n" +
-            "        </span>\n" +
-            "</a><a href=\"/szukaj/produkt?author=Wegner+Robert+M.\" class=\"author11\" title=\"Wegner Robert M. - wszystkie produkty\" >Wegner Robert M.</a>            <span class=\"type\">    ebook\n" +
-            "</span>\n" +
-            "    <div class=\"efileFormat\">\n" +
-            "              <span>\n" +
-            "                <span id=\"transactionid\" data-transactionid=\"10100452954443\"></span>\n" +
-            "                Pobierz:\n" +
-            "                    <a href=\"http://ebook.empik.com/transakcja/10100271438551/pozycja/10100452954443/licencja/1/plik/1/format/epub\" >EPUB</a>\n" +
-            "                    , \n" +
-            "                    <a href=\"http://ebook.empik.com/transakcja/10100271438551/pozycja/10100452954443/licencja/1/plik/1/format/mobi\" >MOBI</a>\n" +
-            "                    \n" +
-            "              </span>\n" +
-            "          </div>\n" +
-            "          <span class=\"readNow\"><a href=\"#\" id=\"p1117544377\" class=\"btnAddReview addReview\">Dodaj recenzję &rsaquo;</a></span>\n" +
-            "        </div>\n" +
-            "    </div>\n" +
-            "</div>" +
-            "</div>\n" +
-            "  <div class=\"dotLine\"></div>";
+    private static String source;
+    private static final int METRO_INDEX = 0;
+    private static final int KLAMCA_INDEX = 1;
+    private static final int WEGNER_INDEX = 2;
 
     @BeforeClass
     public static void initialize() {
@@ -105,7 +46,7 @@ public class EmpikBookDataParserTest {
                 return new WebClientFactory() {
                     @Override
                     public WebClient getHeadlessClient() {
-                        return new HeadlessWebClient();
+                        return new MockWebClient();
                     }
 
                     @Override
@@ -130,40 +71,62 @@ public class EmpikBookDataParserTest {
                 return null;
             }
         });
+
+        source = TestHTMLCodeProvider.getEmpikLibrarySource();
     }
 
-    private List<Book> parseBooks() {
-        EmpikBookDataParser parser = new EmpikBookDataParser();
-        //when
+    private List<Book> parseBooksWithoutFormatDetails() {
+        EmpikBookDataParser parser = new EmpikBookDataParser(new EmpikFileFormatParser() {
+            @Override
+            public void parse(HTMLScraper scraper, ArrayList<WebBookDetails> detailsList) {
+            }
+        });
         parser.parse(source);
         return parser.getBooks();
     }
 
-    @Test
-    public void parser_parsesAuthorNamesProperly() {
-        List<Book> books = parseBooks();
-        //then
-        assertEquals("Metro 2034", books.get(0).getTitle());
-        assertEquals("Kłamca. Tom 1", books.get(1).getTitle());
-        assertEquals("Gdybym miała brata. Opowieści z meekhańskiego pogranicza", books.get(2).getTitle());
+    private List<FormatDetails> getFormatDetailsForWegner() {
+        EmpikBookDataParser parser = new EmpikBookDataParser(new EbookEmpikFileFormatParser());
+        parser.parse(source);
+        List<Book> books = parser.getBooks();
+        //when
+        Book book = books.get(WEGNER_INDEX);
+        return book.getFormatDetailsList();
     }
 
     @Test
     public void parser_parsesBookNamesProperly() {
-        List<Book> books = parseBooks();
+        List<Book> books = parseBooksWithoutFormatDetails();
         //then
-        assertEquals("Glukhovsky Dmitry", books.get(0).getAuthor().getName());
-        assertEquals("Ćwiek Jakub", books.get(1).getAuthor().getName());
-        assertEquals("Wegner Robert M.", books.get(2).getAuthor().getName());
+        assertEquals("Metro 2034", books.get(METRO_INDEX).getTitle());
+        assertEquals("Kłamca. Tom 1", books.get(KLAMCA_INDEX).getTitle());
+        assertEquals("Gdybym miała brata. Opowieści z meekhańskiego pogranicza", books.get(WEGNER_INDEX).getTitle());
     }
 
     @Test
-    public void parser_recognizesMp3FormatProperly() {
-        List<Book> books = parseBooks();
-        Book book = books.get(1);
-        List<FormatDetails> formatDetailsList = book.getFormatDetailsList();
+    public void parser_parsesAuthorNamesProperly() {
+        List<Book> books = parseBooksWithoutFormatDetails();
         //then
-        assertEquals(1, formatDetailsList.size());
-        assertTrue(formatDetailsList.get(0) instanceof Mp3Details);
+        assertEquals("Glukhovsky Dmitry", books.get(METRO_INDEX).getAuthor().getName());
+        assertEquals("Ćwiek Jakub", books.get(KLAMCA_INDEX).getAuthor().getName());
+        assertEquals("Wegner Robert M.", books.get(WEGNER_INDEX).getAuthor().getName());
+    }
+
+    @Test
+    public void parser_parsesThumbnailUrlProperly() {
+        List<Book> books = parseBooksWithoutFormatDetails();
+        UrlExtractorThumbnailVisitor visitor = new UrlExtractorThumbnailVisitor();
+        //when
+        books.get(METRO_INDEX).getThumbnail().fill(visitor);
+        String metroThumbnailUrl = visitor.getUrl();
+        books.get(KLAMCA_INDEX).getThumbnail().fill(visitor);
+        String klamcaThumbnailUrl = visitor.getUrl();
+        books.get(WEGNER_INDEX).getThumbnail().fill(visitor);
+        String wegnerThumbnailUrl = visitor.getUrl();
+
+        //then
+        assertEquals("https://ecsmedia.pl/c/metro-2034-p-iext33632227.jpg", metroThumbnailUrl);
+        assertEquals("https://ecsmedia.pl/c/klamca-tom-1-p-iext34472636.jpg", klamcaThumbnailUrl);
+        assertEquals("https://ecsmedia.pl/c/gdybym-miala-brata-opowiesci-z-meekhanskiego-pogranicza-p-iext38617726.jpg", wegnerThumbnailUrl);
     }
 }

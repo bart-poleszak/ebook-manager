@@ -29,7 +29,7 @@ public abstract class FormatDetails {
 
     public static FormatDetails instanceForFormatName(String formatName) {
         FormatDetails result;
-        switch (formatName) {
+        switch (formatName.toUpperCase()) {
             case MobiDetails.FORMAT_NAME:
                 result = new MobiDetails();
                 break;

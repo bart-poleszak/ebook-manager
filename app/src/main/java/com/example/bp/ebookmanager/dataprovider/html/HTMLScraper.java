@@ -22,12 +22,14 @@ import javax.xml.xpath.XPathFactory;
 public class HTMLScraper {
     private Document document;
     private NodeList nodeList;
+    private String source;
 
     public HTMLScraper(String source) {
-        reset(source);
+        this.source = source;
+        reset();
     }
 
-    public void reset(String source) {
+    public void reset() {
         nodeList = null;
         try {
             document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new InputSource(new StringReader(source)));

@@ -76,7 +76,7 @@ public class WoblinkBookDataParser implements BookDataParser {
     }
 
     private void fillAuthors() {
-        scraper.reset(source);
+        scraper.reset();
         scraper.evaluateXPathExpression("//p[@class=\"nw_profil_polka_ksiazka_opcje_autor\"]/a");
         if (scraper.evaluationSuccessful()) {
             ArrayList<String> authors = scraper.getFirstChildList();
@@ -117,12 +117,12 @@ public class WoblinkBookDataParser implements BookDataParser {
     }
 
     private void resetToFormatDataDiv() {
-        scraper.reset(source);
+        scraper.reset();
         scraper.evaluateXPathExpression("//div[@class=\"nw_profil_polka_ksiazka_opcje_przyciski_inhalf\"]");
     }
 
     private void fillThumbnails() {
-        scraper.reset(source);
+        scraper.reset();
         scraper.evaluateXPathExpression("//div[@class=\"nw_profil_polka_ksiazka_okladka nw_okladka\"]/img");
         if (scraper.evaluationSuccessful()) {
             ArrayList<String> urls = scraper.getAttributeValueList("src");

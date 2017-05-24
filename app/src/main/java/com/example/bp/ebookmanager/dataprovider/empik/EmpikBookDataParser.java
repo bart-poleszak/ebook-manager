@@ -15,6 +15,7 @@ import com.example.bp.ebookmanager.model.formats.Mp3Details;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Ebook Manager
@@ -22,14 +23,19 @@ import java.util.List;
  */
 public class EmpikBookDataParser implements BookDataParser {
 
-    private static final String LINE_ITEM = "&LineItemId";
-    private static final String USER_ID = "&UserId";
-    private static final String LINE_ITEM_PLACEHOLDER = "---LINEITEMID---";
-    private static final String USER_ID_PLACEHOLDER = "---USERID---";
-    private static final String EMPIK_COM = "http://empik.com";
+    public static final String LINE_ITEM = "&LineItemId";
+    public static final String USER_ID = "&UserId";
+    public static final String LINE_ITEM_PLACEHOLDER = "---LINEITEMID---";
+    public static final String USER_ID_PLACEHOLDER = "---USERID---";
+    public static final String EMPIK_COM = "http://empik.com";
+    private final EmpikFileFormatParser fileFormatParser;
     private ArrayList<Book> result;
     private ArrayList<WebBookDetails> detailsList;
     private String source;
+
+    public EmpikBookDataParser(EmpikFileFormatParser fileFormatParser) {
+        this.fileFormatParser = fileFormatParser;
+    }
 
     @Override
     public void parse(String source) {
@@ -38,58 +44,43 @@ public class EmpikBookDataParser implements BookDataParser {
         fixSource();
         HTMLScraper scraper = new HTMLScraper(this.source);
 
-        scraper.evaluateXPathExpression("//a[@class=\"author11\"]");
+        scraper.evaluateXPathExpression("//a[@class=\"smartAuthor\"]");
         ArrayList<String> authors = scraper.getFirstChildList();
         result = new ArrayList<>(authors.size());
         detailsList = new ArrayList<>(authors.size());
 
-        scraper.reset(this.source);
-        scraper.evaluateXPathExpression("//a[@class=\"productBox-450Pic\"]");
+        scraper.reset();
+        scraper.evaluateXPathExpression("//a[@class=\"historyOrderBoxTitle\"]");
         ArrayList<String> detailsHrefs = scraper.getAttributeValueList("href");
 
-
-        for (int i = 0; i < authors.size(); i++) {
-            scraper.reset(this.source);
-            scraper.evaluateXPathExpression("(//div[@class=\"efileFormat\"])[" + String.valueOf(i + 1) + "]//a");
-
-            WebActionContext context = new BasicWebActionContext(EMPIK_COM + detailsHrefs.get(i));
+        for (String detailsHref : detailsHrefs) {
+            WebActionContext context = new BasicWebActionContext(EMPIK_COM + detailsHref);
             WebBookDetails details = EbookEmpikWebDataProviderFactory.instance().createBookDetails(context);
-
-            ArrayList<String> formatNames = scraper.getFirstChildList();
-            ArrayList<String> hrefs = scraper.getAttributeValueList("href");
-            for (int formatIndex = 0; formatIndex < formatNames.size(); formatIndex++) {
-                FormatDetails format = FormatDetails.instanceForFormatName(formatNames.get(formatIndex));
-                if (!format.getFormatName().equals(Mp3Details.FORMAT_NAME)) {
-                    format.setDownloadUrl(hrefs.get(formatIndex));
-                    Log.d("Download URL", format.getDownloadUrl());
-                }
-                details.addFormat(format);
-            }
             detailsList.add(details);
         }
+
+        fileFormatParser.parse(scraper, detailsList);
 
         for (int i = 0; i < authors.size(); i++) {
             Book book = new Book(detailsList.get(i));
             result.add(book);
         }
         for (int i = 0; i < authors.size(); i++) {
-            result.get(i).setAuthor(Person.named(authors.get(i)));
+            result.get(i).setAuthor(Person.named(authors.get(i).trim()));
         }
 
-        scraper.reset(this.source);
-        scraper.evaluateXPathExpression("//a[@class=\"productTitle\"]");
-        ArrayList<String> titles = scraper.getAttributeValueList("title");
+        scraper.reset();
+        scraper.evaluateXPathExpression("//a[@class=\"historyOrderBoxTitle\"]/strong");
+        ArrayList<String> titles = scraper.getFirstChildList();
 
         for (int i = 0; i < result.size(); i++) {
             String title = titles.get(i);
-            title = title.replaceAll("&nbsp;", " ");
-            title = title.substring(0, title.indexOf(authors.get(i)) - 3);
             result.get(i).setTitle(title.trim());
             result.get(i).setId("Empik" + title.trim());
         }
 
-        scraper.reset(this.source);
-        scraper.evaluateXPathExpression("//div[@class=\"productBox-450Pic\"]/a/img");
+        scraper.reset();
+        scraper.evaluateXPathExpression("//img");
         ArrayList<String> thumbnailUrls = scraper.getAttributeValueList("src");
 
         for (int i = 0; i < result.size(); i++) {
@@ -105,12 +96,11 @@ public class EmpikBookDataParser implements BookDataParser {
                 "]>\n" + this.source;
         source = source.replaceAll(LINE_ITEM, LINE_ITEM_PLACEHOLDER);
         source = source.replaceAll(USER_ID, USER_ID_PLACEHOLDER);
-        source = source.replaceAll("\"></a>  </div>", " \"/></a>  </div>");
     }
 
     private String cropSource() {
-        int start = source.indexOf("<div class=\"LibraryProductsList\">");
-        int end = source.indexOf("<div class=\"dotLine\"></div>", start);
+        int start = source.indexOf("<div class=\"my-library-content search-content\">");
+        int end = source.indexOf("<div class=\"digital-products-footer\">", start);
         return source.substring(start, end);
     }
 

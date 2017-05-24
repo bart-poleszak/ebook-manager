@@ -8,8 +8,8 @@ import com.example.bp.ebookmanager.dataprovider.WebActionState;
  * Created by bp on 28.06.16.
  */
 public class EmpikWebActionContext implements WebActionContext {
-    public static final String AUDIOBOOK_SHELF_NAME = "audiobook";
-    public static final String EBOOK_SHELF_NAME = "ebook";
+    public static final String AUDIOBOOK_SHELF_NAME = "audiobooki";
+    public static final String EBOOK_SHELF_NAME = "ebooki";
     private ShelfEmpikWebActionState shelfState;
     private LoginEmpikWebActionState loginState;
     private WebActionState currentState;

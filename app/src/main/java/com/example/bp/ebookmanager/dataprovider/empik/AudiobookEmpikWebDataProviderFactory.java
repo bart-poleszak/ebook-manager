@@ -1,5 +1,6 @@
 package com.example.bp.ebookmanager.dataprovider.empik;
 
+import com.example.bp.ebookmanager.dataprovider.BookDataParser;
 import com.example.bp.ebookmanager.dataprovider.WebDataProviderFactory;
 
 /**
@@ -23,5 +24,10 @@ public class AudiobookEmpikWebDataProviderFactory extends EmpikWebDataProviderFa
     @Override
     protected String getShelfName() {
         return EmpikWebActionContext.AUDIOBOOK_SHELF_NAME;
+    }
+
+    @Override
+    protected BookDataParser getBookDataParser() {
+        return new EmpikBookDataParser(new AudiobookEmpikFileFormatParser());
     }
 }
