@@ -145,7 +145,7 @@ public class BookListFragment extends Fragment {
                 .equalTo("id", book.getId())
                 .findFirst();
         if (realmBook == null) {
-            realmBook = realm.createObject(RealmBook.class);
+            realmBook = realm.createObject(RealmBook.class, book.getId());
             realmBook.fromBook(book);
         }
 

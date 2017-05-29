@@ -14,10 +14,6 @@ public class RealmPublisher extends RealmObject {
     @PrimaryKey
     private String name;
 
-    public void fromPublisher(Publisher publisher) {
-        name = publisher.getName();
-    }
-
     public Publisher toPublisher() {
         return Publisher.named(name);
     }

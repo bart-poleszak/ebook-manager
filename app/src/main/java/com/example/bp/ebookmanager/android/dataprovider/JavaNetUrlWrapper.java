@@ -1,5 +1,6 @@
 package com.example.bp.ebookmanager.android.dataprovider;
 
+import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -16,12 +17,12 @@ class JavaNetUrlWrapper implements UrlWrapper{
     }
 
     @Override
-    public HttpURLConnection openConnection() {
-        return null;
+    public HttpURLConnection openConnection() throws IOException {
+        return (HttpURLConnection) url.openConnection();
     }
 
     @Override
     public String getHost() {
-        return null;
+        return url.getHost();
     }
 }

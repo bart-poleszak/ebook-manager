@@ -47,7 +47,6 @@ public class RealmBook extends RealmObject {
     }
 
     public void fromBook(Book book) {
-        id = book.getId();
         title = book.getTitle();
 
         Person author = book.getAuthor();
@@ -75,8 +74,7 @@ public class RealmBook extends RealmObject {
                 .equalTo("name", publisher.getName())
                 .findFirst();
         if (this.publisher == null) {
-            this.publisher = realm.createObject(RealmPublisher.class);
-            this.publisher.fromPublisher(publisher);
+            this.publisher = realm.createObject(RealmPublisher.class, publisher.getName());
         }
     }
 
@@ -100,7 +98,7 @@ public class RealmBook extends RealmObject {
                     .equalTo("id", RealmFormatData.generateId(formatData.getFormatName(), book))
                     .findFirst();
             if (realmFormatData == null)
-                realmFormatData = realm.createObject(RealmFormatData.class);
+                realmFormatData = realm.createObject(RealmFormatData.class, RealmFormatData.generateId(formatData.getFormatName(), book));
             realmFormatData.fromFormatSpecificData(formatData, book);
             formatDetails.add(realmFormatData);
         }

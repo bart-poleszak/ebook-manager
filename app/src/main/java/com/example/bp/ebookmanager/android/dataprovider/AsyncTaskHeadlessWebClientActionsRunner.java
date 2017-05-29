@@ -9,7 +9,6 @@ import android.os.AsyncTask;
 public class AsyncTaskHeadlessWebClientActionsRunner implements HeadlessWebClient.HeadlessWebClientActionsRunner {
 
     private HeadlessWebClient.HeadlessWebClientAsyncActions actions;
-    private WebClientAsyncTask asyncTask;
 
     @Override
     public void setActions(HeadlessWebClient.HeadlessWebClientAsyncActions actions) {
@@ -18,6 +17,7 @@ public class AsyncTaskHeadlessWebClientActionsRunner implements HeadlessWebClien
 
     @Override
     public void run(UrlWrapper url) {
+        WebClientAsyncTask asyncTask = new WebClientAsyncTask();
         asyncTask.execute(url);
     }
 

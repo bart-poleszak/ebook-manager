@@ -27,7 +27,6 @@ public class RealmFormatData extends RealmObject {
     }
 
     public void fromFormatSpecificData(FormatDetails data, Book book) {
-        id = generateId(data.getFormatName(), book);
         formatName = data.getFormatName();
         sizeInMb = data.getSizeInMb();
         downloadUrl = data.getDownloadUrl();

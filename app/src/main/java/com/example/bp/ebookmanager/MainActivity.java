@@ -41,7 +41,8 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void initializeRealm() {
-        RealmConfiguration config = new RealmConfiguration.Builder(this)
+        Realm.init(this);
+        RealmConfiguration config = new RealmConfiguration.Builder()
                 .name("ebookmanager.realm")
                 .schemaVersion(0)
                 .build();

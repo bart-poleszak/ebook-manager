@@ -21,7 +21,7 @@ public class HeadlessWebClient implements WebClient {
     private HeadlessWebClientActionsRunner runner;
     private CookieManager cookieManager;
 
-    HeadlessWebClient(HeadlessWebClientActionsRunner runner, CookieManager cookieManager) {
+    public HeadlessWebClient(HeadlessWebClientActionsRunner runner, CookieManager cookieManager) {
         this.runner = runner;
         this.cookieManager = cookieManager;
         runner.setActions(new HeadlessWebClientAsyncActionsImpl());
@@ -128,69 +128,4 @@ public class HeadlessWebClient implements WebClient {
             }
         }
     }
-
-//    private class HeadlessWebClientAsyncTask extends AsyncTask<UrlWrapper, Void, String> {
-//
-//        private HttpURLConnection connection;
-//        private UrlWrapper url;
-//
-//        @Override
-//        protected String doInBackground(UrlWrapper... params) {
-//            String result = null;
-//            url = params[0];
-//            try {
-//                if (establishConnection()) {
-//                    BufferedReader reader = createReader();
-//                    result = getSource(reader);
-//                }
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            } finally {
-//                connection.disconnect();
-//            }
-//            return result;
-//        }
-//
-//        private boolean establishConnection() throws IOException {
-//            connection = url.openConnection();
-//            setCookie();
-//            connection.connect();
-//            return connection.getResponseCode() == HttpURLConnection.HTTP_OK;
-//        }
-//
-//        private void setCookie() {
-//            CookieManager cookieManager = CookieManager.getInstance();
-//            String cookie = cookieManager.getCookie(url.getHost());
-//            connection.setRequestProperty("User-Agent",
-//                    "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.80 Safari/537.36");
-//            connection.setRequestProperty("Cookie", cookie);
-//        }
-//
-//        private BufferedReader createReader() throws IOException {
-//            InputStream inputStream = connection.getInputStream();
-//            return new BufferedReader(new InputStreamReader(inputStream));
-//        }
-//
-//        private String getSource(BufferedReader reader) throws IOException {
-//            StringBuilder builder = new StringBuilder();
-//            String line;
-//            while ((line = reader.readLine()) != null) {
-//                builder.append(line);
-//                builder.append("\n");
-//            }
-//            return builder.toString();
-//        }
-//
-//        @Override
-//        protected void onPostExecute(String result) {
-//            Log.d("HeadlessWebClient", connection.getURL().toExternalForm());
-//            if (result != null) {
-//                callbacks.onPageFinished(connection.getURL().toExternalForm(), result);
-//            }
-//            else {
-//                callbacks.onLoadingFailed(connection.getURL().toExternalForm());
-//            }
-//            super.onPostExecute(result);
-//        }
-//    }
 }

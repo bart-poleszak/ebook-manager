@@ -15,10 +15,6 @@ public class RealmPerson extends RealmObject {
     @PrimaryKey
     private String name;
 
-    public void fromPerson(Person person) {
-        name = person.getName();
-    }
-
     public Person toPerson() {
         return Person.named(name);
     }
@@ -29,8 +25,7 @@ public class RealmPerson extends RealmObject {
                 .equalTo("name", person.getName())
                 .findFirst();
         if (realmPerson == null) {
-            realmPerson = realm.createObject(RealmPerson.class);
-            realmPerson.fromPerson(person);
+            realmPerson = realm.createObject(RealmPerson.class, person.getName());
         }
         return realmPerson;
     }
