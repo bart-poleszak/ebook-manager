@@ -15,5 +15,6 @@ public interface DataProviderStrategy {
 
     interface Callbacks {
         void onAccessGained();
+        void onFailure();
     }
 }

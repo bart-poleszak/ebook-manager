@@ -41,6 +41,11 @@ public class WebDataProviderStrategy implements DataProviderStrategy {
                 resolver.enableUserAction(userActionEnabler);
                 retryToGainAccess();
             }
+
+            @Override
+            public void onActionFailed() {
+                callbacks.onFailure();
+            }
         };
         resolver.resolve(webActionContext, resolverCallbacks);
     }

@@ -20,6 +20,6 @@ public interface BookDetails {
 
     interface DetailsObserver {
         void onDetailsChanged();
-
+        void onFailure();
     }
 }

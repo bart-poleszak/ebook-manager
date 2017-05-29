@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.bp.ebookmanager.android.AndroidThumbnailVisitor;
 import com.example.bp.ebookmanager.model.Book;
@@ -80,6 +81,11 @@ public class DetailsFragment extends Fragment {
             @Override
             public void onDetailsChanged() {
                 fillDetails();
+            }
+
+            @Override
+            public void onFailure() {
+                Toast.makeText(getContext(), "Failed to get details data", Toast.LENGTH_SHORT).show();
             }
         });
 

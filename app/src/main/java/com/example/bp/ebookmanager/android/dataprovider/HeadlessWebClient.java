@@ -1,20 +1,16 @@
 package com.example.bp.ebookmanager.android.dataprovider;
 
-import android.os.AsyncTask;
-import android.support.annotation.NonNull;
 import android.util.Log;
 import android.webkit.CookieManager;
 
 import com.example.bp.ebookmanager.dataprovider.WebClient;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
-import java.net.URL;
 
 /**
  * Ebook Manager
@@ -22,6 +18,14 @@ import java.net.URL;
  */
 public class HeadlessWebClient implements WebClient {
     private Callbacks callbacks;
+    private HeadlessWebClientActionsRunner runner;
+    private CookieManager cookieManager;
+
+    HeadlessWebClient(HeadlessWebClientActionsRunner runner, CookieManager cookieManager) {
+        this.runner = runner;
+        this.cookieManager = cookieManager;
+        runner.setActions(new HeadlessWebClientAsyncActionsImpl());
+    }
 
     @Override
     public void setCallbacks(Callbacks callbacks) {
@@ -29,9 +33,18 @@ public class HeadlessWebClient implements WebClient {
     }
 
     @Override
-    public void loadUrl(String url) {
-        HeadlessWebClientAsyncTask task = new HeadlessWebClientAsyncTask();
-        task.execute(url);
+    public void loadUrl(String urlString) {
+        try {
+            UrlWrapper url = new JavaNetUrlWrapper(urlString);
+            loadUrl(url);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+            callbacks.onLoadingFailed(urlString);
+        }
+    }
+
+    public void loadUrl(UrlWrapper url) {
+        runner.run(url);
     }
 
     @Override
@@ -44,46 +57,57 @@ public class HeadlessWebClient implements WebClient {
 
     }
 
-    private class HeadlessWebClientAsyncTask extends AsyncTask<String, Void, String> {
+    public interface HeadlessWebClientActionsRunner {
+        void setActions(HeadlessWebClientAsyncActions actions);
+        void run(UrlWrapper url);
+    }
 
+    public interface HeadlessWebClientAsyncActions {
+        String doInBackground(UrlWrapper url);
+        void onPostExecute(String result);
+    }
+
+    public class HeadlessWebClientAsyncActionsImpl implements HeadlessWebClientAsyncActions {
         private HttpURLConnection connection;
-        private URL url;
-        private BufferedReader reader;
+        private UrlWrapper url;
 
         @Override
-        protected String doInBackground(String... params) {
+        public String doInBackground(UrlWrapper url) {
+            String result = null;
+            this.url = url;
             try {
-                establishConnection(params[0]);
-                setCookie();
-                createReader();
-                return getSource();
+                if (establishConnection()) {
+                    BufferedReader reader = createReader();
+                    result = getSource(reader);
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             } finally {
                 connection.disconnect();
             }
-            return null;
+            return result;
         }
 
-        private void establishConnection(String param) throws IOException {
-            url = new URL(param);
-            connection = (HttpURLConnection) url.openConnection();
+        private boolean establishConnection() throws IOException {
+            connection = url.openConnection();
+            setCookie();
+            connection.connect();
+            return connection.getResponseCode() == HttpURLConnection.HTTP_OK;
         }
 
         private void setCookie() {
-            CookieManager cookieManager = CookieManager.getInstance();
             String cookie = cookieManager.getCookie(url.getHost());
             connection.setRequestProperty("User-Agent",
                     "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.80 Safari/537.36");
             connection.setRequestProperty("Cookie", cookie);
         }
 
-        private void createReader() throws IOException {
+        private BufferedReader createReader() throws IOException {
             InputStream inputStream = connection.getInputStream();
-            reader = new BufferedReader(new InputStreamReader(inputStream));
+            return new BufferedReader(new InputStreamReader(inputStream));
         }
 
-        private String getSource() throws IOException {
+        private String getSource(BufferedReader reader) throws IOException {
             StringBuilder builder = new StringBuilder();
             String line;
             while ((line = reader.readLine()) != null) {
@@ -94,10 +118,79 @@ public class HeadlessWebClient implements WebClient {
         }
 
         @Override
-        protected void onPostExecute(String result) {
+        public void onPostExecute(String result) {
             Log.d("HeadlessWebClient", connection.getURL().toExternalForm());
-            callbacks.onPageFinished(connection.getURL().toExternalForm(), result);
-            super.onPostExecute(result);
+            if (result != null) {
+                callbacks.onPageFinished(connection.getURL().toExternalForm(), result);
+            }
+            else {
+                callbacks.onLoadingFailed(connection.getURL().toExternalForm());
+            }
         }
     }
+
+//    private class HeadlessWebClientAsyncTask extends AsyncTask<UrlWrapper, Void, String> {
+//
+//        private HttpURLConnection connection;
+//        private UrlWrapper url;
+//
+//        @Override
+//        protected String doInBackground(UrlWrapper... params) {
+//            String result = null;
+//            url = params[0];
+//            try {
+//                if (establishConnection()) {
+//                    BufferedReader reader = createReader();
+//                    result = getSource(reader);
+//                }
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            } finally {
+//                connection.disconnect();
+//            }
+//            return result;
+//        }
+//
+//        private boolean establishConnection() throws IOException {
+//            connection = url.openConnection();
+//            setCookie();
+//            connection.connect();
+//            return connection.getResponseCode() == HttpURLConnection.HTTP_OK;
+//        }
+//
+//        private void setCookie() {
+//            CookieManager cookieManager = CookieManager.getInstance();
+//            String cookie = cookieManager.getCookie(url.getHost());
+//            connection.setRequestProperty("User-Agent",
+//                    "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.80 Safari/537.36");
+//            connection.setRequestProperty("Cookie", cookie);
+//        }
+//
+//        private BufferedReader createReader() throws IOException {
+//            InputStream inputStream = connection.getInputStream();
+//            return new BufferedReader(new InputStreamReader(inputStream));
+//        }
+//
+//        private String getSource(BufferedReader reader) throws IOException {
+//            StringBuilder builder = new StringBuilder();
+//            String line;
+//            while ((line = reader.readLine()) != null) {
+//                builder.append(line);
+//                builder.append("\n");
+//            }
+//            return builder.toString();
+//        }
+//
+//        @Override
+//        protected void onPostExecute(String result) {
+//            Log.d("HeadlessWebClient", connection.getURL().toExternalForm());
+//            if (result != null) {
+//                callbacks.onPageFinished(connection.getURL().toExternalForm(), result);
+//            }
+//            else {
+//                callbacks.onLoadingFailed(connection.getURL().toExternalForm());
+//            }
+//            super.onPostExecute(result);
+//        }
+//    }
 }

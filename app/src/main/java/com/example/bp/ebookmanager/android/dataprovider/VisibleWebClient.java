@@ -33,7 +33,6 @@ public class VisibleWebClient implements WebClient {
         webView.getSettings().setUserAgentString(
                 "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.80 Safari/537.36");
         webView.getSettings().setJavaScriptEnabled(true);
-//        CookieManager.getInstance().removeAllCookie();
         webView.setWebViewClient(new WebViewClient() {
             @Override
             public void onPageFinished(WebView view, final String url) {
@@ -49,6 +48,7 @@ public class VisibleWebClient implements WebClient {
                     }
                 });
             }
+
         });
         return webView;
     }

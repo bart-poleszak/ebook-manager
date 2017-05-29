@@ -1,6 +1,7 @@
 package com.example.bp.ebookmanager.android.dataprovider;
 
 import android.content.Context;
+import android.webkit.CookieManager;
 
 import com.example.bp.ebookmanager.dataprovider.WebClientFactory;
 import com.example.bp.ebookmanager.dataprovider.WebClient;
@@ -18,7 +19,7 @@ public class AndroidWebClientFactory implements WebClientFactory {
 
     @Override
     public WebClient getHeadlessClient() {
-        return new HeadlessWebClient();
+        return new HeadlessWebClient(new AsyncTaskHeadlessWebClientActionsRunner(), CookieManager.getInstance());
     }
 
     @Override

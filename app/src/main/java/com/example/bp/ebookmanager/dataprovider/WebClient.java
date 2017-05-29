@@ -12,5 +12,6 @@ public interface WebClient {
 
     interface Callbacks {
         void onPageFinished(String url, String source);
+        void onLoadingFailed(String url);
     }
 }

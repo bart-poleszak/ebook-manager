@@ -31,6 +31,11 @@ public class BookDataProviderImpl implements BookDataProvider {
                     callbacks.onNewDataAcquired(strategy.getBooks());
                 }
 
+                @Override
+                public void onFailure() {
+                    callbacks.onDataAcquisitionFailed();
+                }
+
             });
         } catch (Exception e) {
             e.printStackTrace();

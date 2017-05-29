@@ -100,6 +100,12 @@ public class WebBookDetails implements BookDetails {
             resolver.enableUserAction(ConfigManager.get().getUserActionEnabler());
             retryToResolve();
         }
+
+        @Override
+        public void onActionFailed() {
+            if(observer != null)
+                observer.onFailure();
+        }
     }
 
     private void mergeFormatDetails(BookDetails newInternalData) {

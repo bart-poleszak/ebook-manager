@@ -38,6 +38,11 @@ public class WebActionResolver {
                     webClient.loadUrl(action.getTargetSiteURL());
                 }
             }
+
+            @Override
+            public void onLoadingFailed(String url) {
+                callbacks.onActionFailed();
+            }
         });
         webClient.loadUrl(action.getTargetSiteURL());
     }
@@ -72,5 +77,6 @@ public class WebActionResolver {
     public interface Callbacks {
         void onActionCompleted(WebActionContext context);
         void onUserActionRequired();
+        void onActionFailed();
     }
 }
