@@ -3,7 +3,6 @@ package com.example.bp.ebookmanager.android.dataprovider;
 import android.app.Dialog;
 import android.content.Context;
 import android.util.Log;
-import android.webkit.CookieManager;
 import android.webkit.ValueCallback;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;

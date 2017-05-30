@@ -8,6 +8,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.bp.ebookmanager.android.config.AndroidConfiguration;
+import com.example.bp.ebookmanager.android.config.AndroidConfigurationFactory;
+import com.example.bp.ebookmanager.android.config.AndroidConfigurationFactoryImpl;
 import com.example.bp.ebookmanager.config.ConfigManager;
 import com.example.bp.ebookmanager.dataprovider.BookDataProvider;
 import com.example.bp.ebookmanager.model.Book;
@@ -18,6 +20,7 @@ import io.realm.RealmConfiguration;
 public class MainActivity extends AppCompatActivity {
 
     private SyncOptionsDialogMediator syncDialog;
+    private static AndroidConfigurationFactory configurationFactory = new AndroidConfigurationFactoryImpl();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void initializeConfigIfNeeded() {
         if (ConfigManager.get() == null)
-            ConfigManager.set(new AndroidConfiguration(this));
+            ConfigManager.set(configurationFactory.getConfiguration(this));
     }
 
 
@@ -87,5 +90,9 @@ public class MainActivity extends AppCompatActivity {
 
     public BookDataProvider getProviderForSync() {
         return syncDialog.getProvider();
+    }
+
+    public static void setConfigurationFactory(AndroidConfigurationFactory configurationFactory) {
+        MainActivity.configurationFactory = configurationFactory;
     }
 }
