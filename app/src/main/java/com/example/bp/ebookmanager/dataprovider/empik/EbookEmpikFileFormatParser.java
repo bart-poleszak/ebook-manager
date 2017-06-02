@@ -17,12 +17,14 @@ class EbookEmpikFileFormatParser implements EmpikFileFormatParser {
         for (int i = 0; i < detailsList.size(); ++i) {
             scraper.reset();
             scraper.evaluateXPathExpression("(//div[@class=\"download-open\"])[" + String.valueOf(i + 1) + "]//a");
-            ArrayList<String> hrefs = scraper.getAttributeValueList("href");
             ArrayList<String> formats = scraper.getFirstChildList();
+            String downloadLinkBase = scraper.getAttributeValue("href");
+            downloadLinkBase = downloadLinkBase.substring(0, downloadLinkBase.lastIndexOf('/') + 1);
 
-            for (int formatIndex = 0; formatIndex < formats.size(); formatIndex++) {
-                FormatDetails formatDetails = FormatDetails.instanceForFormatName(formats.get(formatIndex).trim());
-                formatDetails.setDownloadUrl(hrefs.get(formatIndex));
+            for (String format : formats) {
+                String trimmedFormat = format.trim();
+                FormatDetails formatDetails = FormatDetails.instanceForFormatName(trimmedFormat);
+                formatDetails.setDownloadUrl(downloadLinkBase + trimmedFormat);
                 detailsList.get(i).addFormat(formatDetails);
             }
         }

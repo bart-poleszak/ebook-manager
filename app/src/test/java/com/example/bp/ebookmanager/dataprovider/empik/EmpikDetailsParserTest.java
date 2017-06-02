@@ -214,7 +214,8 @@ public class EmpikDetailsParserTest {
             "\n" +
             "            </tbody>\n" +
             "        </table>\n" +
-            "    </div>\n";
+            "    </div>\n" +
+            "<div class=\"productComments\" data-title=\"Recenzje\" data-tab-name=\"reviewsTab\" >";
 
     private String metro2033Source = "<div data-title=\"Dane szczegółowe\">\n" +
             "        <h4 class=\"tab-temporary-title\">\n" +
@@ -441,15 +442,226 @@ public class EmpikDetailsParserTest {
             "\n" +
             "            </tbody>\n" +
             "        </table>\n" +
-            "    </div>\n";
+            "    </div>\n" +
+            "<div class=\"productComments\" data-title=\"Recenzje\" data-tab-name=\"reviewsTab\" >";
+
+    private String wegnerSource = "<div data-title=\"Dane szczegółowe\">\n" +
+            "        <h4 class=\"tab-temporary-title\">\n" +
+            "            Dane szczegółowe\n" +
+            "        </h4>\n" +
+            "        \n" +
+            "        <table class=\"productDataTable\">\n" +
+            "            <tbody>\n" +
+            "                \n" +
+            "    <tr class=\"row--text row--text attributeName\" >\n" +
+            "\n" +
+            "\n" +
+            "<td >\n" +
+            "        Tytuł: \n" +
+            "      </td>\n" +
+            "\n" +
+            "<td >\n" +
+            "          <span class=\"attributeDetailsValue\">Gdybym miała brata. Opowieści z meekhańskiego pogranicza</span>\n" +
+            "        </td>\n" +
+            "    </tr>\n" +
+            "\n" +
+            "\n" +
+            "\n" +
+            "\n" +
+            "\n" +
+            "    <tr class=\"row--text row--text attributeName\" >\n" +
+            "\n" +
+            "\n" +
+            "<td >\n" +
+            "        Autor: \n" +
+            "      </td>\n" +
+            "\n" +
+            "<td >\n" +
+            "          <span class=\"attributeDetailsValue\">      <a href=\"/szukaj/produkt?author=Wegner+Robert+M.\" >Wegner&nbsp;Robert&nbsp;M.</a>\n" +
+            "</span>\n" +
+            "        </td>\n" +
+            "    </tr>\n" +
+            "\n" +
+            "\n" +
+            "\n" +
+            "\n" +
+            "\n" +
+            "\n" +
+            "\n" +
+            "\n" +
+            "\n" +
+            "\n" +
+            "    <tr class=\"row--text row--text attributeName\" >\n" +
+            "\n" +
+            "\n" +
+            "<td >\n" +
+            "        Wydawnictwo: \n" +
+            "      </td>\n" +
+            "\n" +
+            "<td >\n" +
+            "          <span class=\"attributeDetailsValue\">Wydawnictwo Powergraph</span>\n" +
+            "        </td>\n" +
+            "    </tr>\n" +
+            "\n" +
+            "\n" +
+            "\n" +
+            "\n" +
+            "\n" +
+            "    <tr class=\"row--text row--text attributeName\" >\n" +
+            "\n" +
+            "\n" +
+            "<td >\n" +
+            "        Język wydania: \n" +
+            "      </td>\n" +
+            "\n" +
+            "<td >\n" +
+            "          <span class=\"attributeDetailsValue\">polski</span>\n" +
+            "        </td>\n" +
+            "    </tr>\n" +
+            "\n" +
+            " \n" +
+            "\n" +
+            "    <tr class=\"row--text row--text attributeName\" >\n" +
+            "\n" +
+            "\n" +
+            "<td >\n" +
+            "        Język oryginału: \n" +
+            "      </td>\n" +
+            "\n" +
+            "<td >\n" +
+            "          <span class=\"attributeDetailsValue\">polski</span>\n" +
+            "        </td>\n" +
+            "    </tr>\n" +
+            "\n" +
+            " \n" +
+            " \n" +
+            "\n" +
+            "    <tr class=\"row--text row--text attributeName\" >\n" +
+            "\n" +
+            "\n" +
+            "<td >\n" +
+            "        Ilość stron: \n" +
+            "      </td>\n" +
+            "\n" +
+            "<td >\n" +
+            "          <span class=\"attributeDetailsValue\">65</span>\n" +
+            "        </td>\n" +
+            "    </tr>\n" +
+            "\n" +
+            "\n" +
+            "\n" +
+            "\n" +
+            "    <tr class=\"row--text row--text attributeName\" >\n" +
+            "\n" +
+            "\n" +
+            "<td >\n" +
+            "        Data premiery: \n" +
+            "      </td>\n" +
+            "\n" +
+            "<td >\n" +
+            "          <span class=\"attributeDetailsValue\">2015-10-29</span>\n" +
+            "        </td>\n" +
+            "    </tr>\n" +
+            "\n" +
+            "\n" +
+            "\n" +
+            "    <tr class=\"row--text row--text attributeName\" >\n" +
+            "\n" +
+            "\n" +
+            "<td >\n" +
+            "        Rok wydania: \n" +
+            "      </td>\n" +
+            "\n" +
+            "<td >\n" +
+            "          <span class=\"attributeDetailsValue\">2015</span>\n" +
+            "        </td>\n" +
+            "    </tr>\n" +
+            "\n" +
+            "\n" +
+            "\n" +
+            "\n" +
+            "\n" +
+            "\n" +
+            "    <tr class=\"row--text row--text attributeName\" >\n" +
+            "\n" +
+            "\n" +
+            "<td >\n" +
+            "        Format: \n" +
+            "      </td>\n" +
+            "\n" +
+            "<td >\n" +
+            "          <span class=\"attributeDetailsValue\">    <span class=\"ebookFormatInfo\">EPUB</span>\n" +
+            "  <div class=\"showHint hintSet\" type=\"text\" data-trigger=\"manual\" data-toggle=\"tooltip\" data-container=\".hintSet\" data-html=\"true\" data-title=\"Ebook chroniony przy pomocy watermark - więcej informacji w sekcji &lt;a href=&quot;http://www.empik.com/pomoc/faq-ebook&quot; target=&quot;_blank&quot; &gt;Pomocy ›&lt;/a&gt;\" data-placement=\"right\">\n" +
+            "<img src=\"/b/mp/img/svg/info.svg\"   alt=\"\" />    </div>\n" +
+            "        <!-- gry on-line-->\n" +
+            "\n" +
+            "    <span class=\"ebookLicenseInfo\">\n" +
+            "<strong>UWAGA!</strong> Ebook chroniony przez watermark.             <a href=\"/pomoc/faq-ebook\" target=\"_blank\" ><span>więcej ›</span></a>\n" +
+            "    </span>\n" +
+            "</span>\n" +
+            "        </td>\n" +
+            "    </tr>\n" +
+            "\n" +
+            "    <tr class=\"row--text row--text attributeName\" >\n" +
+            "\n" +
+            "\n" +
+            "<td >\n" +
+            "        Liczba urządzeń: \n" +
+            "      </td>\n" +
+            "\n" +
+            "<td >\n" +
+            "          <span class=\"attributeDetailsValue\">bez ograniczeń</span>\n" +
+            "        </td>\n" +
+            "    </tr>\n" +
+            "    <tr class=\"row--text row--text attributeName\" >\n" +
+            "\n" +
+            "\n" +
+            "<td >\n" +
+            "        Drukowanie: \n" +
+            "      </td>\n" +
+            "\n" +
+            "<td >\n" +
+            "          <span class=\"attributeDetailsValue\">bez ograniczeń</span>\n" +
+            "        </td>\n" +
+            "    </tr>\n" +
+            "    <tr class=\"row--text row--text attributeName\" >\n" +
+            "\n" +
+            "\n" +
+            "<td >\n" +
+            "        Kopiowanie: \n" +
+            "      </td>\n" +
+            "\n" +
+            "<td >\n" +
+            "          <span class=\"attributeDetailsValue\">bez ograniczeń</span>\n" +
+            "        </td>\n" +
+            "    </tr>\n" +
+            "\n" +
+            "\n" +
+            "\n" +
+            "    <tr class=\"row--text row--text attributeName\" >\n" +
+            "\n" +
+            "\n" +
+            "<td >\n" +
+            "        Indeks: \n" +
+            "      </td>\n" +
+            "\n" +
+            "<td >\n" +
+            "          <span class=\"attributeDetailsValue\">18465563</span>\n" +
+            "        </td>\n" +
+            "    </tr>\n" +
+            "\n" +
+            "            </tbody>\n" +
+            "        </table>\n" +
+            "    </div>\n" +
+            "<div class=\"productComments\" data-title=\"Recenzje\" data-tab-name=\"reviewsTab\" >";
 
     @Test
     public void parser_parsesPublisherCorrectly() {
         EmpikDetailsParser parser = new EmpikDetailsParser();
         //when
-        BookDetails details = parser.parse(klamcaSource);
+        BookDetails details = parser.parse(wegnerSource);
         //then
-        assertEquals("Fabryka Słów Sp. z o.o.", details.getPublisher().getName());
+        assertEquals("Wydawnictwo Powergraph", details.getPublisher().getName());
     }
 
     @Test
@@ -475,7 +687,7 @@ public class EmpikDetailsParserTest {
     public void parser_setsTranslatorToNullIfThereAreNotAny() {
         EmpikDetailsParser parser = new EmpikDetailsParser();
         //when
-        BookDetails details = parser.parse(klamcaSource);
+        BookDetails details = parser.parse(wegnerSource);
         //then
         assertNull(details.getTranslator());
     }

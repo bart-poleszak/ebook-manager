@@ -1,35 +1,16 @@
-package com.example.bp.ebookmanager.integrationtest;
+package com.example.bp.ebookmanager.integrationtest.empik;
 
-import android.app.Instrumentation;
-import android.content.Context;
-import android.support.test.InstrumentationRegistry;
-import android.support.test.espresso.Espresso;
 import android.support.test.espresso.UiController;
 import android.support.test.espresso.ViewAction;
-import android.support.test.espresso.action.ViewActions;
-import android.support.test.espresso.assertion.ViewAssertions;
-import android.support.test.espresso.base.UiControllerModule;
-import android.support.test.espresso.matcher.ViewMatchers;
-import android.support.test.espresso.web.assertion.WebAssertion;
-import android.support.test.espresso.web.webdriver.DriverAtoms;
-import android.support.test.espresso.web.webdriver.Locator;
 import android.support.test.filters.LargeTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
-import android.test.ApplicationTestCase;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
-import com.example.bp.ebookmanager.DetailsListAdapter;
 import com.example.bp.ebookmanager.MainActivity;
 import com.example.bp.ebookmanager.R;
-import com.example.bp.ebookmanager.android.config.AndroidConfiguration;
-import com.example.bp.ebookmanager.config.ConfigManager;
-import com.example.bp.ebookmanager.config.Configuration;
-import com.example.bp.ebookmanager.config.TestConfiguration;
-import com.example.bp.ebookmanager.config.TestConfigurationFactory;
 import com.example.bp.ebookmanager.model.Book;
 import com.example.bp.ebookmanager.model.formats.Mp3Details;
 
@@ -37,20 +18,15 @@ import static android.support.test.espresso.Espresso.*;
 import static android.support.test.espresso.assertion.ViewAssertions.*;
 import static android.support.test.espresso.matcher.ViewMatchers.*;
 import static android.support.test.espresso.action.ViewActions.*;
-import static android.support.test.espresso.web.sugar.Web.*;
-import static android.support.test.espresso.web.webdriver.DriverAtoms.*;
 import static org.hamcrest.CoreMatchers.anything;
 import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.*;
 
-import org.hamcrest.CoreMatchers;
 import org.hamcrest.Matcher;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
-
-import java.net.CookieManager;
 
 /**
  * ebook-manager
@@ -99,7 +75,7 @@ public class EmpikIntegrationTests {
 
     @BeforeClass
     public static void beforeClass() {
-        MainActivity.setConfigurationFactory(new TestConfigurationFactory());
+        MainActivity.setConfigurationFactory(EmpikTestConfiguration.getFactory());
     }
 
     @Ignore

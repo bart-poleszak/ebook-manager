@@ -96,6 +96,7 @@ public class EmpikBookDataParser implements BookDataParser {
                 "]>\n" + this.source;
         source = source.replaceAll(LINE_ITEM, LINE_ITEM_PLACEHOLDER);
         source = source.replaceAll(USER_ID, USER_ID_PLACEHOLDER);
+        source = source.replaceAll("ng-cloak", "");
     }
 
     private String cropSource() {

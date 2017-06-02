@@ -1,6 +1,10 @@
-package com.example.bp.ebookmanager.config;
+package com.example.bp.ebookmanager.integrationtest.empik;
+
+import android.content.Context;
 
 import com.example.bp.ebookmanager.android.config.AndroidConfiguration;
+import com.example.bp.ebookmanager.android.config.AndroidConfigurationFactory;
+import com.example.bp.ebookmanager.config.Configuration;
 import com.example.bp.ebookmanager.dataprovider.BookDataProvider;
 import com.example.bp.ebookmanager.dataprovider.BookDataProviderImpl;
 import com.example.bp.ebookmanager.dataprovider.UserActionEnabler;
@@ -27,10 +31,10 @@ import java.util.List;
  * Created by bart-poleszak on 29.05.2017.
  */
 
-public class TestConfiguration implements Configuration {
+public class EmpikTestConfiguration implements Configuration {
     AndroidConfiguration androidConfiguration;
 
-    public TestConfiguration(AndroidConfiguration androidConfiguration) {
+    public EmpikTestConfiguration(AndroidConfiguration androidConfiguration) {
         this.androidConfiguration = androidConfiguration;
     }
 
@@ -98,6 +102,16 @@ public class TestConfiguration implements Configuration {
                 ArrayList<Book> books = new ArrayList<>();
                 books.add(book);
                 callbacks.onNewDataAcquired(books);
+            }
+        };
+    }
+
+    public static AndroidConfigurationFactory getFactory() {
+        return new AndroidConfigurationFactory() {
+            @Override
+            public Configuration getConfiguration(Context context) {
+                AndroidConfiguration androidConfiguration = new AndroidConfiguration(context);
+                return new EmpikTestConfiguration(androidConfiguration);
             }
         };
     }

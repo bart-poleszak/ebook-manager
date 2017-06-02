@@ -58,8 +58,8 @@ public class EmpikDetailsParser implements BookDetailsParser {
 
     private String cropAndFixSource() {
         int start = source.indexOf("<div data-title=\"Dane szczegółowe\">");
-        String tagEnd = "</div>";
-        int end = source.indexOf(tagEnd, start) + tagEnd.length();
+        String nextDiv = "<div class=\"productComments\"";
+        int end = source.indexOf(nextDiv, start);
         return source.substring(start, end).replaceAll("&nbsp", " ");
     }
 }

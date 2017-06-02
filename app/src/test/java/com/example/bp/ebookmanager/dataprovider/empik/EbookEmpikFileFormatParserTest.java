@@ -69,6 +69,7 @@ public class EbookEmpikFileFormatParserTest {
             downloadLinks.add(formatDetails.getDownloadUrl());
         }
         //then
+        assertEquals(2, downloadLinks.size());
         assertTrue(downloadLinks.contains("http://ebook.empik.com/transakcja/10100271438551/pozycja/10100452954443/licencja/1/plik/1/format/epub"));
         assertTrue(downloadLinks.contains("http://ebook.empik.com/transakcja/10100271438551/pozycja/10100452954443/licencja/1/plik/1/format/mobi"));
     }

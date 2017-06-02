@@ -80,6 +80,9 @@ public class HeadlessWebClient implements WebClient {
                     BufferedReader reader = createReader();
                     result = getSource(reader);
                 }
+            }
+            catch (IOException e) {
+                result = null;
             } catch (Exception e) {
                 e.printStackTrace();
             } finally {
