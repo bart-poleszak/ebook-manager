@@ -2,6 +2,7 @@ package com.example.bp.ebookmanager.integrationtest.empik;
 
 import android.content.Context;
 
+import com.example.bp.ebookmanager.DataStore;
 import com.example.bp.ebookmanager.android.config.AndroidConfiguration;
 import com.example.bp.ebookmanager.android.config.AndroidConfigurationFactory;
 import com.example.bp.ebookmanager.config.Configuration;
@@ -9,6 +10,7 @@ import com.example.bp.ebookmanager.dataprovider.BookDataProvider;
 import com.example.bp.ebookmanager.dataprovider.BookDataProviderImpl;
 import com.example.bp.ebookmanager.dataprovider.UserActionEnabler;
 import com.example.bp.ebookmanager.dataprovider.WebClientFactory;
+import com.example.bp.ebookmanager.dataprovider.WebDataProviderFactory;
 import com.example.bp.ebookmanager.dataprovider.empik.AudiobookEmpikWebDataProviderFactory;
 import com.example.bp.ebookmanager.dataprovider.empik.EbookEmpikWebDataProviderFactory;
 import com.example.bp.ebookmanager.dataprovider.mock.MockBookDataProviderStrategy;
@@ -20,6 +22,7 @@ import com.example.bp.ebookmanager.model.Person;
 import com.example.bp.ebookmanager.model.Publisher;
 import com.example.bp.ebookmanager.model.formats.FormatDetails;
 import com.example.bp.ebookmanager.model.formats.Mp3Details;
+import com.example.bp.ebookmanager.utils.FakeDataStore;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -32,10 +35,12 @@ import java.util.List;
  */
 
 public class EmpikTestConfiguration implements Configuration {
-    AndroidConfiguration androidConfiguration;
+    private final WebDataProviderFactory providerToTestFactory;
+    private AndroidConfiguration androidConfiguration;
 
-    public EmpikTestConfiguration(AndroidConfiguration androidConfiguration) {
+    public EmpikTestConfiguration(AndroidConfiguration androidConfiguration, WebDataProviderFactory providerToTestFactory) {
         this.androidConfiguration = androidConfiguration;
+        this.providerToTestFactory = providerToTestFactory;
     }
 
     @Override
@@ -51,7 +56,7 @@ public class EmpikTestConfiguration implements Configuration {
     @Override
     public List<BookDataProvider> getDataProviders() {
         ArrayList<BookDataProvider> providers = new ArrayList<>();
-        providers.add(AudiobookEmpikWebDataProviderFactory.instance().createBookDataProvider());
+        providers.add(providerToTestFactory.createBookDataProvider());
         return providers;
     }
 
@@ -65,53 +70,22 @@ public class EmpikTestConfiguration implements Configuration {
 
             @Override
             public void requestBooks(Callbacks callbacks) {
-                BookDetails details = new BookDetails() {
-                    @Override
-                    public Person getTranslator() {
-                        return null;
-                    }
-
-                    @Override
-                    public Publisher getPublisher() {
-                        return Publisher.named("Fake publisher");
-                    }
-
-                    @Override
-                    public void setObserver(DetailsObserver observer) {
-
-                    }
-
-                    @Override
-                    public List<FormatDetails> getFormats() {
-                        ArrayList<FormatDetails> result = new ArrayList<>();
-                        result.add(new Mp3Details());
-                        return result;
-                    }
-
-                    @Override
-                    public FormatDetails getFormat(String formatName) {
-                        if (formatName.equals(Mp3Details.FORMAT_NAME))
-                            return new Mp3Details();
-                        return null;
-                    }
-                };
-                Book book = new Book(details);
-                book.setTitle("Metro 2034");
-                book.setAuthor(Person.named("fake author"));
-                book.setId("EmpikMetro 2034");
-                ArrayList<Book> books = new ArrayList<>();
-                books.add(book);
-                callbacks.onNewDataAcquired(books);
+                callbacks.onNewDataAcquired(Collections.<Book>emptyList());
             }
         };
     }
 
-    public static AndroidConfigurationFactory getFactory() {
+    @Override
+    public DataStore getDataStore() {
+        return new FakeDataStore();
+    }
+
+    public static AndroidConfigurationFactory getFactory(final WebDataProviderFactory providerToTestFactory) {
         return new AndroidConfigurationFactory() {
             @Override
             public Configuration getConfiguration(Context context) {
                 AndroidConfiguration androidConfiguration = new AndroidConfiguration(context);
-                return new EmpikTestConfiguration(androidConfiguration);
+                return new EmpikTestConfiguration(androidConfiguration, providerToTestFactory);
             }
         };
     }

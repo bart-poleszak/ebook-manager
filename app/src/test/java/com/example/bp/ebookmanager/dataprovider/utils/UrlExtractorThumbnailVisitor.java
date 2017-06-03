@@ -1,4 +1,4 @@
-package com.example.bp.ebookmanager.dataprovider.mock;
+package com.example.bp.ebookmanager.dataprovider.utils;
 
 import com.example.bp.ebookmanager.model.RawThumbnail;
 import com.example.bp.ebookmanager.model.ThumbnailVisitor;

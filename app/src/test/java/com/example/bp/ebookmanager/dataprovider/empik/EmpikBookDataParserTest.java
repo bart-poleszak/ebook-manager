@@ -1,5 +1,6 @@
 package com.example.bp.ebookmanager.dataprovider.empik;
 
+import com.example.bp.ebookmanager.DataStore;
 import com.example.bp.ebookmanager.config.ConfigManager;
 import com.example.bp.ebookmanager.config.Configuration;
 import com.example.bp.ebookmanager.dataprovider.BookDataProvider;
@@ -7,23 +8,18 @@ import com.example.bp.ebookmanager.dataprovider.UserActionEnabler;
 import com.example.bp.ebookmanager.dataprovider.WebClient;
 import com.example.bp.ebookmanager.dataprovider.WebClientFactory;
 import com.example.bp.ebookmanager.dataprovider.html.HTMLScraper;
-import com.example.bp.ebookmanager.dataprovider.mock.MockWebClient;
-import com.example.bp.ebookmanager.dataprovider.mock.TestHTMLCodeProvider;
-import com.example.bp.ebookmanager.dataprovider.mock.UrlExtractorThumbnailVisitor;
+import com.example.bp.ebookmanager.dataprovider.utils.MockWebClient;
+import com.example.bp.ebookmanager.dataprovider.utils.TestHTMLCodeProvider;
+import com.example.bp.ebookmanager.dataprovider.utils.UrlExtractorThumbnailVisitor;
 import com.example.bp.ebookmanager.model.Book;
 import com.example.bp.ebookmanager.model.WebBookDetails;
-import com.example.bp.ebookmanager.model.formats.EpubDetails;
 import com.example.bp.ebookmanager.model.formats.FormatDetails;
-import com.example.bp.ebookmanager.model.formats.MobiDetails;
-import com.example.bp.ebookmanager.model.formats.Mp3Details;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 import static org.junit.Assert.*;
 
@@ -68,6 +64,11 @@ public class EmpikBookDataParserTest {
 
             @Override
             public BookDataProvider getLocalDataProvider() {
+                return null;
+            }
+
+            @Override
+            public DataStore getDataStore() {
                 return null;
             }
         });

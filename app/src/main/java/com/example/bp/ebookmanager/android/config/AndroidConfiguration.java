@@ -2,6 +2,8 @@ package com.example.bp.ebookmanager.android.config;
 
 import android.content.Context;
 
+import com.example.bp.ebookmanager.DataStore;
+import com.example.bp.ebookmanager.android.RealmDataStore;
 import com.example.bp.ebookmanager.android.dataprovider.AndroidUserActionEnabler;
 import com.example.bp.ebookmanager.android.dataprovider.AndroidWebClientFactory;
 import com.example.bp.ebookmanager.config.Configuration;
@@ -48,9 +50,6 @@ public class AndroidConfiguration implements Configuration {
         providers.add(WoblinkWebDataProviderFactory.instance().createBookDataProvider());
         providers.add(AudiobookEmpikWebDataProviderFactory.instance().createBookDataProvider());
         providers.add(EbookEmpikWebDataProviderFactory.instance().createBookDataProvider());
-        BookDataProviderImpl provider = new BookDataProviderImpl(new MockBookDataProviderStrategy());
-        provider.setName("Fake data");
-        providers.add(provider);
         return providers;
     }
 
@@ -58,5 +57,10 @@ public class AndroidConfiguration implements Configuration {
     public BookDataProvider getLocalDataProvider() {
         RealmDataProviderStrategy strategy = new RealmDataProviderStrategy();
         return new BookDataProviderImpl(strategy);
+    }
+
+    @Override
+    public DataStore getDataStore() {
+        return new RealmDataStore();
     }
 }

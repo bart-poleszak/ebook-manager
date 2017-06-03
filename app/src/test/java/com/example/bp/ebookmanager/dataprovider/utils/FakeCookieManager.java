@@ -1,4 +1,4 @@
-package com.example.bp.ebookmanager.dataprovider.mock;
+package com.example.bp.ebookmanager.dataprovider.utils;
 
 import android.webkit.CookieManager;
 import android.webkit.ValueCallback;

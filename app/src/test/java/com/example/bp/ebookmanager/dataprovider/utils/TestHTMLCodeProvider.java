@@ -1,4 +1,4 @@
-package com.example.bp.ebookmanager.dataprovider.mock;
+package com.example.bp.ebookmanager.dataprovider.utils;
 
 /**
  * Created by Bartek on 2017-05-22.

@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.bp.ebookmanager.android.AndroidThumbnailVisitor;
+import com.example.bp.ebookmanager.config.ConfigManager;
 import com.example.bp.ebookmanager.model.Book;
 import com.example.bp.ebookmanager.model.BookDetails;
 import com.example.bp.ebookmanager.model.Person;
@@ -27,14 +28,12 @@ import com.example.bp.ebookmanager.model.ThumbnailVisitor;
 import com.example.bp.ebookmanager.model.formats.AudiobookDetails;
 import com.example.bp.ebookmanager.model.formats.EbookDetails;
 import com.example.bp.ebookmanager.model.formats.FormatDetails;
-import com.example.bp.ebookmanager.realm.RealmBook;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import io.realm.Realm;
 
 /**
  * Ebook Manager
@@ -142,7 +141,7 @@ public class DetailsFragment extends Fragment {
             adapter.addRow(ctx.getString(R.string.format), builder.substring(0, builder.length() - 2));
 
         fillFormatDetails();
-        updateRealm();
+        ConfigManager.get().getDataStore().update(book);
     }
 
     private void fillFormatDetails() {
@@ -176,16 +175,6 @@ public class DetailsFragment extends Fragment {
 
             }
         });
-    }
-
-    private void updateRealm() {
-        Realm realm = Realm.getDefaultInstance();
-        realm.beginTransaction();
-        RealmBook realmBook = realm.where(RealmBook.class)
-                .equalTo("id", book.getId())
-                .findFirst();
-        realmBook.fillDetails(book);
-        realm.commitTransaction();
     }
 
     private void fillBasicData() {

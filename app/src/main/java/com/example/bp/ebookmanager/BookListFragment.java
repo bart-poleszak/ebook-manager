@@ -15,14 +15,12 @@ import android.widget.Toast;
 import com.example.bp.ebookmanager.config.ConfigManager;
 import com.example.bp.ebookmanager.dataprovider.BookDataProvider;
 import com.example.bp.ebookmanager.model.Book;
-import com.example.bp.ebookmanager.realm.RealmBook;
 
 import java.io.ByteArrayOutputStream;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import io.realm.Realm;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -32,6 +30,7 @@ public class BookListFragment extends Fragment {
     @BindView(R.id.listView) ListView listView;
     @BindView(R.id.fab) FloatingActionButton fab;
     private BookListAdapter adapter;
+    private DataStore dataStore;
 
     public BookListFragment() {
     }
@@ -41,6 +40,7 @@ public class BookListFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
         ButterKnife.bind(this, view);
+        dataStore = ConfigManager.get().getDataStore();
 
         initializeListView();
         fab.setOnClickListener(new View.OnClickListener() {
@@ -85,13 +85,7 @@ public class BookListFragment extends Fragment {
                     ByteArrayOutputStream stream = new ByteArrayOutputStream();
                     bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
                     byte[] thumbnailBytes = stream.toByteArray();
-                    Realm realm = Realm.getDefaultInstance();
-                    realm.beginTransaction();
-                    RealmBook realmBook = realm.where(RealmBook.class)
-                            .equalTo("id", book.getId())
-                            .findFirst();
-                    realmBook.setThumbnail(thumbnailBytes);
-                    realm.commitTransaction();
+                    dataStore.storeThumbnail(book, thumbnailBytes);
                 }
             });
         }
@@ -117,7 +111,7 @@ public class BookListFragment extends Fragment {
         public void onNewDataAcquired(List<Book> data) {
             adapter.setMarkNewAsSynched(true);
             adapter.updateItems(data);
-            updateRealm(data);
+            dataStore.update(data);
         }
 
         @Override
@@ -130,24 +124,5 @@ public class BookListFragment extends Fragment {
     private void dataAquisitionFailedToast() {
         Toast toast = Toast.makeText(getContext(), "Data acquisition failed", Toast.LENGTH_SHORT);
         toast.show();
-    }
-
-    private void updateRealm(List<Book> data) {
-        Realm realm = Realm.getDefaultInstance();
-        realm.beginTransaction();
-        for (Book book : data)
-            addBookToRealmIfNeeded(realm, book);
-        realm.commitTransaction();
-    }
-
-    private void addBookToRealmIfNeeded(Realm realm, Book book) {
-        RealmBook realmBook = realm.where(RealmBook.class)
-                .equalTo("id", book.getId())
-                .findFirst();
-        if (realmBook == null) {
-            realmBook = realm.createObject(RealmBook.class, book.getId());
-            realmBook.fromBook(book);
-        }
-
     }
 }

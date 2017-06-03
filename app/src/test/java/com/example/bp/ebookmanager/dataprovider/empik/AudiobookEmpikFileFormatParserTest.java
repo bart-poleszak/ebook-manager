@@ -1,7 +1,7 @@
 package com.example.bp.ebookmanager.dataprovider.empik;
 
 import com.example.bp.ebookmanager.dataprovider.html.HTMLScraper;
-import com.example.bp.ebookmanager.dataprovider.mock.TestHTMLCodeProvider;
+import com.example.bp.ebookmanager.dataprovider.utils.TestHTMLCodeProvider;
 import com.example.bp.ebookmanager.model.WebBookDetails;
 
 import org.junit.BeforeClass;

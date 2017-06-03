@@ -1,4 +1,4 @@
-package com.example.bp.ebookmanager.dataprovider.mock;
+package com.example.bp.ebookmanager.dataprovider.utils;
 
 import com.example.bp.ebookmanager.android.dataprovider.HeadlessWebClient;
 import com.example.bp.ebookmanager.android.dataprovider.UrlWrapper;

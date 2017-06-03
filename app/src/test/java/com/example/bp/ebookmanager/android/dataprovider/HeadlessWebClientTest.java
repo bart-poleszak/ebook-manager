@@ -3,12 +3,11 @@ package com.example.bp.ebookmanager.android.dataprovider;
 import android.webkit.CookieManager;
 
 import com.example.bp.ebookmanager.dataprovider.WebClient;
-import com.example.bp.ebookmanager.dataprovider.mock.FakeCookieManager;
-import com.example.bp.ebookmanager.dataprovider.mock.FakeUrlWrapper;
-import com.example.bp.ebookmanager.dataprovider.mock.SynchroniousHeadlessWebClientActionsRunner;
+import com.example.bp.ebookmanager.dataprovider.utils.FakeCookieManager;
+import com.example.bp.ebookmanager.dataprovider.utils.FakeUrlWrapper;
+import com.example.bp.ebookmanager.dataprovider.utils.SynchroniousHeadlessWebClientActionsRunner;
 
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.net.HttpURLConnection;

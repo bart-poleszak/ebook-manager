@@ -11,6 +11,11 @@ import android.widget.ListView;
 
 import com.example.bp.ebookmanager.MainActivity;
 import com.example.bp.ebookmanager.R;
+import com.example.bp.ebookmanager.config.ConfigManager;
+import com.example.bp.ebookmanager.config.Configuration;
+import com.example.bp.ebookmanager.dataprovider.BookDataProvider;
+import com.example.bp.ebookmanager.dataprovider.empik.AudiobookEmpikWebDataProviderFactory;
+import com.example.bp.ebookmanager.dataprovider.empik.EmpikWebDataProviderFactory;
 import com.example.bp.ebookmanager.model.Book;
 import com.example.bp.ebookmanager.model.formats.Mp3Details;
 
@@ -23,6 +28,7 @@ import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.*;
 
 import org.hamcrest.Matcher;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Rule;
@@ -48,34 +54,15 @@ import org.junit.Test;
 
 @org.junit.runner.RunWith(AndroidJUnit4.class)
 @LargeTest
-public class EmpikIntegrationTests {
+public class EmpikAudiobookIntegrationTests {
     public static final int EXPECTED_BOOK_COUNT = 3;
-
-    public static ViewAction waitFor(final long millis) {
-        return new ViewAction() {
-            @Override
-            public Matcher<View> getConstraints() {
-                return isRoot();
-            }
-
-            @Override
-            public String getDescription() {
-                return "Wait for " + millis + " milliseconds.";
-            }
-
-            @Override
-            public void perform(UiController uiController, final View view) {
-                uiController.loopMainThreadForAtLeast(millis);
-            }
-        };
-    }
 
     @Rule
     public ActivityTestRule<MainActivity> activityRule = new ActivityTestRule<>(MainActivity.class);
 
     @BeforeClass
     public static void beforeClass() {
-        MainActivity.setConfigurationFactory(EmpikTestConfiguration.getFactory());
+        MainActivity.setConfigurationFactory(EmpikTestConfiguration.getFactory(AudiobookEmpikWebDataProviderFactory.instance()));
     }
 
     @Ignore
@@ -86,18 +73,18 @@ public class EmpikIntegrationTests {
     }
 
     @Test
-    public void booksAreLoading() {
+    public void booksAreLoading() throws InterruptedException {
         onView(withId(R.id.fab)).perform(click());
-        onView(isRoot()).perform(waitFor(2000));
+        Thread.sleep(1000);
 
         ListView listView = (ListView) activityRule.getActivity().findViewById(R.id.listView);
         assertEquals(EXPECTED_BOOK_COUNT, listView.getCount());
     }
 
     @Test
-    public void bookDetailsAreLoading() {
+    public void bookDetailsAreLoading() throws InterruptedException {
         onView(withId(R.id.fab)).perform(click());
-        onView(isRoot()).perform(waitFor(1000));
+        Thread.sleep(1000);
 
         int metro2034Position = getMetro2034Position();
 
@@ -106,7 +93,7 @@ public class EmpikIntegrationTests {
                 .atPosition(metro2034Position)
                 .perform(click());
 
-        onView(isRoot()).perform(waitFor(1000));
+        Thread.sleep(1000);
         onView(withId(R.id.detailsTitle))
                 .check(matches(withText("Metro 2034")));
         onView(withId(R.id.detailsAuthor))
@@ -153,9 +140,9 @@ public class EmpikIntegrationTests {
     }
 
     @Test
-    public void downloadIsActiveAfterSynchronization() {
+    public void downloadIsActiveAfterSynchronization() throws InterruptedException {
         onView(withId(R.id.fab)).perform(click());
-        onView(isRoot()).perform(waitFor(1000));
+        Thread.sleep(1000);
 
         int metro2034Position = getMetro2034Position();
         onData(anything())
@@ -163,7 +150,7 @@ public class EmpikIntegrationTests {
                 .atPosition(metro2034Position)
                 .perform(click());
 
-        onView(isRoot()).perform(waitFor(1000));
+        Thread.sleep(1000);
         onView(withId(R.id.downloadButton))
                 .check(matches(isEnabled()));
     }

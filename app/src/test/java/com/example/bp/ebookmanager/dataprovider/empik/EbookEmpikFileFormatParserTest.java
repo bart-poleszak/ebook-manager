@@ -1,7 +1,7 @@
 package com.example.bp.ebookmanager.dataprovider.empik;
 
 import com.example.bp.ebookmanager.dataprovider.html.HTMLScraper;
-import com.example.bp.ebookmanager.dataprovider.mock.TestHTMLCodeProvider;
+import com.example.bp.ebookmanager.dataprovider.utils.TestHTMLCodeProvider;
 import com.example.bp.ebookmanager.model.WebBookDetails;
 import com.example.bp.ebookmanager.model.formats.EpubDetails;
 import com.example.bp.ebookmanager.model.formats.FormatDetails;
@@ -12,7 +12,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.Assert.*;
 
