@@ -50,6 +50,7 @@ public class TestBookDataProvider implements BookDataProvider {
         Book book = new Book(details);
         book.setAuthor(Person.named(author));
         book.setTitle(title);
+        books.add(book);
         this.books = books;
     }
 }

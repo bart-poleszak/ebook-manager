@@ -2,7 +2,7 @@ package com.example.bp.ebookmanager.android.config;
 
 import android.content.Context;
 
-import com.example.bp.ebookmanager.DataStore;
+import com.example.bp.ebookmanager.AndroidDataStore;
 import com.example.bp.ebookmanager.android.RealmDataStore;
 import com.example.bp.ebookmanager.android.dataprovider.AndroidUserActionEnabler;
 import com.example.bp.ebookmanager.android.dataprovider.AndroidWebClientFactory;
@@ -13,8 +13,6 @@ import com.example.bp.ebookmanager.dataprovider.UserActionEnabler;
 import com.example.bp.ebookmanager.dataprovider.WebClientFactory;
 import com.example.bp.ebookmanager.dataprovider.empik.AudiobookEmpikWebDataProviderFactory;
 import com.example.bp.ebookmanager.dataprovider.empik.EbookEmpikWebDataProviderFactory;
-import com.example.bp.ebookmanager.dataprovider.empik.EmpikWebDataProviderFactory;
-import com.example.bp.ebookmanager.dataprovider.mock.MockBookDataProviderStrategy;
 import com.example.bp.ebookmanager.dataprovider.realm.RealmDataProviderStrategy;
 import com.example.bp.ebookmanager.dataprovider.woblink.WoblinkWebDataProviderFactory;
 
@@ -60,7 +58,7 @@ public class AndroidConfiguration implements Configuration {
     }
 
     @Override
-    public DataStore getDataStore() {
-        return new RealmDataStore();
+    public AndroidDataStore getDataStore() {
+        return new RealmDataStore("ebookmanager.realm");
     }
 }

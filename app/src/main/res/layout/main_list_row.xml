@@ -34,14 +34,18 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="Large Text"
-            android:id="@+id/titleTextView" />
+            android:id="@+id/titleTextView"
+            android:maxLines="1"
+            android:ellipsize="end"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="Small Text"
-            android:id="@+id/authorTextView" />
+            android:id="@+id/authorTextView"
+            android:maxLines="1"
+            android:ellipsize="end" />
     </LinearLayout>
 
 

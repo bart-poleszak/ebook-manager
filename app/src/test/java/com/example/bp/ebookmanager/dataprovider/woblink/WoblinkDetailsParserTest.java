@@ -5,6 +5,7 @@ import com.example.bp.ebookmanager.model.formats.EpubDetails;
 import com.example.bp.ebookmanager.model.formats.FormatDetails;
 import com.example.bp.ebookmanager.model.formats.MobiDetails;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.junit.Assert.*;

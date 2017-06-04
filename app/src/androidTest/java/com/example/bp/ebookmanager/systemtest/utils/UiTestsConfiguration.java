@@ -1,9 +1,6 @@
 package com.example.bp.ebookmanager.systemtest.utils;
 
-import android.content.Context;
-
-import com.example.bp.ebookmanager.DataStore;
-import com.example.bp.ebookmanager.android.config.AndroidConfigurationFactory;
+import com.example.bp.ebookmanager.AndroidDataStore;
 import com.example.bp.ebookmanager.config.Configuration;
 import com.example.bp.ebookmanager.dataprovider.BookDataProvider;
 import com.example.bp.ebookmanager.dataprovider.UserActionEnabler;
@@ -11,7 +8,6 @@ import com.example.bp.ebookmanager.dataprovider.WebActionResolver;
 import com.example.bp.ebookmanager.dataprovider.WebClient;
 import com.example.bp.ebookmanager.dataprovider.WebClientFactory;
 import com.example.bp.ebookmanager.model.Book;
-import com.example.bp.ebookmanager.systemtest.UiTests;
 import com.example.bp.ebookmanager.utils.FakeDataStore;
 import com.example.bp.ebookmanager.utils.FakeWebClient;
 
@@ -75,7 +71,7 @@ public class UiTestsConfiguration implements Configuration {
     }
 
     @Override
-    public DataStore getDataStore() {
+    public AndroidDataStore getDataStore() {
         return new FakeDataStore();
     }
 

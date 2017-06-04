@@ -30,7 +30,7 @@ public class BookListFragment extends Fragment {
     @BindView(R.id.listView) ListView listView;
     @BindView(R.id.fab) FloatingActionButton fab;
     private BookListAdapter adapter;
-    private DataStore dataStore;
+    private AndroidDataStore dataStore;
 
     public BookListFragment() {
     }

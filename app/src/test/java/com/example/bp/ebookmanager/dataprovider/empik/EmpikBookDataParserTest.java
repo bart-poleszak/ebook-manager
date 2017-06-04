@@ -1,6 +1,6 @@
 package com.example.bp.ebookmanager.dataprovider.empik;
 
-import com.example.bp.ebookmanager.DataStore;
+import com.example.bp.ebookmanager.AndroidDataStore;
 import com.example.bp.ebookmanager.config.ConfigManager;
 import com.example.bp.ebookmanager.config.Configuration;
 import com.example.bp.ebookmanager.dataprovider.BookDataProvider;
@@ -68,7 +68,7 @@ public class EmpikBookDataParserTest {
             }
 
             @Override
-            public DataStore getDataStore() {
+            public AndroidDataStore getDataStore() {
                 return null;
             }
         });

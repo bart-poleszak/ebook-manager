@@ -1,6 +1,6 @@
 package com.example.bp.ebookmanager.config;
 
-import com.example.bp.ebookmanager.DataStore;
+import com.example.bp.ebookmanager.AndroidDataStore;
 import com.example.bp.ebookmanager.dataprovider.BookDataProvider;
 import com.example.bp.ebookmanager.dataprovider.UserActionEnabler;
 import com.example.bp.ebookmanager.dataprovider.WebClientFactory;
@@ -16,5 +16,5 @@ public interface Configuration {
     UserActionEnabler getUserActionEnabler();
     List<BookDataProvider> getDataProviders();
     BookDataProvider getLocalDataProvider();
-    DataStore getDataStore();
+    AndroidDataStore getDataStore();
 }

@@ -2,30 +2,18 @@ package com.example.bp.ebookmanager.integrationtest.empik;
 
 import android.content.Context;
 
-import com.example.bp.ebookmanager.DataStore;
+import com.example.bp.ebookmanager.AndroidDataStore;
 import com.example.bp.ebookmanager.android.config.AndroidConfiguration;
 import com.example.bp.ebookmanager.android.config.AndroidConfigurationFactory;
 import com.example.bp.ebookmanager.config.Configuration;
 import com.example.bp.ebookmanager.dataprovider.BookDataProvider;
-import com.example.bp.ebookmanager.dataprovider.BookDataProviderImpl;
 import com.example.bp.ebookmanager.dataprovider.UserActionEnabler;
 import com.example.bp.ebookmanager.dataprovider.WebClientFactory;
 import com.example.bp.ebookmanager.dataprovider.WebDataProviderFactory;
-import com.example.bp.ebookmanager.dataprovider.empik.AudiobookEmpikWebDataProviderFactory;
-import com.example.bp.ebookmanager.dataprovider.empik.EbookEmpikWebDataProviderFactory;
-import com.example.bp.ebookmanager.dataprovider.mock.MockBookDataProviderStrategy;
-import com.example.bp.ebookmanager.dataprovider.woblink.WoblinkWebDataProviderFactory;
 import com.example.bp.ebookmanager.model.Book;
-import com.example.bp.ebookmanager.model.BookDetails;
-import com.example.bp.ebookmanager.model.BookDetailsImpl;
-import com.example.bp.ebookmanager.model.Person;
-import com.example.bp.ebookmanager.model.Publisher;
-import com.example.bp.ebookmanager.model.formats.FormatDetails;
-import com.example.bp.ebookmanager.model.formats.Mp3Details;
 import com.example.bp.ebookmanager.utils.FakeDataStore;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -76,7 +64,7 @@ public class EmpikTestConfiguration implements Configuration {
     }
 
     @Override
-    public DataStore getDataStore() {
+    public AndroidDataStore getDataStore() {
         return new FakeDataStore();
     }
 

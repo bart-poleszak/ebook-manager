@@ -1,6 +1,8 @@
 package com.example.bp.ebookmanager.utils;
 
-import com.example.bp.ebookmanager.DataStore;
+import android.content.Context;
+
+import com.example.bp.ebookmanager.AndroidDataStore;
 import com.example.bp.ebookmanager.model.Book;
 
 import java.util.List;
@@ -10,7 +12,12 @@ import java.util.List;
  * Created by Bartek on 2017-06-03.
  */
 
-public class FakeDataStore implements DataStore {
+public class FakeDataStore implements AndroidDataStore {
+    @Override
+    public void initialize(Context context) {
+
+    }
+
     @Override
     public void storeThumbnail(Book book, byte[] thumbnail) {
 
